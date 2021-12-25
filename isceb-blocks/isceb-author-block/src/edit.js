@@ -88,11 +88,13 @@ export default function Edit({ attributes, setAttributes }) {
 				/>
 			</PanelBody>
 		</InspectorControls>,
-		<div { ...useBlockProps() }>
-			<div class="isceb-standard-page-title-head">
-				<input type="text" onChange={updateTopic} value={attributes.topic} placeholder="Post topic" class="isceb-standard-page-topic" />
-				<input type="text" onChange={updateDate} value={attributes.date} placeholder="Post date" class="isceb-standard-page-date" />
-
+		<div {...useBlockProps()} class="isceb-gutenberg-block-wrapper">
+			<div class="isceb-standard-page-title-head-topic">
+				<p>Topic: </p>
+				<input type="text" onChange={updateTopic} value={attributes.topic} placeholder="Post topic" />
+			</div>
+			<div class="isceb-standard-page-date">
+				<input type="text" onChange={updateDate} value={attributes.date} placeholder="Post date" />
 			</div>
 			<div class="isceb-standard-page-head-container">
 				<input type="text" onChange={updateAuthor} value={attributes.author} style={{ color: titleColor }} placeholder="Name of the page's author" class="isceb-standard-page-author" />

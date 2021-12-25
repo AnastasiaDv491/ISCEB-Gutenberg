@@ -9,3 +9,15 @@
 	// margin: 5px;
 }
 
+.isceb-gutenberg-block-wrapper {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	grid-template-rows: repeat(2, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+
+}
+
+.isceb-standard-page-title-head-topic,.isceb-standard-page-date,.isceb-standard-page-head-container{
+	margin:auto;
+}

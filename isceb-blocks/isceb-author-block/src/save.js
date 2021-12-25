@@ -30,13 +30,14 @@ export default function save({ attributes }) {
 		date
 	} = attributes;
 	return (
-		<div { ...useBlockProps.save() }>
-			<div class="isceb-standard-page-title-head">
-				<h6 class="isceb-standard-page-topic">Topic: {topic}</h6>
-				<h6 class="isceb-standard-page-date">{date}</h6>
+		<div {...useBlockProps.save()}>
+			<div class="isceb-standard-page-title-head-topic">
+				<h6>Topic: {topic}</h6>
 
 			</div>
-
+			<div class="isceb-standard-page-date">
+				<h6 >{date}</h6>
+			</div>
 			<div class="isceb-standard-page-head-container">
 				<img src={authorImage} style={{
 					borderRadius: '50%',
