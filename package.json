@@ -8,6 +8,8 @@
 	"scripts": {
 		"build:author-block": "wp-scripts build  isceb-blocks/isceb-author-block/src/index.js --output-path=isceb-blocks/isceb-author-block/build/",
 		"start:author-block": "wp-scripts start isceb-blocks/isceb-author-block/src/index.js --output-path=isceb-blocks/isceb-author-block/build/",
+		"build:news-block": "wp-scripts build  isceb-blocks/isceb-news-block/src/index.js --output-path=isceb-blocks/isceb-news-block/build/",
+		"start:news-block": "wp-scripts start isceb-blocks/isceb-news-block/src/index.js --output-path=isceb-blocks/isceb-news-block/build/",
 		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",

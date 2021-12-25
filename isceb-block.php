@@ -1,7 +1,8 @@
 <?php
+
 /**
- * Plugin Name:       ISCEB Author Block
- * Description:       Example block written with ESNext standard and JSX support – build step required.
+ * Plugin Name:       ISCEB Blocks package
+ * Description:       A collection of blocks custom made for ISCEB.
  * Requires at least: 5.8
  * Requires PHP:      7.0
  * Version:           0.1.0
@@ -20,7 +21,15 @@
  *
  * @see https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/writing-your-first-block-type/
  */
-function isceb_author_block_isceb_block_block_init() {
-	register_block_type( plugin_dir_path( __FILE__ ) . 'isceb-blocks/isceb-author-block/');
+function isceb_author_block_isceb_block_block_init()
+{
+	register_block_type(plugin_dir_path(__FILE__) . 'isceb-blocks/isceb-author-block/');
 }
-add_action( 'init', 'isceb_author_block_isceb_block_block_init' );
+add_action('init', 'isceb_author_block_isceb_block_block_init');
+
+
+function isceb_news_block_isceb_block_block_init()
+{
+	register_block_type(plugin_dir_path(__FILE__) . 'isceb-blocks/isceb-news-block/');
+}
+add_action('init', 'isceb_news_block_isceb_block_block_init');
