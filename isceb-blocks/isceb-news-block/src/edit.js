@@ -12,11 +12,8 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
 import { useBlockProps, InspectorControls, ColorPalette, MediaUpload } from '@wordpress/block-editor';
-import { PanelBody, IconButton, SelectControl } from '@wordpress/components';
-import { Component } from '@wordpress/element';
-import apiFetch from '@wordpress/api-fetch';
-import { compose } from '@wordpress/compose';
-import { withDispatch, withSelect, useSelect } from '@wordpress/data';
+import { SelectControl } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -123,19 +120,7 @@ import './editor.scss';
 // 	}
 // }
 
-// GET
-apiFetch({ path: '/wp/v2/posts' }).then((posts) => {
-	console.log(posts);
-});
 
-// POST
-apiFetch({
-	path: '/wp/v2/posts/1',
-	method: 'POST',
-	data: { title: 'Hello World' },
-}).then((res) => {
-	console.log(res);
-});
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
@@ -154,13 +139,10 @@ export default function Edit({ attributes, setAttributes }) {
 			let mediaCollection = [];
 
 			postCollection?.forEach(post => {
-				mediaCollection[post.id] = select('core').getMedia(post.featured_media);
+				post.imgurl = select('core').getMedia(post.featured_media)?.media_details.sizes.medium_large.source_url;
 			});
 
-			console.log(mediaCollection);
-			// console.log(select('core').getEditedPostAttribute( 'featured_media' ));
-			// return postCollection?.map(post => ({ label: post.title.rendered, value: post.id }));
-			return { postCollection, mediaCollection }
+			return postCollection
 		}
 	);
 
@@ -177,14 +159,16 @@ export default function Edit({ attributes, setAttributes }) {
 		setAttributes({ selectedPosts: posts });
 	}
 
-	return [ // If we are focused on this block, create the inspector controls.
-		<InspectorControls key='inspector'>
+	return [
+		<InspectorControls key='inspector' className='isceb-gutenberg-select'>
 			<SelectControl
 				multiple
 				value={attributes.selectedPosts.map(post => { return post.id })}
 				onChange={onSelectedPageChange}
 				label={__('Select a Post')}
-				options={options?.postCollection?.map(post => ({ label: post.title.rendered, value: post.id }))} />
+				options={options?.map(post => ({ label: post.title.rendered, value: post.id }))}
+			/>
+
 		</InspectorControls>
 		,
 
@@ -194,18 +178,13 @@ export default function Edit({ attributes, setAttributes }) {
 					<a href={post.link}>
 						<div className="itemBanner" key={post.id} >
 							<div key={post.id} className="bannerCardImage" style={{
-								backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${options?.mediaCollection[post.id]?.media_details.sizes.medium_large.source_url})`,
-							}}></div>
-							{/* <p>{post.title.rendered}</p><p dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }} /> */}
-							{/* <p>{options?.mediaCollection[post.id]?.media_details.sizes.thumbnail.source_url}</p> */}
-							{/* </div> */}
-							<div class="bannerCardContent">
-								<h3 class="bannerCardTitle">{post.title.rendered}</h3>
-								<p class="bannerCardDescription" dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}/>
+								backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`,
+							}}/>
 
-								<button class="bannerCardButton">More Info</button>
-
-
+							<div className="bannerCardContent">
+								<h3 className="bannerCardTitle">{post.title.rendered}</h3>
+								<p className="bannerCardDescription">{post.excerpt.raw}</p>
+								<button className="bannerCardButton">More Info</button>
 							</div>
 						</div>
 					</a>

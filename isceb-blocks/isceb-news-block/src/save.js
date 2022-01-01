@@ -12,8 +12,6 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
 import { useBlockProps } from '@wordpress/block-editor';
-import apiFetch from '@wordpress/api-fetch';
-
 
 /**
  * The save function defines the way in which the different attributes should
@@ -25,34 +23,30 @@ import apiFetch from '@wordpress/api-fetch';
  * @return {WPElement} Element to render.
  */
 
-// GET
-apiFetch({ path: '/wp/v2/posts' }).then((posts) => {
-	console.log(posts);
-});
 
-// POST
-apiFetch({
-	path: '/wp/v2/posts/1',
-	method: 'POST',
-	data: { title: 'Hello World' },
-}).then((res) => {
-	console.log(res);
-});
 export default function save({ attributes }) {
 	const {
-		aPost,
+		selectedPosts,
 	} = attributes;
-	console.log(aPost);
 
 	return (
-		<section  {...useBlockProps.save({className:"homepage-banners"})}>
-			<div class="container-banners">
-			</div>
-			
-			<div>  hello
-			{aPost}
+		<section  {...useBlockProps.save({ className: "homepage-banners" })}>
+			<div className="container-banners">
+				{selectedPosts?.map(post =>
+					<a href={post.link}>
+						<div className="itemBanner" key={post.id} >
+							<div key={post.id} className="bannerCardImage" style={{
+								backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`,
+							}}></div>
 
-
+							<div className="bannerCardContent">
+								<h3 className="bannerCardTitle">{post.title.rendered}</h3>
+								<p className="bannerCardDescription">{post.excerpt.raw}</p>
+								<button className="bannerCardButton" >More Info</button>
+							</div>
+						</div>
+					</a>
+				)}
 			</div>
 		</section >
 	);

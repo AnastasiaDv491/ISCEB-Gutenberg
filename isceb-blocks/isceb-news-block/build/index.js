@@ -20,13 +20,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
-/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_5__);
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
-/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./editor.scss */ "./isceb-blocks/isceb-news-block/src/editor.scss");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./isceb-blocks/isceb-news-block/src/editor.scss");
 
 
 /**
@@ -41,9 +37,6 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-
-
-
 
 
 
@@ -143,26 +136,8 @@ __webpack_require__.r(__webpack_exports__);
 // 		]
 // 	}
 // }
-// GET
 
-_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default()({
-  path: '/wp/v2/posts'
-}).then(posts => {
-  console.log(posts);
-}); // POST
-
-_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default()({
-  path: '/wp/v2/posts/1',
-  method: 'POST',
-  data: {
-    title: 'Hello World'
-  }
-}).then(res => {
-  console.log(res);
-});
 function Edit(_ref) {
-  var _options$postCollecti;
-
   let {
     attributes,
     setAttributes
@@ -172,7 +147,7 @@ function Edit(_ref) {
   } = attributes;
   let postCollection = [];
   let posts = [];
-  const options = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(select => {
+  const options = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(select => {
     var _postCollection;
 
     postCollection = select('core').getEntityRecords('postType', 'page', {
@@ -181,15 +156,11 @@ function Edit(_ref) {
     });
     let mediaCollection = [];
     (_postCollection = postCollection) === null || _postCollection === void 0 ? void 0 : _postCollection.forEach(post => {
-      mediaCollection[post.id] = select('core').getMedia(post.featured_media);
-    });
-    console.log(mediaCollection); // console.log(select('core').getEditedPostAttribute( 'featured_media' ));
-    // return postCollection?.map(post => ({ label: post.title.rendered, value: post.id }));
+      var _select$getMedia;
 
-    return {
-      postCollection,
-      mediaCollection
-    };
+      post.imgurl = (_select$getMedia = select('core').getMedia(post.featured_media)) === null || _select$getMedia === void 0 ? void 0 : _select$getMedia.media_details.sizes.medium_large.source_url;
+    });
+    return postCollection;
   });
 
   function onSelectedPageChange(selectedPages) {
@@ -204,9 +175,9 @@ function Edit(_ref) {
     });
   }
 
-  return [// If we are focused on this block, create the inspector controls.
-  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
-    key: "inspector"
+  return [(0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
+    key: "inspector",
+    className: "isceb-gutenberg-select"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
     multiple: true,
     value: attributes.selectedPosts.map(post => {
@@ -214,7 +185,7 @@ function Edit(_ref) {
     }),
     onChange: onSelectedPageChange,
     label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Select a Post'),
-    options: options === null || options === void 0 ? void 0 : (_options$postCollecti = options.postCollection) === null || _options$postCollecti === void 0 ? void 0 : _options$postCollecti.map(post => ({
+    options: options === null || options === void 0 ? void 0 : options.map(post => ({
       label: post.title.rendered,
       value: post.id
     }))
@@ -222,33 +193,26 @@ function Edit(_ref) {
     className: "homepage-banners"
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "container-banners"
-  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => {
-    var _options$mediaCollect;
-
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-      href: post.link
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "itemBanner",
-      key: post.id
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      key: post.id,
-      className: "bannerCardImage",
-      style: {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${options === null || options === void 0 ? void 0 : (_options$mediaCollect = options.mediaCollection[post.id]) === null || _options$mediaCollect === void 0 ? void 0 : _options$mediaCollect.media_details.sizes.medium_large.source_url})`
-      }
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      class: "bannerCardContent"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
-      class: "bannerCardTitle"
-    }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-      class: "bannerCardDescription",
-      dangerouslySetInnerHTML: {
-        __html: post.excerpt.rendered
-      }
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-      class: "bannerCardButton"
-    }, "More Info"))));
-  })))];
+  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    href: post.link
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "itemBanner",
+    key: post.id
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    key: post.id,
+    className: "bannerCardImage",
+    style: {
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`
+    }
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "bannerCardContent"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
+    className: "bannerCardTitle"
+  }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "bannerCardDescription"
+  }, post.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "bannerCardButton"
+  }, "More Info")))))))];
 } // const PostsDropdownControl = compose(
 // 	// withDispatch allows to save the selected post ID into post meta
 // 	withDispatch(function (dispatch, props) {
@@ -487,8 +451,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
-/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3__);
 
 
 /**
@@ -505,7 +467,6 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-
 /**
  * The save function defines the way in which the different attributes should
  * be combined into the final markup, which is then serialized by the block
@@ -515,36 +476,38 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @return {WPElement} Element to render.
  */
-// GET
 
-_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3___default()({
-  path: '/wp/v2/posts'
-}).then(posts => {
-  console.log(posts);
-}); // POST
-
-_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3___default()({
-  path: '/wp/v2/posts/1',
-  method: 'POST',
-  data: {
-    title: 'Hello World'
-  }
-}).then(res => {
-  console.log(res);
-});
 function save(_ref) {
   let {
     attributes
   } = _ref;
   const {
-    aPost
+    selectedPosts
   } = attributes;
-  console.log(aPost);
   return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save({
     className: "homepage-banners"
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "container-banners"
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "  hello", aPost));
+    className: "container-banners"
+  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+    href: post.link
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "itemBanner",
+    key: post.id
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    key: post.id,
+    className: "bannerCardImage",
+    style: {
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`
+    }
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "bannerCardContent"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
+    className: "bannerCardTitle"
+  }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    className: "bannerCardDescription"
+  }, post.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+    className: "bannerCardButton"
+  }, "More Info")))))));
 }
 
 /***/ }),
@@ -570,16 +533,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
-
-/***/ }),
-
-/***/ "@wordpress/api-fetch":
-/*!**********************************!*\
-  !*** external ["wp","apiFetch"] ***!
-  \**********************************/
-/***/ (function(module) {
-
-module.exports = window["wp"]["apiFetch"];
 
 /***/ }),
 
@@ -610,16 +563,6 @@ module.exports = window["wp"]["blocks"];
 /***/ (function(module) {
 
 module.exports = window["wp"]["components"];
-
-/***/ }),
-
-/***/ "@wordpress/compose":
-/*!*********************************!*\
-  !*** external ["wp","compose"] ***!
-  \*********************************/
-/***/ (function(module) {
-
-module.exports = window["wp"]["compose"];
 
 /***/ }),
 
