@@ -15,6 +15,8 @@ import { useBlockProps, InspectorControls, ColorPalette, MediaUpload } from '@wo
 import { PanelBody, IconButton, SelectControl } from '@wordpress/components';
 import { Component } from '@wordpress/element';
 import apiFetch from '@wordpress/api-fetch';
+import { compose } from '@wordpress/compose';
+import { withDispatch, withSelect, useSelect } from '@wordpress/data';
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -29,98 +31,247 @@ import './editor.scss';
  * https://rudrastyh.com/gutenberg/get-posts-in-dynamic-select-control.html
  */
 
-export default class mySelectPosts extends Component {
-	// Method for setting the initial state.
-	static getInitialState(selectedPost) {
-		return {
-			posts: [],
-			selectedPost: selectedPost,
-			post: {},
-		};
-	}
+// export default class mySelectPosts extends Component {
+// 	// Method for setting the initial state.
+// 	static getInitialState(selectedPost) {
+// 		return {
+// 			posts: [],
+// 			selectedPost: selectedPost,
+// 			post: {},
+// 		};
+// 	}
 
-	// Constructing our component. With super() we are setting everything to 'this'.
-	// Now we can access the attributes with this.props.attributes
-	constructor() {
-		super(...arguments);
-		// Maybe we have a previously selected post. Try to load it.
-		this.state = this.constructor.getInitialState(this.props.attributes.selectedPost);
-		// Bind so we can use 'this' inside the method.
-		this.getOptions = this.getOptions.bind(this);
-		// Load posts.
-		this.getOptions();
+// 	// Constructing our component. With super() we are setting everything to 'this'.
+// 	// Now we can access the attributes with this.props.attributes
+// 	constructor() {
+// 		super(...arguments);
+// 		// Maybe we have a previously selected post. Try to load it.
+// 		this.state = this.constructor.getInitialState(this.props.attributes.selectedPost);
+// 		// Bind so we can use 'this' inside the method.
+// 		this.getOptions = this.getOptions.bind(this);
+// 		// Load posts.
+// 		this.getOptions();
 
-		// Bind it.
-		this.onChangeSelectPost = this.onChangeSelectPost.bind(this);
-	}
+// 		// Bind it.
+// 		this.onChangeSelectPost = this.onChangeSelectPost.bind(this);
+// 	}
 
-	getOptions() {
-			return (apiFetch({ path: '/wp/v2/pages' }).then((posts) => {
-			if (posts && 0 !== this.state.selectedPost) {
-				// If we have a selected Post, find that post and add it.
-				const post = posts.find((item) => { return item.id == this.state.selectedPost });
-				// This is the same as { post: post, posts: posts }
-				this.setState({ post, posts });
-			} else {
-				this.setState({ posts });
-			}
-		}));
-	}
+// 	getOptions() {
+// 			return (apiFetch({ path: '/wp/v2/pages' }).then((posts) => {
+// 			if (posts && 0 !== this.state.selectedPost) {
+// 				// If we have a selected Post, find that post and add it.
+// 				const post = posts.find((item) => { return item.id == this.state.selectedPost });
+// 				// This is the same as { post: post, posts: posts }
+// 				this.setState({ post, posts });
+// 			} else {
+// 				this.setState({ posts });
+// 			}
+// 		}));
+// 	}
 
-	onChangeSelectPost( value ) {
-		// Find the post
-		const post = this.state.posts.find( ( item ) => { return item.id == parseInt( value ) } );
-		// Set the state
-		this.setState( { selectedPost: parseInt( value ), post } );
-		// Set the attributes
-		this.props.setAttributes( {
-		  selectedPost: parseInt( value ),
-		  title: post.title.rendered,
-		  content: post.excerpt.rendered,
-		  link: post.link,
-		});
-	  }
+// 	onChangeSelectPost( value ) {
+// 		// Find the post
+// 		const post = this.state.posts.find( ( item ) => { return item.id == parseInt( value ) } );
+// 		// Set the state
+// 		this.setState( { selectedPost: parseInt( value ), post } );
+// 		// Set the attributes
+// 		this.props.setAttributes( {
+// 		  selectedPost: parseInt( value ),
+// 		  title: post.title.rendered,
+// 		  content: post.excerpt.rendered,
+// 		  link: post.link,
+// 		});
+// 	  }
 
-	render() {
-		// Options to hold all loaded posts. For now, just the default.
-		let options = [{ value: 0, label: __('Select a Post') }];
-		let output = __('Loading Posts');
-		this.props.className += ' loading';
-		if (this.state.posts.length > 0) {
-			const loading = __('We have %d posts. Choose one.');
-			output = loading.replace('%d', this.state.posts.length);
-			this.state.posts.forEach((post) => {
-				options.push({ value: post.id, label: post.title.rendered });
+// 	render() {
+// 		// Options to hold all loaded posts. For now, just the default.
+// 		let options = [{ value: 0, label: __('Select a Post') }];
+// 		let output = __('Loading Posts');
+
+// 		if (this.state.posts.length > 0) {
+// 			const loading = __('We have %d posts. Choose one.');
+// 			output = loading.replace('%d', this.state.posts.length);
+// 			this.state.posts.forEach((post) => {
+// 				options.push({ value: post.id, label: post.title.rendered });
+// 			});
+// 		} else {
+// 			output = __('No posts found. Please create some first.');
+// 		}
+
+// 		 // Checking if we have anything in the object
+// 		if( this.state.post.hasOwnProperty('title') ) {
+// 			output = <div className="post">
+// 			  <a href={ this.state.post.link }><h2 dangerouslySetInnerHTML={ { __html: this.state.post.title.rendered } }></h2></a>
+// 			  <p dangerouslySetInnerHTML={ { __html: this.state.post.excerpt.rendered } }></p>
+// 			  </div>;
+
+// 		  } 
+// 		return [ // If we are focused on this block, create the inspector controls.
+// 			<InspectorControls key='inspector'>
+// 				<SelectControl
+// 					// Selected value.
+// 					value={this.props.attributes.selectedPost}
+// 					onChange={this.onChangeSelectPost}
+// 					label={__('Select a Post')}
+// 					options={options} />
+// 					<PostsDropdownControl  label="Title" metaKey="misha_plugin_seo_title"/>
+// 			</InspectorControls>
+// 			,
+
+// 			<div  >{output}</div>
+// 		]
+// 	}
+// }
+
+// GET
+apiFetch({ path: '/wp/v2/posts' }).then((posts) => {
+	console.log(posts);
+});
+
+// POST
+apiFetch({
+	path: '/wp/v2/posts/1',
+	method: 'POST',
+	data: { title: 'Hello World' },
+}).then((res) => {
+	console.log(res);
+});
+
+export default function Edit({ attributes, setAttributes }) {
+	const {
+		selectedPosts
+	} = attributes;
+
+	let postCollection = [];
+	let posts = [];
+
+
+	const options = useSelect(
+		(select) => {
+			postCollection = select('core').getEntityRecords('postType', 'page', { per_page: -1, status: 'publish', });
+
+
+			let mediaCollection = [];
+
+			postCollection?.forEach(post => {
+				mediaCollection[post.id] = select('core').getMedia(post.featured_media);
 			});
-		} else {
-			output = __('No posts found. Please create some first.');
+
+			console.log(mediaCollection);
+			// console.log(select('core').getEditedPostAttribute( 'featured_media' ));
+			// return postCollection?.map(post => ({ label: post.title.rendered, value: post.id }));
+			return { postCollection, mediaCollection }
 		}
+	);
 
-		 // Checking if we have anything in the object
-		if( this.state.post.hasOwnProperty('title') ) {
-			output = <div className="post">
-			  <a href={ this.state.post.link }><h2 dangerouslySetInnerHTML={ { __html: this.state.post.title.rendered } }></h2></a>
-			  <p dangerouslySetInnerHTML={ { __html: this.state.post.excerpt.rendered } }></p>
-			  </div>;
-			this.props.className += ' has-post';
-		  } else {
-			this.props.className += ' no-post';
-		  }
 
-		return [ // If we are focused on this block, create the inspector controls.
-			!!this.props.isSelected && (<InspectorControls key='inspector'>
-				<SelectControl
-					// Selected value.
-					value={this.props.attributes.selectedPost}
-					onChange={this.onChangeSelectPost}
-					label={__('Select a Post')}
-					options={options} />
-			</InspectorControls>
-			),
-			<div className={this.props.className}>{output}</div>
-		]
+
+	function onSelectedPageChange(selectedPages) {
+		let selectedPagesNumberParsed = selectedPages.map(post => { return parseInt(post) });
+
+		posts = postCollection.filter(post => selectedPagesNumberParsed.includes(post.id));
+
+		console.log(selectedPosts);
+
+		// let postIds = posts.map(post => {return post.id});
+		setAttributes({ selectedPosts: posts });
 	}
+
+	return [ // If we are focused on this block, create the inspector controls.
+		<InspectorControls key='inspector'>
+			<SelectControl
+				multiple
+				value={attributes.selectedPosts.map(post => { return post.id })}
+				onChange={onSelectedPageChange}
+				label={__('Select a Post')}
+				options={options?.postCollection?.map(post => ({ label: post.title.rendered, value: post.id }))} />
+		</InspectorControls>
+		,
+
+		<section  {...useBlockProps({ className: "homepage-banners" })}>
+			<div className="container-banners">
+				{selectedPosts?.map(post =>
+					<a href={post.link}>
+						<div className="itemBanner" key={post.id} >
+							<div key={post.id} className="bannerCardImage" style={{
+								backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${options?.mediaCollection[post.id]?.media_details.sizes.medium_large.source_url})`,
+							}}></div>
+							{/* <p>{post.title.rendered}</p><p dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }} /> */}
+							{/* <p>{options?.mediaCollection[post.id]?.media_details.sizes.thumbnail.source_url}</p> */}
+							{/* </div> */}
+							<div class="bannerCardContent">
+								<h3 class="bannerCardTitle">{post.title.rendered}</h3>
+								<p class="bannerCardDescription" dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}/>
+
+								<button class="bannerCardButton">More Info</button>
+
+
+							</div>
+						</div>
+					</a>
+				)}
+			</div>
+		</section >
+
+	]
+
 }
+
+// const PostsDropdownControl = compose(
+// 	// withDispatch allows to save the selected post ID into post meta
+// 	withDispatch(function (dispatch, props) {
+// 		console.log(props);
+// 		return {
+// 			setMetaValue: function (metaValue) {
+// 				dispatch('core/editor').editPost(
+// 					{ meta: { [props.metaKey]: metaValue } }
+// 				);
+// 				console.log(metaValue);
+// 				console.log(props.metaKey);
+// 			}
+// 		}
+// 	}),
+// 	// withSelect allows to get posts for our SelectControl and also to get the post meta value
+// 	withSelect(function (select, props) {
+// 		console.log(select('core/editor').getEditedPostAttribute('meta'));
+// 		return {
+// 			posts: select('core').getEntityRecords('postType', 'page'),
+// 			metaValue: select('core/editor').getEditedPostAttribute('meta')[props.metaKey],
+// 		}
+// 	}))(function (props) {
+
+// 		// options for SelectControl
+// 		var options = [];
+
+// 		console.log(props.posts);
+
+// 		// if posts found
+// 		if (props.posts) {
+// 			options.push({ value: 0, label: 'Select something' });
+// 			props.posts.forEach((post) => { // simple foreach loop
+// 				options.push({ value: post.id, label: post.title.rendered });
+// 			});
+// 		} else {
+// 			options.push({ value: 0, label: 'Loading...' })
+// 		}
+
+// 		console.log(props);
+
+// 		return <SelectControl
+// 			onChange={function (content) {
+// 				console.log("hhh");
+// 				console.log(content);
+// 				props.setMetaValue(content);
+// 			}}
+// 			label={__('Select a Post')}
+// 			options={options}
+// 			value={props.metaValue}
+// 		/>;
+
+
+// 	}
+
+// 	);
 
 
 

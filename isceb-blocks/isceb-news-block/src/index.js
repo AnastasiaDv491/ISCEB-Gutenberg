@@ -18,7 +18,7 @@ import './style.scss';
 /**
  * Internal dependencies
  */
-import mySelectPosts from './edit';
+import Edit from './edit';
 import save from './save';
 
 /**
@@ -30,7 +30,7 @@ registerBlockType('isceb-blocks/news-block', {
     /**
      * @see ./edit.js
      */
-    edit:mySelectPosts ,
+    edit:Edit ,
 
     /**
      * @see ./save.js
@@ -56,5 +56,23 @@ registerBlockType('isceb-blocks/news-block', {
             type: 'number',
             default: 0,
         }, 
+        selectedPosts:{
+            type: 'array',
+            default: [],
+        },
+        align:{
+            type:'string',
+            default:'full',
+        }
+
     },
+    supports:{
+        align:true,
+        alignWide:true,
+    },
+    getEditWrapperProps(attributes) {
+        return {
+          'data-align': 'full'
+        };
+      },
 });

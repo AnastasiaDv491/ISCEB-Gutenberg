@@ -9,3 +9,72 @@
 	// margin: 5px;
 }
 
+$primary: #1F476B; 
+$secondary:  #d3ebf8;
+
+
+.homepage-banners {
+	background: linear-gradient(180deg, $primary 50%, $secondary 50%);
+	height: 640px;
+	display: flex;
+	padding-left: 1rem;
+}
+
+@media (min-width: 641px) {
+	.homepage-banners {
+		padding-left: 0;
+	}
+}
+
+.container-banners {
+	margin: 0 auto;
+	padding: 20px;
+	display: grid;
+	height: 100%;
+	grid-gap: 1.5rem;
+	grid-auto-flow: column;
+	grid-auto-columns: minmax(280px, 1fr); //240
+	overflow: auto;
+
+	scroll-snap-type: x mandatory;
+}
+
+
+.itemBanner {
+	height: 600px;
+	position: relative;
+	scroll-snap-align: start;
+	animation: 1.2s ease-out 0s 1 slideInFromLeft;
+}
+
+.bannerCardContent {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+	text-align: center;
+	width: fit-content;
+}
+
+.bannerCardButton {
+	border: none;
+	padding: 10px;
+	font-weight: bold;
+	background-color: white;
+	border-radius: 5px;
+}
+
+.bannerCardImage {
+	height: 100%;
+	background-size: cover;
+
+	background-repeat: no-repeat;
+	background-position: center center;
+	transition: transform 0.1s ease-in;
+	border-radius: 5px;
+}
+
+.bannerCardImage:hover {
+	transform: scale(1.03);
+}

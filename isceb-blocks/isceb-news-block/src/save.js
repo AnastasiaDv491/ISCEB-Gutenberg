@@ -12,6 +12,8 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
 import { useBlockProps } from '@wordpress/block-editor';
+import apiFetch from '@wordpress/api-fetch';
+
 
 /**
  * The save function defines the way in which the different attributes should
@@ -22,35 +24,36 @@ import { useBlockProps } from '@wordpress/block-editor';
  *
  * @return {WPElement} Element to render.
  */
+
+// GET
+apiFetch({ path: '/wp/v2/posts' }).then((posts) => {
+	console.log(posts);
+});
+
+// POST
+apiFetch({
+	path: '/wp/v2/posts/1',
+	method: 'POST',
+	data: { title: 'Hello World' },
+}).then((res) => {
+	console.log(res);
+});
 export default function save({ attributes }) {
 	const {
-		authorImage,
-		author,
-		topic,
-		date
+		aPost,
 	} = attributes;
+	console.log(aPost);
+
 	return (
-		<div {...useBlockProps.save()}>
-			<div class="isceb-standard-page-title-head-topic">
-				<h6>Topic: {topic}</h6>
+		<section  {...useBlockProps.save({className:"homepage-banners"})}>
+			<div class="container-banners">
+			</div>
+			
+			<div>  hello
+			{aPost}
+
 
 			</div>
-			<div class="isceb-standard-page-date">
-				<h6 >{date}</h6>
-			</div>
-			<div class="isceb-standard-page-head-container">
-				<img src={authorImage} style={{
-					borderRadius: '50%',
-					height: '60px',
-					width: '60px',
-					border: '5px solid #1F476B'
-					// boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
-				}}
-					class="isceb-standard-page-author-img"
-				/>
-				<h6 class="isceb-standard-page-author">{author} </h6>
-
-			</div>
-		</div>
+		</section >
 	);
 }

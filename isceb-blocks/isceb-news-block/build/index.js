@@ -10,7 +10,7 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": function() { return /* binding */ mySelectPosts; }
+/* harmony export */   "default": function() { return /* binding */ Edit; }
 /* harmony export */ });
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
 /* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
@@ -22,7 +22,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
 /* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./isceb-blocks/isceb-news-block/src/editor.scss");
+/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/compose */ "@wordpress/compose");
+/* harmony import */ var _wordpress_compose__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_compose__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./editor.scss */ "./isceb-blocks/isceb-news-block/src/editor.scss");
 
 
 /**
@@ -42,6 +46,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * Those files can contain any CSS code that gets applied to the editor.
@@ -55,132 +61,242 @@ __webpack_require__.r(__webpack_exports__);
  * https://www.ibenic.com/create-gutenberg-block-displaying-post/
  * https://rudrastyh.com/gutenberg/get-posts-in-dynamic-select-control.html
  */
+// export default class mySelectPosts extends Component {
+// 	// Method for setting the initial state.
+// 	static getInitialState(selectedPost) {
+// 		return {
+// 			posts: [],
+// 			selectedPost: selectedPost,
+// 			post: {},
+// 		};
+// 	}
+// 	// Constructing our component. With super() we are setting everything to 'this'.
+// 	// Now we can access the attributes with this.props.attributes
+// 	constructor() {
+// 		super(...arguments);
+// 		// Maybe we have a previously selected post. Try to load it.
+// 		this.state = this.constructor.getInitialState(this.props.attributes.selectedPost);
+// 		// Bind so we can use 'this' inside the method.
+// 		this.getOptions = this.getOptions.bind(this);
+// 		// Load posts.
+// 		this.getOptions();
+// 		// Bind it.
+// 		this.onChangeSelectPost = this.onChangeSelectPost.bind(this);
+// 	}
+// 	getOptions() {
+// 			return (apiFetch({ path: '/wp/v2/pages' }).then((posts) => {
+// 			if (posts && 0 !== this.state.selectedPost) {
+// 				// If we have a selected Post, find that post and add it.
+// 				const post = posts.find((item) => { return item.id == this.state.selectedPost });
+// 				// This is the same as { post: post, posts: posts }
+// 				this.setState({ post, posts });
+// 			} else {
+// 				this.setState({ posts });
+// 			}
+// 		}));
+// 	}
+// 	onChangeSelectPost( value ) {
+// 		// Find the post
+// 		const post = this.state.posts.find( ( item ) => { return item.id == parseInt( value ) } );
+// 		// Set the state
+// 		this.setState( { selectedPost: parseInt( value ), post } );
+// 		// Set the attributes
+// 		this.props.setAttributes( {
+// 		  selectedPost: parseInt( value ),
+// 		  title: post.title.rendered,
+// 		  content: post.excerpt.rendered,
+// 		  link: post.link,
+// 		});
+// 	  }
+// 	render() {
+// 		// Options to hold all loaded posts. For now, just the default.
+// 		let options = [{ value: 0, label: __('Select a Post') }];
+// 		let output = __('Loading Posts');
+// 		if (this.state.posts.length > 0) {
+// 			const loading = __('We have %d posts. Choose one.');
+// 			output = loading.replace('%d', this.state.posts.length);
+// 			this.state.posts.forEach((post) => {
+// 				options.push({ value: post.id, label: post.title.rendered });
+// 			});
+// 		} else {
+// 			output = __('No posts found. Please create some first.');
+// 		}
+// 		 // Checking if we have anything in the object
+// 		if( this.state.post.hasOwnProperty('title') ) {
+// 			output = <div className="post">
+// 			  <a href={ this.state.post.link }><h2 dangerouslySetInnerHTML={ { __html: this.state.post.title.rendered } }></h2></a>
+// 			  <p dangerouslySetInnerHTML={ { __html: this.state.post.excerpt.rendered } }></p>
+// 			  </div>;
+// 		  } 
+// 		return [ // If we are focused on this block, create the inspector controls.
+// 			<InspectorControls key='inspector'>
+// 				<SelectControl
+// 					// Selected value.
+// 					value={this.props.attributes.selectedPost}
+// 					onChange={this.onChangeSelectPost}
+// 					label={__('Select a Post')}
+// 					options={options} />
+// 					<PostsDropdownControl  label="Title" metaKey="misha_plugin_seo_title"/>
+// 			</InspectorControls>
+// 			,
+// 			<div  >{output}</div>
+// 		]
+// 	}
+// }
+// GET
 
-class mySelectPosts extends _wordpress_element__WEBPACK_IMPORTED_MODULE_0__.Component {
-  // Method for setting the initial state.
-  static getInitialState(selectedPost) {
+_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default()({
+  path: '/wp/v2/posts'
+}).then(posts => {
+  console.log(posts);
+}); // POST
+
+_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default()({
+  path: '/wp/v2/posts/1',
+  method: 'POST',
+  data: {
+    title: 'Hello World'
+  }
+}).then(res => {
+  console.log(res);
+});
+function Edit(_ref) {
+  var _options$postCollecti;
+
+  let {
+    attributes,
+    setAttributes
+  } = _ref;
+  const {
+    selectedPosts
+  } = attributes;
+  let postCollection = [];
+  let posts = [];
+  const options = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_6__.useSelect)(select => {
+    var _postCollection;
+
+    postCollection = select('core').getEntityRecords('postType', 'page', {
+      per_page: -1,
+      status: 'publish'
+    });
+    let mediaCollection = [];
+    (_postCollection = postCollection) === null || _postCollection === void 0 ? void 0 : _postCollection.forEach(post => {
+      mediaCollection[post.id] = select('core').getMedia(post.featured_media);
+    });
+    console.log(mediaCollection); // console.log(select('core').getEditedPostAttribute( 'featured_media' ));
+    // return postCollection?.map(post => ({ label: post.title.rendered, value: post.id }));
+
     return {
-      posts: [],
-      selectedPost: selectedPost,
-      post: {}
+      postCollection,
+      mediaCollection
     };
-  } // Constructing our component. With super() we are setting everything to 'this'.
-  // Now we can access the attributes with this.props.attributes
+  });
 
+  function onSelectedPageChange(selectedPages) {
+    let selectedPagesNumberParsed = selectedPages.map(post => {
+      return parseInt(post);
+    });
+    posts = postCollection.filter(post => selectedPagesNumberParsed.includes(post.id));
+    console.log(selectedPosts); // let postIds = posts.map(post => {return post.id});
 
-  constructor() {
-    super(...arguments); // Maybe we have a previously selected post. Try to load it.
-
-    this.state = this.constructor.getInitialState(this.props.attributes.selectedPost); // Bind so we can use 'this' inside the method.
-
-    this.getOptions = this.getOptions.bind(this); // Load posts.
-
-    this.getOptions(); // Bind it.
-
-    this.onChangeSelectPost = this.onChangeSelectPost.bind(this);
+    setAttributes({
+      selectedPosts: posts
+    });
   }
 
-  getOptions() {
-    return _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_4___default()({
-      path: '/wp/v2/pages'
-    }).then(posts => {
-      if (posts && 0 !== this.state.selectedPost) {
-        // If we have a selected Post, find that post and add it.
-        const post = posts.find(item => {
-          return item.id == this.state.selectedPost;
-        }); // This is the same as { post: post, posts: posts }
+  return [// If we are focused on this block, create the inspector controls.
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
+    key: "inspector"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
+    multiple: true,
+    value: attributes.selectedPosts.map(post => {
+      return post.id;
+    }),
+    onChange: onSelectedPageChange,
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Select a Post'),
+    options: options === null || options === void 0 ? void 0 : (_options$postCollecti = options.postCollection) === null || _options$postCollecti === void 0 ? void 0 : _options$postCollecti.map(post => ({
+      label: post.title.rendered,
+      value: post.id
+    }))
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)({
+    className: "homepage-banners"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "container-banners"
+  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => {
+    var _options$mediaCollect;
 
-        this.setState({
-          post,
-          posts
-        });
-      } else {
-        this.setState({
-          posts
-        });
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: post.link
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "itemBanner",
+      key: post.id
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      key: post.id,
+      className: "bannerCardImage",
+      style: {
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${options === null || options === void 0 ? void 0 : (_options$mediaCollect = options.mediaCollection[post.id]) === null || _options$mediaCollect === void 0 ? void 0 : _options$mediaCollect.media_details.sizes.medium_large.source_url})`
       }
-    });
-  }
-
-  onChangeSelectPost(value) {
-    // Find the post
-    const post = this.state.posts.find(item => {
-      return item.id == parseInt(value);
-    }); // Set the state
-
-    this.setState({
-      selectedPost: parseInt(value),
-      post
-    }); // Set the attributes
-
-    this.props.setAttributes({
-      selectedPost: parseInt(value),
-      title: post.title.rendered,
-      content: post.excerpt.rendered,
-      link: post.link
-    });
-  }
-
-  render() {
-    // Options to hold all loaded posts. For now, just the default.
-    let options = [{
-      value: 0,
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Select a Post')
-    }];
-
-    let output = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Loading Posts');
-
-    this.props.className += ' loading';
-
-    if (this.state.posts.length > 0) {
-      const loading = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('We have %d posts. Choose one.');
-
-      output = loading.replace('%d', this.state.posts.length);
-      this.state.posts.forEach(post => {
-        options.push({
-          value: post.id,
-          label: post.title.rendered
-        });
-      });
-    } else {
-      output = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('No posts found. Please create some first.');
-    } // Checking if we have anything in the object
-
-
-    if (this.state.post.hasOwnProperty('title')) {
-      output = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-        className: "post"
-      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-        href: this.state.post.link
-      }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", {
-        dangerouslySetInnerHTML: {
-          __html: this.state.post.title.rendered
-        }
-      })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-        dangerouslySetInnerHTML: {
-          __html: this.state.post.excerpt.rendered
-        }
-      }));
-      this.props.className += ' has-post';
-    } else {
-      this.props.className += ' no-post';
-    }
-
-    return [// If we are focused on this block, create the inspector controls.
-    !!this.props.isSelected && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
-      key: "inspector"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl // Selected value.
-    , {
-      value: this.props.attributes.selectedPost,
-      onChange: this.onChangeSelectPost,
-      label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Select a Post'),
-      options: options
-    })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: this.props.className
-    }, output)];
-  }
-
-} // /**
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      class: "bannerCardContent"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
+      class: "bannerCardTitle"
+    }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      class: "bannerCardDescription",
+      dangerouslySetInnerHTML: {
+        __html: post.excerpt.rendered
+      }
+    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      class: "bannerCardButton"
+    }, "More Info"))));
+  })))];
+} // const PostsDropdownControl = compose(
+// 	// withDispatch allows to save the selected post ID into post meta
+// 	withDispatch(function (dispatch, props) {
+// 		console.log(props);
+// 		return {
+// 			setMetaValue: function (metaValue) {
+// 				dispatch('core/editor').editPost(
+// 					{ meta: { [props.metaKey]: metaValue } }
+// 				);
+// 				console.log(metaValue);
+// 				console.log(props.metaKey);
+// 			}
+// 		}
+// 	}),
+// 	// withSelect allows to get posts for our SelectControl and also to get the post meta value
+// 	withSelect(function (select, props) {
+// 		console.log(select('core/editor').getEditedPostAttribute('meta'));
+// 		return {
+// 			posts: select('core').getEntityRecords('postType', 'page'),
+// 			metaValue: select('core/editor').getEditedPostAttribute('meta')[props.metaKey],
+// 		}
+// 	}))(function (props) {
+// 		// options for SelectControl
+// 		var options = [];
+// 		console.log(props.posts);
+// 		// if posts found
+// 		if (props.posts) {
+// 			options.push({ value: 0, label: 'Select something' });
+// 			props.posts.forEach((post) => { // simple foreach loop
+// 				options.push({ value: post.id, label: post.title.rendered });
+// 			});
+// 		} else {
+// 			options.push({ value: 0, label: 'Loading...' })
+// 		}
+// 		console.log(props);
+// 		return <SelectControl
+// 			onChange={function (content) {
+// 				console.log("hhh");
+// 				console.log(content);
+// 				props.setMetaValue(content);
+// 			}}
+// 			label={__('Select a Post')}
+// 			options={options}
+// 			value={props.metaValue}
+// 		/>;
+// 	}
+// 	);
+// /**
 //  * The edit function describes the structure of your block in the context of the
 //  * editor. This represents what the editor will render when the block is used.
 //  *
@@ -330,8 +446,27 @@ __webpack_require__.r(__webpack_exports__);
     selectedPost: {
       type: 'number',
       default: 0
+    },
+    selectedPosts: {
+      type: 'array',
+      default: []
+    },
+    align: {
+      type: 'string',
+      default: 'full'
     }
+  },
+  supports: {
+    align: true,
+    alignWide: true
+  },
+
+  getEditWrapperProps(attributes) {
+    return {
+      'data-align': 'full'
+    };
   }
+
 });
 
 /***/ }),
@@ -352,6 +487,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
 /* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/api-fetch */ "@wordpress/api-fetch");
+/* harmony import */ var _wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3__);
 
 
 /**
@@ -368,6 +505,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
+
 /**
  * The save function defines the way in which the different attributes should
  * be combined into the final markup, which is then serialized by the block
@@ -377,36 +515,36 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @return {WPElement} Element to render.
  */
+// GET
 
+_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3___default()({
+  path: '/wp/v2/posts'
+}).then(posts => {
+  console.log(posts);
+}); // POST
+
+_wordpress_api_fetch__WEBPACK_IMPORTED_MODULE_3___default()({
+  path: '/wp/v2/posts/1',
+  method: 'POST',
+  data: {
+    title: 'Hello World'
+  }
+}).then(res => {
+  console.log(res);
+});
 function save(_ref) {
   let {
     attributes
   } = _ref;
   const {
-    authorImage,
-    author,
-    topic,
-    date
+    aPost
   } = attributes;
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save(), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "isceb-standard-page-title-head-topic"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", null, "Topic: ", topic)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "isceb-standard-page-date"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", null, date)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    class: "isceb-standard-page-head-container"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-    src: authorImage,
-    style: {
-      borderRadius: '50%',
-      height: '60px',
-      width: '60px',
-      border: '5px solid #1F476B' // boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
-
-    },
-    class: "isceb-standard-page-author-img"
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", {
-    class: "isceb-standard-page-author"
-  }, author, " ")));
+  console.log(aPost);
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save({
+    className: "homepage-banners"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    class: "container-banners"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "  hello", aPost));
 }
 
 /***/ }),
@@ -472,6 +610,26 @@ module.exports = window["wp"]["blocks"];
 /***/ (function(module) {
 
 module.exports = window["wp"]["components"];
+
+/***/ }),
+
+/***/ "@wordpress/compose":
+/*!*********************************!*\
+  !*** external ["wp","compose"] ***!
+  \*********************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["compose"];
+
+/***/ }),
+
+/***/ "@wordpress/data":
+/*!******************************!*\
+  !*** external ["wp","data"] ***!
+  \******************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["data"];
 
 /***/ }),
 
