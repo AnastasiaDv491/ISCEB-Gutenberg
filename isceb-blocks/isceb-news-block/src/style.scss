@@ -78,3 +78,18 @@ $secondary:  #d3ebf8;
 .bannerCardImage:hover {
 	transform: scale(1.03);
 }
+
+.bannerCardTag {
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	background-color: $secondary;
+	border-radius: 5px;
+}
+
+.bannerTagText {
+	margin: 0;
+	padding: 4px;
+	font-weight: bold;
+	color: $primary;
+}

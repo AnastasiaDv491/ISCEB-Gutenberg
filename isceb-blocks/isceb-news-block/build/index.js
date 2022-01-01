@@ -147,21 +147,34 @@ function Edit(_ref) {
   } = attributes;
   let postCollection = [];
   let posts = [];
+  let tagsCollection = [];
+  let test = [];
   const options = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(select => {
     var _postCollection;
 
-    postCollection = select('core').getEntityRecords('postType', 'page', {
+    postCollection = select('core').getEntityRecords('postType', 'post', {
       per_page: -1,
       status: 'publish'
     });
+    tagsCollection = select('core').getEntityRecords('taxonomy', 'post_tag', {
+      per_page: -1
+    }); // tagsCollection = select("core/editor").getEditedPostAttribute("tags");
+
     let mediaCollection = [];
     (_postCollection = postCollection) === null || _postCollection === void 0 ? void 0 : _postCollection.forEach(post => {
-      var _select$getMedia;
+      var _select$getMedia, _tagsCollection;
 
       post.imgurl = (_select$getMedia = select('core').getMedia(post.featured_media)) === null || _select$getMedia === void 0 ? void 0 : _select$getMedia.media_details.sizes.medium_large.source_url;
+      post.tagText = (_tagsCollection = tagsCollection) === null || _tagsCollection === void 0 ? void 0 : _tagsCollection.filter(tag => post.tags.includes(tag.id)).map(tag => tag.name); // tagsCollection?.forEach(tag => {
+      // 	if (post.tags[0] == tag.id) {
+      // 		console.log(tag.name);
+      // 	}
+      // })
     });
     return postCollection;
   });
+  console.log(tagsCollection);
+  console.log(postCollection);
 
   function onSelectedPageChange(selectedPages) {
     let selectedPagesNumberParsed = selectedPages.map(post => {
@@ -193,26 +206,34 @@ function Edit(_ref) {
     className: "homepage-banners"
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "container-banners"
-  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: post.link
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "itemBanner",
-    key: post.id
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    key: post.id,
-    className: "bannerCardImage",
-    style: {
-      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`
-    }
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "bannerCardContent"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
-    className: "bannerCardTitle"
-  }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-    className: "bannerCardDescription"
-  }, post.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: "bannerCardButton"
-  }, "More Info")))))))];
+  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => {
+    var _post$tagText;
+
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: post.link
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "itemBanner",
+      key: post.id
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      key: post.id,
+      className: "bannerCardImage",
+      style: {
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`
+      }
+    }), (post === null || post === void 0 ? void 0 : (_post$tagText = post.tagText) === null || _post$tagText === void 0 ? void 0 : _post$tagText.length) > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      class: "bannerCardTag"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      class: "bannerTagText"
+    }, post.tagText[0])), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "bannerCardContent"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
+      className: "bannerCardTitle"
+    }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "bannerCardDescription"
+    }, post.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      className: "bannerCardButton"
+    }, "More Info"))));
+  })))];
 } // const PostsDropdownControl = compose(
 // 	// withDispatch allows to save the selected post ID into post meta
 // 	withDispatch(function (dispatch, props) {
@@ -488,26 +509,34 @@ function save(_ref) {
     className: "homepage-banners"
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
     className: "container-banners"
-  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-    href: post.link
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "itemBanner",
-    key: post.id
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    key: post.id,
-    className: "bannerCardImage",
-    style: {
-      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`
-    }
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "bannerCardContent"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
-    className: "bannerCardTitle"
-  }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-    className: "bannerCardDescription"
-  }, post.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-    className: "bannerCardButton"
-  }, "More Info")))))));
+  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => {
+    var _post$tagText;
+
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: post.link
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "itemBanner",
+      key: post.id
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      key: post.id,
+      className: "bannerCardImage",
+      style: {
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`
+      }
+    }), (post === null || post === void 0 ? void 0 : (_post$tagText = post.tagText) === null || _post$tagText === void 0 ? void 0 : _post$tagText.length) > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      class: "bannerCardTag"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      class: "bannerTagText"
+    }, post.tagText[0])), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "bannerCardContent"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
+      className: "bannerCardTitle"
+    }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "bannerCardDescription"
+    }, post.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      className: "bannerCardButton"
+    }, "More Info"))));
+  })));
 }
 
 /***/ }),

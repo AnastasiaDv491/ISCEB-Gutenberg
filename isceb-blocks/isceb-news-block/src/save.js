@@ -39,6 +39,12 @@ export default function save({ attributes }) {
 								backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`,
 							}}></div>
 
+							{post?.tagText?.length > 0 &&
+								<div class="bannerCardTag">
+									<p class="bannerTagText">{post.tagText[0]}</p>
+								</div>
+
+							}
 							<div className="bannerCardContent">
 								<h3 className="bannerCardTitle">{post.title.rendered}</h3>
 								<p className="bannerCardDescription">{post.excerpt.raw}</p>

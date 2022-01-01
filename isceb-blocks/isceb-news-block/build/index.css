@@ -73,4 +73,23 @@
   transform: scale(1.03);
 }
 
+.bannerCardTag {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: #d3ebf8;
+  border-radius: 5px;
+}
+
+.bannerTagText {
+  margin: 0;
+  padding: 4px;
+  font-weight: bold;
+  color: #1F476B;
+}
+
+.editor-styles-wrapper .bannerTagText {
+  margin: 0;
+}
+
 /*# sourceMappingURL=index.css.map*/

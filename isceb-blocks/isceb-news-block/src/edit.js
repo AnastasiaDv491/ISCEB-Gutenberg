@@ -129,22 +129,34 @@ export default function Edit({ attributes, setAttributes }) {
 
 	let postCollection = [];
 	let posts = [];
+	let tagsCollection = [];
+	let test = [];
 
 
 	const options = useSelect(
 		(select) => {
-			postCollection = select('core').getEntityRecords('postType', 'page', { per_page: -1, status: 'publish', });
-
+			postCollection = select('core').getEntityRecords('postType', 'post', { per_page: -1, status: 'publish' });
+			tagsCollection = select('core').getEntityRecords('taxonomy', 'post_tag', { per_page: -1 });
+			// tagsCollection = select("core/editor").getEditedPostAttribute("tags");
 
 			let mediaCollection = [];
 
 			postCollection?.forEach(post => {
 				post.imgurl = select('core').getMedia(post.featured_media)?.media_details.sizes.medium_large.source_url;
-			});
+				post.tagText = tagsCollection?.filter(tag => post.tags.includes(tag.id)).map(tag => tag.name);
+				// tagsCollection?.forEach(tag => {
+				// 	if (post.tags[0] == tag.id) {
+				// 		console.log(tag.name);
+				// 	}
+				// })
 
+			});
 			return postCollection
 		}
 	);
+
+	console.log(tagsCollection);
+	console.log(postCollection);
 
 
 
@@ -179,7 +191,13 @@ export default function Edit({ attributes, setAttributes }) {
 						<div className="itemBanner" key={post.id} >
 							<div key={post.id} className="bannerCardImage" style={{
 								backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`,
-							}}/>
+							}} />
+							{post?.tagText?.length > 0 &&
+								<div class="bannerCardTag">
+									<p class="bannerTagText">{post.tagText[0]}</p>
+								</div>
+
+							}
 
 							<div className="bannerCardContent">
 								<h3 className="bannerCardTitle">{post.title.rendered}</h3>
