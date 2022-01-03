@@ -16,6 +16,8 @@
 		"packages-update": "wp-scripts packages-update"
 	},
 	"dependencies": {
+		"@dnd-kit/core": "^4.0.3",
+		"@dnd-kit/sortable": "^5.1.0",
 		"@wordpress/block-editor": "^8.0.12",
 		"@wordpress/blocks": "^11.1.5",
 		"@wordpress/i18n": "^4.2.4"
