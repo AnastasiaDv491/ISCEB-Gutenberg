@@ -9,9 +9,8 @@
 	// margin: 5px;
 }
 
-$primary: #1F476B; 
-$secondary:  #d3ebf8;
-
+$primary: #1f476b;
+$secondary: #d3ebf8;
 
 .homepage-banners {
 	background: linear-gradient(180deg, $primary 50%, $secondary 50%);
@@ -38,7 +37,6 @@ $secondary:  #d3ebf8;
 
 	scroll-snap-type: x mandatory;
 }
-
 
 .itemBanner {
 	height: 600px;
@@ -94,6 +92,11 @@ $secondary:  #d3ebf8;
 	color: $primary;
 }
 
-.editor-styles-wrapper .bannerTagText{
-	margin:0;
+.editor-styles-wrapper .bannerTagText {
+	margin: 0;
+}
+
+//Fix for height problem select control
+.isceb-gutenberg-select > div > select[id^="inspector-select-control-"] {
+	height: auto !important;
 }

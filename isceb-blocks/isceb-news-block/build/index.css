@@ -7,7 +7,7 @@
  * Replace them with your own styles or remove the file completely.
  */
 .homepage-banners {
-  background: linear-gradient(180deg, #1F476B 50%, #d3ebf8 50%);
+  background: linear-gradient(180deg, #1f476b 50%, #d3ebf8 50%);
   height: 640px;
   display: flex;
   padding-left: 1rem;
@@ -85,11 +85,15 @@
   margin: 0;
   padding: 4px;
   font-weight: bold;
-  color: #1F476B;
+  color: #1f476b;
 }
 
 .editor-styles-wrapper .bannerTagText {
   margin: 0;
+}
+
+.isceb-gutenberg-select > div > select[id^=inspector-select-control-] {
+  height: auto !important;
 }
 
 /*# sourceMappingURL=index.css.map*/

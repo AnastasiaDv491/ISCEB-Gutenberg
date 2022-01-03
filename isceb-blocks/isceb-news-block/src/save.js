@@ -40,10 +40,9 @@ export default function save({ attributes }) {
 							}}></div>
 
 							{post?.tagText?.length > 0 &&
-								<div class="bannerCardTag">
-									<p class="bannerTagText">{post.tagText[0]}</p>
+								<div className="bannerCardTag">
+									<p className="bannerTagText">{post.tagText[0]}</p>
 								</div>
-
 							}
 							<div className="bannerCardContent">
 								<h3 className="bannerCardTitle">{post.title.rendered}</h3>
