@@ -14,8 +14,8 @@ import { __ } from '@wordpress/i18n';
 import { useBlockProps, InspectorControls, ColorPalette, MediaUpload } from '@wordpress/block-editor';
 import { SelectControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useState} from '@wordpress/element'
-import React, { forwardRef,setState } from 'react';
+import { useState,useEffect } from '@wordpress/element'
+import React, { forwardRef, setState } from 'react';
 
 
 import {
@@ -57,13 +57,14 @@ export default function Edit({ attributes, setAttributes }) {
 	const {
 		selectedPosts
 	} = attributes;
-	
-	const [activeId, setActiveId] = useState(null);
-	// const [items, setItems] = useState(['1', '2', '3']);
-	const [items,setItems] = useState(selectedPosts);
-	setAttributes({ selectedPosts: items});
 
-	const {options, isLoaded} = useSelect(
+
+	const [activeId, setActiveId] = useState(null);
+
+	const [items, setItems] = useState(selectedPosts);
+	
+	
+	const { options =__( '...retrieving' ) , isLoaded } = useSelect(
 		(select) => {
 			const { getEntityRecords } = select('core');
 			let postCollection = getEntityRecords('postType', 'page', { per_page: -1, status: 'publish' });
@@ -76,17 +77,23 @@ export default function Edit({ attributes, setAttributes }) {
 
 			});
 
-			
-			return {options: postCollection,isLoaded: true}
-		}
+			console.log(postCollection)
+
+			return { options: postCollection, isLoaded: true }
+		}, []
 	);
+
+	//Triggers every time items array is changed
+	useEffect(()=>{
+		setAttributes({ selectedPosts: items });
+	},[items])
+	
+	
 
 	function onSelectedPageChange(selectedPages) {
 		let selectedPagesNumberParsed = selectedPages.map(post => { return parseInt(post) });
 
-		// setState({selectedPosts: options.filter(post => selectedPagesNumberParsed.includes(post.id))});
 		setItems(options.filter(post => selectedPagesNumberParsed.includes(post.id)));
-		setAttributes({ selectedPosts: options.filter(post => selectedPagesNumberParsed.includes(post.id)) });
 	}
 
 
@@ -106,14 +113,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 
 		return (
-			// <Item ref={setNodeRef} style={style} {...attributes} {...listeners}>
-			// 	Hallo {id}
-			// </Item>
-
 			<BannerItem post={props.post} ref={setNodeRef} style={style} {...attributes} {...listeners}></BannerItem>
-			// <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-			// 	{props.textContent} oetss
-			// </div>
 		);
 	}
 
@@ -126,41 +126,38 @@ export default function Edit({ attributes, setAttributes }) {
 	);
 
 	function handleDragEnd(event) {
-		const {active, over} = event;
-		
+		const { active, over } = event;
+
 
 		if (active.id !== over.id) {
-			console.log("change");
-		  setItems((items) => {
-			const oldIndex = items.findIndex(obj => obj.id == active.id);
-			const newIndex = items.findIndex(obj => obj.id == over.id);
-			
-			items[oldIndex].sortKey = newIndex;
-			items[newIndex].sortKey = oldIndex;
-			return arrayMove(items, oldIndex, newIndex); 
-			;
-		  });
+			setItems((items) => {
+				const oldIndex = items.findIndex(obj => obj.id == active.id);
+				const newIndex = items.findIndex(obj => obj.id == over.id);
+
+				items[oldIndex].sortKey = newIndex;
+				items[newIndex].sortKey = oldIndex;
+				return arrayMove(items, oldIndex, newIndex);
+				;
+			});
 		}
-		console.log(selectedPosts,items);
-		setAttributes({ selectedPosts: items});
-		console.log(selectedPosts,items);
+
 		setActiveId(null);
 
-	  }
+	}
 
 	function handleDragStart(event) {
-		const {active} = event;
+		const { active } = event;
 		setActiveId(active.id);
-	  }
+	}
 
-	  
+
 	return [
 		<InspectorControls key='inspector'>
 			<SelectControl
 				multiple
-				value={attributes.selectedPosts.map(post => { return post.id })}
+				value={items.map(post => { return post.id })}
 				onChange={onSelectedPageChange}
-				label={__('Select a Post')}
+				label={__('Select a Post (use CTRL to select multiple)')}
 				options={options?.map(post => ({ label: post.title.rendered, value: post.id }))}
 				className='isceb-gutenberg-select'
 			/>
@@ -169,35 +166,26 @@ export default function Edit({ attributes, setAttributes }) {
 
 		<section {...useBlockProps({ className: "homepage-banners" })}  >
 			<div className="container-banners">
-				{/* <Sortable {...props} useDragOverlay={false} itemCount={5} /> */}
-
 				< DndContext
 					sensors={sensors}
 					collisionDetection={closestCenter}
 					onDragStart={handleDragStart}
 					onDragEnd={handleDragEnd}
 				>
-
-
 					<SortableContext
 						items={items}
 						strategy={verticalListSortingStrategy}
 					>
-						{/*  */}
-
-
-						{items?.map(post => <SortableItem post={post} key={post.id} id={post.id} />)}
-
-
+						
+						{
+						items?.map(post => <SortableItem post={post} key={post.id} id={post.id} />)}
 					</SortableContext>
+					{/* 
+					Activate if you want to see something else when dragging the element
 					<DragOverlay>
-						{activeId ? <BannerItem id={activeId} /> : null}
+						{activeId ? <BannerItem post={items.find(post => {post.id == activeId})} id={activeId} /> : null}
 					</DragOverlay>
-					{/* <DragOverlay>
-				{activeId ? <SortableItem id={activeId} post={post} key={post.id} /> : null}
-			</DragOverlay> */}
-
-
+					 */}
 				</DndContext >
 			</div>
 		</section>

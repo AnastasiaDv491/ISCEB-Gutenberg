@@ -4000,40 +4000,29 @@ const BannerItem = (0,react__WEBPACK_IMPORTED_MODULE_2__.forwardRef)((_ref, ref)
     id,
     ...props
   } = _ref;
-  return (// <a href={props.post.link}>
-    (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, props, {
-      ref: ref,
-      className: "itemBanner",
-      id: (_props$post = props.post) === null || _props$post === void 0 ? void 0 : _props$post.id,
-      key: (_props$post2 = props.post) === null || _props$post2 === void 0 ? void 0 : _props$post2.id
-    }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
-      className: "bannerCardImage",
-      style: {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${(_props$post3 = props.post) === null || _props$post3 === void 0 ? void 0 : _props$post3.imgurl})`
-      }
-    }), ((_props$post4 = props.post) === null || _props$post4 === void 0 ? void 0 : (_props$post4$tagText = _props$post4.tagText) === null || _props$post4$tagText === void 0 ? void 0 : _props$post4$tagText.length) > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
-      className: "bannerCardTag"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("p", {
-      className: "bannerTagText"
-    }, (_props$post5 = props.post) === null || _props$post5 === void 0 ? void 0 : _props$post5.tagText[0])), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
-      className: "bannerCardContent"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("h3", {
-      className: "bannerCardTitle"
-    }, (_props$post6 = props.post) === null || _props$post6 === void 0 ? void 0 : _props$post6.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("p", {
-      className: "bannerCardDescription"
-    }, (_props$post7 = props.post) === null || _props$post7 === void 0 ? void 0 : _props$post7.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
-      className: "bannerCardButton"
-    }, "More Info"))) // </a>
-    // <div {...props} ref={ref} style={{backgroundColor:"red"}}>{props.post}</div>
-    // <div className="itemBanner" id={props.post} key={props.post} >
-    //     <div className="bannerCardContent">
-    //         <h3 className="bannerCardTitle">{props.post}</h3>
-    //         <p className="bannerCardDescription">{props.post}</p>
-    //         <button className="bannerCardButton">More Info</button>
-    //     </div>
-    // </div>
-
-  );
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, props, {
+    ref: ref,
+    className: "itemBanner",
+    id: (_props$post = props.post) === null || _props$post === void 0 ? void 0 : _props$post.id,
+    key: (_props$post2 = props.post) === null || _props$post2 === void 0 ? void 0 : _props$post2.id
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "bannerCardImage",
+    style: {
+      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${(_props$post3 = props.post) === null || _props$post3 === void 0 ? void 0 : _props$post3.imgurl})`
+    }
+  }), ((_props$post4 = props.post) === null || _props$post4 === void 0 ? void 0 : (_props$post4$tagText = _props$post4.tagText) === null || _props$post4$tagText === void 0 ? void 0 : _props$post4$tagText.length) > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "bannerCardTag"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("p", {
+    className: "bannerTagText"
+  }, (_props$post5 = props.post) === null || _props$post5 === void 0 ? void 0 : _props$post5.tagText[0])), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "bannerCardContent"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("h3", {
+    className: "bannerCardTitle"
+  }, (_props$post6 = props.post) === null || _props$post6 === void 0 ? void 0 : _props$post6.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("p", {
+    className: "bannerCardDescription"
+  }, (_props$post7 = props.post) === null || _props$post7 === void 0 ? void 0 : _props$post7.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
+    className: "bannerCardButton"
+  }, "More Info")));
 });
 
 /***/ }),
@@ -4117,14 +4106,10 @@ function Edit(_ref2) {
   const {
     selectedPosts
   } = attributes;
-  const [activeId, setActiveId] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(null); // const [items, setItems] = useState(['1', '2', '3']);
-
+  const [activeId, setActiveId] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
   const [items, setItems] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(selectedPosts);
-  setAttributes({
-    selectedPosts: items
-  });
   const {
-    options,
+    options = (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('...retrieving'),
     isLoaded
   } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(select => {
     const {
@@ -4147,21 +4132,24 @@ function Edit(_ref2) {
         return (_post$tags = post.tags) === null || _post$tags === void 0 ? void 0 : _post$tags.includes(tag.id);
       }).map(tag => tag.name);
     });
+    console.log(postCollection);
     return {
       options: postCollection,
       isLoaded: true
     };
-  });
+  }, []); //Triggers every time items array is changed
+
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    setAttributes({
+      selectedPosts: items
+    });
+  }, [items]);
 
   function onSelectedPageChange(selectedPages) {
     let selectedPagesNumberParsed = selectedPages.map(post => {
       return parseInt(post);
-    }); // setState({selectedPosts: options.filter(post => selectedPagesNumberParsed.includes(post.id))});
-
-    setItems(options.filter(post => selectedPagesNumberParsed.includes(post.id)));
-    setAttributes({
-      selectedPosts: options.filter(post => selectedPagesNumberParsed.includes(post.id))
     });
+    setItems(options.filter(post => selectedPagesNumberParsed.includes(post.id)));
   }
 
   function SortableItem(props) {
@@ -4178,18 +4166,11 @@ function Edit(_ref2) {
       transform: _dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_9__.CSS.Transform.toString(transform),
       transition
     };
-    return (// <Item ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      // 	Hallo {id}
-      // </Item>
-      (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_components_bannerItem__WEBPACK_IMPORTED_MODULE_10__.BannerItem, (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
-        post: props.post,
-        ref: setNodeRef,
-        style: style
-      }, attributes, listeners)) // <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      // 	{props.textContent} oetss
-      // </div>
-
-    );
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_components_bannerItem__WEBPACK_IMPORTED_MODULE_10__.BannerItem, (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
+      post: props.post,
+      ref: setNodeRef,
+      style: style
+    }, attributes, listeners));
   }
 
   const sensors = (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.useSensors)((0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.useSensor)(_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.PointerSensor), (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.useSensor)(_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.KeyboardSensor, {
@@ -4203,7 +4184,6 @@ function Edit(_ref2) {
     } = event;
 
     if (active.id !== over.id) {
-      console.log("change");
       setItems(items => {
         const oldIndex = items.findIndex(obj => obj.id == active.id);
         const newIndex = items.findIndex(obj => obj.id == over.id);
@@ -4214,11 +4194,6 @@ function Edit(_ref2) {
       });
     }
 
-    console.log(selectedPosts, items);
-    setAttributes({
-      selectedPosts: items
-    });
-    console.log(selectedPosts, items);
     setActiveId(null);
   }
 
@@ -4233,11 +4208,11 @@ function Edit(_ref2) {
     key: "inspector"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
     multiple: true,
-    value: attributes.selectedPosts.map(post => {
+    value: items.map(post => {
       return post.id;
     }),
     onChange: onSelectedPageChange,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Select a Post'),
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Select a Post (use CTRL to select multiple)'),
     options: options === null || options === void 0 ? void 0 : options.map(post => ({
       label: post.title.rendered,
       value: post.id
@@ -4259,9 +4234,7 @@ function Edit(_ref2) {
     post: post,
     key: post.id,
     id: post.id
-  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.DragOverlay, null, activeId ? (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_components_bannerItem__WEBPACK_IMPORTED_MODULE_10__.BannerItem, {
-    id: activeId
-  }) : null))))];
+  }))))))];
 }
 
 /***/ }),
