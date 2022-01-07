@@ -1,1 +1,4799 @@
-!function(){"use strict";var e,t={436:function(e,t,n){var r=window.wp.blocks;function o(){return o=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var n=arguments[t];for(var r in n)Object.prototype.hasOwnProperty.call(n,r)&&(e[r]=n[r])}return e},o.apply(this,arguments)}var i=window.wp.element,a=window.wp.i18n,s=window.wp.blockEditor,l=window.wp.components,c=window.wp.data,u=window.React,d=n.n(u),f=window.ReactDOM;const p="undefined"!=typeof window&&void 0!==window.document&&void 0!==window.document.createElement;function g(e){const t=Object.prototype.toString.call(e);return"[object Window]"===t||"[object global]"===t}function h(e){return"nodeType"in e}function v(e){var t,n;return e?g(e)?e:h(e)&&null!=(t=null==(n=e.ownerDocument)?void 0:n.defaultView)?t:window:window}function m(e){const{Document:t}=v(e);return e instanceof t}function b(e){return!g(e)&&e instanceof v(e).HTMLElement}function y(e){return e?g(e)?e.document:h(e)?m(e)?e:b(e)?e.ownerDocument:document:document:document}const w=p?u.useLayoutEffect:u.useEffect;function x(e,t){const n=(0,u.useRef)();return(0,u.useMemo)((()=>{const t=e(n.current);return n.current=t,t}),[...t])}function D(){const e=(0,u.useRef)(null),t=(0,u.useCallback)((t=>{e.current=t}),[]);return[e,t]}let E={};function R(e,t){return(0,u.useMemo)((()=>{if(t)return t;const n=null==E[e]?0:E[e]+1;return E[e]=n,`${e}-${n}`}),[e,t])}function C(e){return(t,...n)=>n.reduce(((t,n)=>{const r=Object.entries(n);for(const[n,o]of r){const r=t[n];null!=r&&(t[n]=r+e*o)}return t}),{...t})}const T=C(1),S=C(-1);function M(e){if(function(e){if(!e)return!1;const{TouchEvent:t}=v(e.target);return t&&e instanceof t}(e)){if(e.touches&&e.touches.length){const{clientX:t,clientY:n}=e.touches[0];return{x:t,y:n}}if(e.changedTouches&&e.changedTouches.length){const{clientX:t,clientY:n}=e.changedTouches[0];return{x:t,y:n}}}return function(e){return"clientX"in e&&"clientY"in e}(e)?{x:e.clientX,y:e.clientY}:{x:0,y:0}}const N=Object.freeze({Translate:{toString(e){if(!e)return;const{x:t,y:n}=e;return`translate3d(${t?Math.round(t):0}px, ${n?Math.round(n):0}px, 0)`}},Scale:{toString(e){if(!e)return;const{scaleX:t,scaleY:n}=e;return`scaleX(${t}) scaleY(${n})`}},Transform:{toString(e){if(e)return[N.Translate.toString(e),N.Scale.toString(e)].join(" ")}},Transition:{toString:({property:e,duration:t,easing:n})=>`${e} ${t}ms ${n}`}}),L={display:"none"};function k({id:e,value:t}){return d().createElement("div",{id:e,style:L},t)}const I={position:"absolute",width:1,height:1,margin:-1,border:0,padding:0,overflow:"hidden",clip:"rect(0 0 0 0)",clipPath:"inset(100%)",whiteSpace:"nowrap"};function O({id:e,announcement:t}){return d().createElement("div",{id:e,style:I,role:"status","aria-live":"assertive","aria-atomic":!0},t)}const A={draggable:"\n    To pick up a draggable item, press the space bar.\n    While dragging, use the arrow keys to move the item.\n    Press space again to drop the item in its new position, or press escape to cancel.\n  "},B={onDragStart:e=>`Picked up draggable item ${e}.`,onDragOver:(e,t)=>t?`Draggable item ${e} was moved over droppable area ${t}.`:`Draggable item ${e} is no longer over a droppable area.`,onDragEnd:(e,t)=>t?`Draggable item ${e} was dropped over droppable area ${t}`:`Draggable item ${e} was dropped.`,onDragCancel:e=>`Dragging was cancelled. Draggable item ${e} was dropped.`};var P;function j(...e){}!function(e){e.DragStart="dragStart",e.DragMove="dragMove",e.DragEnd="dragEnd",e.DragCancel="dragCancel",e.DragOver="dragOver",e.RegisterDroppable="registerDroppable",e.SetDroppableDisabled="setDroppableDisabled",e.UnregisterDroppable="unregisterDroppable"}(P||(P={}));class _ extends Map{get(e){var t;return null!=e&&null!=(t=super.get(e))?t:void 0}toArray(){return Array.from(this.values())}getEnabled(){return this.toArray().filter((({disabled:e})=>!e))}getNodeFor(e){var t,n;return null!=(t=null==(n=this.get(e))?void 0:n.node.current)?t:void 0}}const $=(0,u.createContext)({activatorEvent:null,active:null,activeNode:null,activeNodeRect:null,activeNodeClientRect:null,activators:[],ariaDescribedById:{draggable:""},containerNodeRect:null,dispatch:j,draggableNodes:{},droppableRects:new Map,droppableContainers:new _,over:null,dragOverlay:{nodeRef:{current:null},rect:null,setRef:j},scrollableAncestors:[],scrollableAncestorRects:[],recomputeLayouts:j,windowRect:null,willRecomputeLayouts:!1});function K(){return{draggable:{active:null,initialCoordinates:{x:0,y:0},nodes:{},translate:{x:0,y:0}},droppable:{containers:new _}}}function U(e,t){switch(t.type){case P.DragStart:return{...e,draggable:{...e.draggable,initialCoordinates:t.initialCoordinates,active:t.active}};case P.DragMove:return e.draggable.active?{...e,draggable:{...e.draggable,translate:{x:t.coordinates.x-e.draggable.initialCoordinates.x,y:t.coordinates.y-e.draggable.initialCoordinates.y}}}:e;case P.DragEnd:case P.DragCancel:return{...e,draggable:{...e.draggable,active:null,initialCoordinates:{x:0,y:0},translate:{x:0,y:0}}};case P.RegisterDroppable:{const{element:n}=t,{id:r}=n,o=new _(e.droppable.containers);return o.set(r,n),{...e,droppable:{...e.droppable,containers:o}}}case P.SetDroppableDisabled:{const{id:n,key:r,disabled:o}=t,i=e.droppable.containers.get(n);if(!i||r!==i.key)return e;const a=new _(e.droppable.containers);return a.set(n,{...i,disabled:o}),{...e,droppable:{...e.droppable,containers:a}}}case P.UnregisterDroppable:{const{id:n,key:r}=t,o=e.droppable.containers.get(n);if(!o||r!==o.key)return e;const i=new _(e.droppable.containers);return i.delete(n),{...e,droppable:{...e.droppable,containers:i}}}default:return e}}const W=(0,u.createContext)({type:null,event:null});function X({announcements:e=B,hiddenTextDescribedById:t,screenReaderInstructions:n}){const{announce:r,announcement:o}=function(){const[e,t]=(0,u.useState)("");return{announce:(0,u.useCallback)((e=>{null!=e&&t(e)}),[]),announcement:e}}(),i=R("DndLiveRegion"),[a,s]=(0,u.useState)(!1);return(0,u.useEffect)((()=>{s(!0)}),[]),function({onDragStart:e,onDragMove:t,onDragOver:n,onDragEnd:r,onDragCancel:o}){const i=(0,u.useContext)(W),a=(0,u.useRef)(i);(0,u.useEffect)((()=>{if(i!==a.current){const{type:s,event:l}=i;switch(s){case P.DragStart:null==e||e(l);break;case P.DragMove:null==t||t(l);break;case P.DragOver:null==n||n(l);break;case P.DragCancel:null==o||o(l);break;case P.DragEnd:null==r||r(l)}a.current=i}}),[i,e,t,n,r,o])}((0,u.useMemo)((()=>({onDragStart({active:t}){r(e.onDragStart(t.id))},onDragMove({active:t,over:n}){e.onDragMove&&r(e.onDragMove(t.id,null==n?void 0:n.id))},onDragOver({active:t,over:n}){r(e.onDragOver(t.id,null==n?void 0:n.id))},onDragEnd({active:t,over:n}){r(e.onDragEnd(t.id,null==n?void 0:n.id))},onDragCancel({active:t}){r(e.onDragCancel(t.id))}})),[r,e])),a?(0,f.createPortal)(d().createElement(d().Fragment,null,d().createElement(k,{id:t,value:n.draggable}),d().createElement(O,{id:i,announcement:o})),document.body):null}const Y=Object.freeze({x:0,y:0});function F(e,t){return Math.sqrt(Math.pow(e.x-t.x,2)+Math.pow(e.y-t.y,2))}function z(e,t=e.offsetLeft,n=e.offsetTop){return{x:t+.5*e.width,y:n+.5*e.height}}const H=({collisionRect:e,droppableContainers:t})=>{const n=z(e,e.left,e.top);let r=1/0,o=null;for(const e of t){const{rect:{current:t}}=e;if(t){const i=F(z(t),n);i<r&&(r=i,o=e.id)}}return o};function q(e){return function(t,...n){return n.reduce(((t,n)=>({...t,top:t.top+e*n.y,bottom:t.bottom+e*n.y,left:t.left+e*n.x,right:t.right+e*n.x,offsetLeft:t.offsetLeft+e*n.x,offsetTop:t.offsetTop+e*n.y})),{...t})}}const V=q(1);function G(e){const t=[];return e?function e(n){if(!n)return t;if(m(n)&&null!=n.scrollingElement&&!t.includes(n.scrollingElement))return t.push(n.scrollingElement),t;if(!b(n)||function(e){return e instanceof v(e).SVGElement}(n))return t;if(t.includes(n))return t;const r=window.getComputedStyle(n);return function(e,t=window.getComputedStyle(e)){const n=/(auto|scroll|overlay)/;return null!=["overflow","overflowX","overflowY"].find((e=>{const r=t[e];return"string"==typeof r&&n.test(r)}))}(n,r)&&t.push(n),function(e,t=window.getComputedStyle(e)){return"fixed"===t.position}(n,r)?t:e(n.parentNode)}(e.parentNode):t}function J(e){return p&&e?g(e)?e:h(e)?m(e)||e===y(e).scrollingElement?window:b(e)?e:null:null:null}function Q(e){return g(e)?{x:e.scrollX,y:e.scrollY}:{x:e.scrollLeft,y:e.scrollTop}}var Z;function ee(e){const t={x:0,y:0},n={x:e.scrollWidth-e.clientWidth,y:e.scrollHeight-e.clientHeight};return{isTop:e.scrollTop<=t.y,isLeft:e.scrollLeft<=t.x,isBottom:e.scrollTop>=n.y,isRight:e.scrollLeft>=n.x,maxScroll:n,minScroll:t}}!function(e){e[e.Forward=1]="Forward",e[e.Backward=-1]="Backward"}(Z||(Z={}));const te={x:.2,y:.2};function ne(e,t,{top:n,left:r,right:o,bottom:i},a=10,s=te){const{clientHeight:l,clientWidth:c}=e,u=(d=e,p&&d&&d===document.scrollingElement?{top:0,left:0,right:c,bottom:l,width:c,height:l}:t);var d;const{isTop:f,isBottom:g,isLeft:h,isRight:v}=ee(e),m={x:0,y:0},b={x:0,y:0},y=u.height*s.y,w=u.width*s.x;return!f&&n<=u.top+y?(m.y=Z.Backward,b.y=a*Math.abs((u.top+y-n)/y)):!g&&i>=u.bottom-y&&(m.y=Z.Forward,b.y=a*Math.abs((u.bottom-y-i)/y)),!v&&o>=u.right-w?(m.x=Z.Forward,b.x=a*Math.abs((u.right-w-o)/w)):!h&&r<=u.left+w&&(m.x=Z.Backward,b.x=a*Math.abs((u.left+w-r)/w)),{direction:m,speed:b}}function re(e){if(e===document.scrollingElement){const{innerWidth:e,innerHeight:t}=window;return{top:0,left:0,right:e,bottom:t,width:e,height:t}}const{top:t,left:n,right:r,bottom:o}=e.getBoundingClientRect();return{top:t,left:n,right:r,bottom:o,width:e.clientWidth,height:e.clientHeight}}function oe(e){return e.reduce(((e,t)=>T(e,Q(t))),Y)}function ie(e,t,n=Y){if(!e||!b(e))return n;const r={x:n.x+e.offsetLeft,y:n.y+e.offsetTop};return e.offsetParent===t?r:ie(e.offsetParent,t,r)}function ae(e){const{offsetWidth:t,offsetHeight:n}=e,{x:r,y:o}=ie(e,null);return{width:t,height:n,offsetTop:o,offsetLeft:r}}function se(e){if(g(e)){const e=window.innerWidth,t=window.innerHeight;return{top:0,left:0,right:e,bottom:t,width:e,height:t,offsetTop:0,offsetLeft:0}}const{offsetTop:t,offsetLeft:n}=ae(e),{width:r,height:o,top:i,bottom:a,left:s,right:l}=e.getBoundingClientRect();return{width:r,height:o,top:i,bottom:a,right:l,left:s,offsetTop:t,offsetLeft:n}}function le(e){const{width:t,height:n,offsetTop:r,offsetLeft:o}=ae(e),i=oe(G(e)),a=r-i.y,s=o-i.x;return{width:t,height:n,top:a,bottom:a+n,right:s+t,left:s,offsetTop:r,offsetLeft:o}}function ce(e){return"top"in e}function ue(e,t=e.offsetLeft,n=e.offsetTop){return[{x:t,y:n},{x:t+e.width,y:n},{x:t,y:n+e.height},{x:t+e.width,y:n+e.height}]}function de(e,t){const n=Math.max(t.top,e.offsetTop),r=Math.max(t.left,e.offsetLeft),o=Math.min(t.left+t.width,e.offsetLeft+e.width),i=Math.min(t.top+t.height,e.offsetTop+e.height),a=o-r,s=i-n;if(r<o&&n<i){const n=t.width*t.height,r=e.width*e.height,o=a*s;return Number((o/(n+r-o)).toFixed(4))}return 0}const fe=({collisionRect:e,droppableContainers:t})=>{let n=0,r=null;for(const o of t){const{rect:{current:t}}=o;if(t){const i=de(t,e);i>n&&(n=i,r=o.id)}}return r};var pe,ge,he,ve;function me(e){const t=(0,u.useRef)(e);return w((()=>{t.current!==e&&(t.current=e)}),[e]),t}!function(e){e[e.Pointer=0]="Pointer",e[e.DraggableRect=1]="DraggableRect"}(pe||(pe={})),function(e){e[e.TreeOrder=0]="TreeOrder",e[e.ReversedTreeOrder=1]="ReversedTreeOrder"}(ge||(ge={})),function(e){e[e.Always=0]="Always",e[e.BeforeDragging=1]="BeforeDragging",e[e.WhileDragging=2]="WhileDragging"}(he||(he={})),function(e){e.Optimized="optimized"}(ve||(ve={}));const be=new Map,ye={measure:ae,strategy:he.WhileDragging,frequency:ve.Optimized};const we=[],xe=Re(se),De=Ce(se);function Ee(e,t,n){const r=(0,u.useRef)(e);return x((o=>e?n||!o&&e||e!==r.current?b(e)&&null==e.parentNode?null:t(e):null!=o?o:null:null),[e,n,t])}function Re(e){return(t,n)=>Ee(t,e,n)}function Ce(e){const t=[];return function(n,r){const o=(0,u.useRef)(n);return x((i=>n.length?r||!i&&n.length||n!==o.current?n.map((t=>e(t))):null!=i?i:t:t),[n,r])}}function Te(e){const{width:t,height:n,offsetLeft:r,offsetTop:o}=ae(e);return{top:o,bottom:o+n,left:r,right:r+t,width:t,height:n,offsetTop:o,offsetLeft:r}}const Se=Re(Te);function Me(e,t){return(0,u.useMemo)((()=>({sensor:e,options:null!=t?t:{}})),[e,t])}class Ne{constructor(e){this.target=e,this.listeners=[],this.removeAll=()=>{this.listeners.forEach((e=>{var t;return null==(t=this.target)?void 0:t.removeEventListener(...e)}))}}add(e,t,n){var r;null==(r=this.target)||r.addEventListener(e,t,n),this.listeners.push([e,t,n])}}function Le(e,t){const n=Math.abs(e.x),r=Math.abs(e.y);return"number"==typeof t?Math.sqrt(n**2+r**2)>t:"x"in t&&"y"in t?n>t.x&&r>t.y:"x"in t?n>t.x:"y"in t&&r>t.y}var ke,Ie;function Oe(e){e.preventDefault()}function Ae(e){e.stopPropagation()}!function(e){e.Click="click",e.DragStart="dragstart",e.Keydown="keydown",e.ContextMenu="contextmenu",e.Resize="resize",e.SelectionChange="selectionchange",e.VisibilityChange="visibilitychange"}(ke||(ke={})),function(e){e.Space="Space",e.Down="ArrowDown",e.Right="ArrowRight",e.Left="ArrowLeft",e.Up="ArrowUp",e.Esc="Escape",e.Enter="Enter"}(Ie||(Ie={}));const Be={start:[Ie.Space,Ie.Enter],cancel:[Ie.Esc],end:[Ie.Space,Ie.Enter]},Pe=(e,{currentCoordinates:t})=>{switch(e.code){case Ie.Right:return{...t,x:t.x+25};case Ie.Left:return{...t,x:t.x-25};case Ie.Down:return{...t,y:t.y+25};case Ie.Up:return{...t,y:t.y-25}}};class je{constructor(e){this.props=e,this.autoScrollEnabled=!1,this.coordinates=Y;const{event:{target:t}}=e;this.props=e,this.listeners=new Ne(y(t)),this.windowListeners=new Ne(v(t)),this.handleKeyDown=this.handleKeyDown.bind(this),this.handleCancel=this.handleCancel.bind(this),this.attach()}attach(){this.handleStart(),this.windowListeners.add(ke.Resize,this.handleCancel),this.windowListeners.add(ke.VisibilityChange,this.handleCancel),setTimeout((()=>this.listeners.add(ke.Keydown,this.handleKeyDown)))}handleStart(){const{activeNode:e,onStart:t}=this.props;if(!e.node.current)throw new Error("Active draggable node is undefined");const n=se(e.node.current),r={x:n.left,y:n.top};this.coordinates=r,t(r)}handleKeyDown(e){if(function(e){if(!e)return!1;const{KeyboardEvent:t}=v(e.target);return t&&e instanceof t}(e)){const{coordinates:t}=this,{active:n,context:r,options:o}=this.props,{keyboardCodes:i=Be,coordinateGetter:a=Pe,scrollBehavior:s="smooth"}=o,{code:l}=e;if(i.end.includes(l))return void this.handleEnd(e);if(i.cancel.includes(l))return void this.handleCancel(e);const c=a(e,{active:n,context:r.current,currentCoordinates:t});if(c){const n={x:0,y:0},{scrollableAncestors:o}=r.current;for(const r of o){const o=e.code,i=S(c,t),{isTop:a,isRight:l,isLeft:u,isBottom:d,maxScroll:f,minScroll:p}=ee(r),g=re(r),h={x:Math.min(o===Ie.Right?g.right-g.width/2:g.right,Math.max(o===Ie.Right?g.left:g.left+g.width/2,c.x)),y:Math.min(o===Ie.Down?g.bottom-g.height/2:g.bottom,Math.max(o===Ie.Down?g.top:g.top+g.height/2,c.y))},v=o===Ie.Right&&!l||o===Ie.Left&&!u,m=o===Ie.Down&&!d||o===Ie.Up&&!a;if(v&&h.x!==c.x){if(o===Ie.Right&&r.scrollLeft+i.x<=f.x||o===Ie.Left&&r.scrollLeft+i.x>=p.x)return void r.scrollBy({left:i.x,behavior:s});n.x=o===Ie.Right?r.scrollLeft-f.x:r.scrollLeft-p.x,r.scrollBy({left:-n.x,behavior:s});break}if(m&&h.y!==c.y){if(o===Ie.Down&&r.scrollTop+i.y<=f.y||o===Ie.Up&&r.scrollTop+i.y>=p.y)return void r.scrollBy({top:i.y,behavior:s});n.y=o===Ie.Down?r.scrollTop-f.y:r.scrollTop-p.y,r.scrollBy({top:-n.y,behavior:s});break}}this.handleMove(e,T(c,n))}}}handleMove(e,t){const{onMove:n}=this.props;e.preventDefault(),n(t),this.coordinates=t}handleEnd(e){const{onEnd:t}=this.props;e.preventDefault(),this.detach(),t()}handleCancel(e){const{onCancel:t}=this.props;e.preventDefault(),this.detach(),t()}detach(){this.listeners.removeAll(),this.windowListeners.removeAll()}}function _e(e){return Boolean(e&&"distance"in e)}function $e(e){return Boolean(e&&"delay"in e)}je.activators=[{eventName:"onKeyDown",handler:(e,{keyboardCodes:t=Be,onActivation:n})=>{const{code:r}=e.nativeEvent;return!!t.start.includes(r)&&(e.preventDefault(),null==n||n({event:e.nativeEvent}),!0)}}];class Ke{constructor(e,t,n=function(e){const{EventTarget:t}=v(e);return e instanceof t?e:y(e)}(e.event.target)){this.props=e,this.events=t,this.autoScrollEnabled=!0,this.activated=!1,this.timeoutId=null;const{event:r}=e,{target:o}=r;this.props=e,this.events=t,this.document=y(o),this.documentListeners=new Ne(this.document),this.listeners=new Ne(n),this.windowListeners=new Ne(v(o)),this.initialCoordinates=M(r),this.handleStart=this.handleStart.bind(this),this.handleMove=this.handleMove.bind(this),this.handleEnd=this.handleEnd.bind(this),this.handleCancel=this.handleCancel.bind(this),this.handleKeydown=this.handleKeydown.bind(this),this.removeTextSelection=this.removeTextSelection.bind(this),this.attach()}attach(){const{events:e,props:{options:{activationConstraint:t}}}=this;if(this.listeners.add(e.move.name,this.handleMove,{passive:!1}),this.listeners.add(e.end.name,this.handleEnd),this.windowListeners.add(ke.Resize,this.handleCancel),this.windowListeners.add(ke.DragStart,Oe),this.windowListeners.add(ke.VisibilityChange,this.handleCancel),this.windowListeners.add(ke.ContextMenu,Oe),this.documentListeners.add(ke.Keydown,this.handleKeydown),t){if(_e(t))return;if($e(t))return void(this.timeoutId=setTimeout(this.handleStart,t.delay))}this.handleStart()}detach(){this.listeners.removeAll(),this.windowListeners.removeAll(),setTimeout(this.documentListeners.removeAll,50),null!==this.timeoutId&&(clearTimeout(this.timeoutId),this.timeoutId=null)}handleStart(){const{initialCoordinates:e}=this,{onStart:t}=this.props;e&&(this.activated=!0,this.documentListeners.add(ke.Click,Ae,{capture:!0}),this.removeTextSelection(),this.documentListeners.add(ke.SelectionChange,this.removeTextSelection),t(e))}handleMove(e){const{activated:t,initialCoordinates:n,props:r}=this,{onMove:o,options:{activationConstraint:i}}=r;if(!n)return;const a=M(e),s=S(n,a);if(!t&&i){if($e(i))return Le(s,i.tolerance)?this.handleCancel():void 0;if(_e(i))return null!=i.tolerance&&Le(s,i.tolerance)?this.handleCancel():Le(s,i.distance)?this.handleStart():void 0}e.cancelable&&e.preventDefault(),o(a)}handleEnd(){const{onEnd:e}=this.props;this.detach(),e()}handleCancel(){const{onCancel:e}=this.props;this.detach(),e()}handleKeydown(e){e.code===Ie.Esc&&this.handleCancel()}removeTextSelection(){var e;null==(e=this.document.getSelection())||e.removeAllRanges()}}const Ue={move:{name:"pointermove"},end:{name:"pointerup"}};class We extends Ke{constructor(e){const{event:t}=e,n=y(t.target);super(e,Ue,n)}}We.activators=[{eventName:"onPointerDown",handler:({nativeEvent:e},{onActivation:t})=>!(!e.isPrimary||0!==e.button||(null==t||t({event:e}),0))}];const Xe={move:{name:"mousemove"},end:{name:"mouseup"}};var Ye;!function(e){e[e.RightClick=2]="RightClick"}(Ye||(Ye={})),class extends Ke{constructor(e){super(e,Xe,y(e.event.target))}}.activators=[{eventName:"onMouseDown",handler:({nativeEvent:e},{onActivation:t})=>e.button!==Ye.RightClick&&(null==t||t({event:e}),!0)}];const Fe={move:{name:"touchmove"},end:{name:"touchend"}};(class extends Ke{constructor(e){super(e,Fe)}static setup(){return window.addEventListener(Fe.move.name,e,{capture:!1,passive:!1}),function(){window.removeEventListener(Fe.move.name,e)};function e(){}}}).activators=[{eventName:"onTouchStart",handler:({nativeEvent:e},{onActivation:t})=>{const{touches:n}=e;return!(n.length>1||(null==t||t({event:e}),0))}}];const ze=[{sensor:We,options:{}},{sensor:je,options:{}}],He={current:{}},qe=(0,u.createContext)({...Y,scaleX:1,scaleY:1}),Ve=(0,u.memo)((function({id:e,autoScroll:t=!0,announcements:n,children:r,sensors:o=ze,collisionDetection:i=fe,measuring:a,modifiers:s,screenReaderInstructions:l=A,...c}){var g,h,v,m,y;const E=(0,u.useReducer)(U,void 0,K),[C,S]=E,[N,L]=(0,u.useState)((()=>({type:null,event:null}))),[k,I]=(0,u.useState)(!1),{draggable:{active:O,nodes:B,translate:j},droppable:{containers:_}}=C,F=O?B[O]:null,z=(0,u.useRef)({initial:null,translated:null}),H=(0,u.useMemo)((()=>{var e;return null!=O?{id:O,data:null!=(e=null==F?void 0:F.data)?e:He,rect:z}:null}),[O,F]),q=(0,u.useRef)(null),[Z,ee]=(0,u.useState)(null),[te,re]=(0,u.useState)(null),ie=(0,u.useRef)(c),ae=R("DndDescribedBy",e),se=(0,u.useMemo)((()=>_.getEnabled()),[_]),{layoutRectMap:ce,recomputeLayouts:ue,willRecomputeLayouts:de}=function(e,{dragging:t,dependencies:n,config:r}){const[o,i]=(0,u.useState)(!1),{frequency:a,measure:s,strategy:l}={...ye,...r},c=(0,u.useRef)(e),d=(0,u.useCallback)((()=>i(!0)),[]),f=(0,u.useRef)(null),p=function(){switch(l){case he.Always:return!1;case he.BeforeDragging:return t;default:return!t}}(),g=x((n=>{if(p&&!t)return be;if(!n||n===be||c.current!==e||o){for(let t of e)t&&(t.rect.current=t.node.current?s(t.node.current):null);return function(e){const t=new Map;if(e)for(const n of e){if(!n)continue;const{id:e,rect:r}=n;null!=r.current&&t.set(e,r.current)}return t}(e)}return n}),[e,t,p,s,o]);return(0,u.useEffect)((()=>{c.current=e}),[e]),(0,u.useEffect)((()=>{o&&i(!1)}),[o]),(0,u.useEffect)((function(){p||requestAnimationFrame(d)}),[t,p]),(0,u.useEffect)((function(){p||"number"!=typeof a||null!==f.current||(f.current=setTimeout((()=>{d(),f.current=null}),a))}),[a,p,d,...n]),{layoutRectMap:g,recomputeLayouts:d,willRecomputeLayouts:o}}(se,{dragging:k,dependencies:[j.x,j.y],config:null==a?void 0:a.droppable}),ve=function(e,t){const n=null!==t?e[t]:void 0,r=n?n.node.current:null;return x((e=>{var n;return null===t?null:null!=(n=null!=r?r:e)?n:null}),[r,t])}(B,O),me=te?M(te):null,Re=Ee(ve,null!=(g=null==a||null==(h=a.draggable)?void 0:h.measure)?g:le),Ce=xe(ve),Te=(0,u.useRef)(null),Me=Te.current,Ne=(0,u.useRef)({active:null,activeNode:ve,collisionRect:null,droppableRects:ce,draggableNodes:B,draggingNodeRect:null,droppableContainers:_,over:null,scrollableAncestors:[],scrollAdjustedTranslate:null,translatedRect:null}),Le=_.getNodeFor(null==(v=Ne.current.over)?void 0:v.id),ke=xe(ve?ve.ownerDocument.defaultView:null),Ie=xe(ve?ve.parentElement:null),Oe=function(e){const t=(0,u.useRef)(e),n=x((n=>e?n&&e&&t.current&&e.parentNode===t.current.parentNode?n:G(e):we),[e]);return(0,u.useEffect)((()=>{t.current=e}),[e]),n}(O?null!=Le?Le:ve:null),Ae=De(Oe),Be=function({disabled:e,forceRecompute:t}){const[n,r]=D(),o=Se(e?null:function(e){if(!e)return null;if(e.children.length>1)return e;const t=e.children[0];return b(t)?t:e}(n.current),t);return(0,u.useMemo)((()=>({nodeRef:n,rect:o,setRef:r})),[o,n,r])}({disabled:null==O,forceRecompute:de}),Pe=null!=(m=Be.rect)?m:Re,je=Pe===Re?($e=Me,(_e=Re)&&$e?{x:_e.left-$e.left,y:_e.top-$e.top}:Y):Y;var _e,$e;const Ke=function(e,{transform:t,...n}){return(null==e?void 0:e.length)?e.reduce(((e,t)=>t({transform:e,...n})),t):t}(s,{transform:{x:j.x-je.x,y:j.y-je.y,scaleX:1,scaleY:1},activatorEvent:te,active:H,activeNodeRect:Ce,containerNodeRect:Ie,draggingNodeRect:Pe,over:Ne.current.over,overlayNodeRect:Be.rect,scrollableAncestors:Oe,scrollableAncestorRects:Ae,windowRect:ke}),Ue=me?T(me,j):null,We=function(e){const[t,n]=(0,u.useState)(null),r=(0,u.useRef)(e),o=(0,u.useCallback)((e=>{const t=J(e.target);t&&n((e=>e?(e.set(t,Q(t)),new Map(e)):null))}),[]);return(0,u.useEffect)((()=>{const t=r.current;if(e!==t){i(t);const a=e.map((e=>{const t=J(e);return t?(t.addEventListener("scroll",o,{passive:!0}),[t,Q(t)]):null})).filter((e=>null!=e));n(a.length?new Map(a):null),r.current=e}return()=>{i(e),i(t)};function i(e){e.forEach((e=>{const t=J(e);null==t||t.removeEventListener("scroll",o)}))}}),[o,e]),(0,u.useMemo)((()=>e.length?t?Array.from(t.values()).reduce(((e,t)=>T(e,t)),Y):oe(e):Y),[e,t])}(Oe),Xe=T(Ke,We),Ye=Pe?V(Pe,Ke):null,Fe=Ye?V(Ye,We):null,Ve=H&&Fe?i({active:H,collisionRect:Fe,droppableContainers:se}):null,[Ge,Je]=(0,u.useState)(null),Qe=function(e,t,n){return{...e,scaleX:t&&n?t.width/n.width:1,scaleY:t&&n?t.height/n.height:1}}(Ke,null!=(y=null==Ge?void 0:Ge.rect)?y:null,Re),Ze=(0,u.useCallback)(((e,{sensor:t,options:n})=>{if(!q.current)return;const r=B[q.current];if(!r)return;const o=new t({active:q.current,activeNode:r,event:e.nativeEvent,options:n,context:Ne,onStart(e){const t=q.current;if(!t)return;const n=B[t];if(!n)return;const{onDragStart:r}=ie.current,o={active:{id:t,data:n.data,rect:z}};(0,f.unstable_batchedUpdates)((()=>{S({type:P.DragStart,initialCoordinates:e,active:t}),L({type:P.DragStart,event:o})})),null==r||r(o)},onMove(e){S({type:P.DragMove,coordinates:e})},onEnd:i(P.DragEnd),onCancel:i(P.DragCancel)});function i(e){return async function(){const{active:t,over:n,scrollAdjustedTranslate:r}=Ne.current;let o=null;if(t&&r){const{cancelDrop:i}=ie.current;o={active:t,delta:r,over:n},e===P.DragEnd&&"function"==typeof i&&await Promise.resolve(i(o))&&(e=P.DragCancel)}if(q.current=null,(0,f.unstable_batchedUpdates)((()=>{S({type:e}),Je(null),I(!1),ee(null),re(null),o&&L({type:e,event:o})})),o){const{onDragCancel:t,onDragEnd:n}=ie.current,r=e===P.DragEnd?n:t;null==r||r(o)}}}(0,f.unstable_batchedUpdates)((()=>{ee(o),re(e.nativeEvent)}))}),[S,B]),et=(0,u.useCallback)(((e,t)=>(n,r)=>{const o=n.nativeEvent;null!==q.current||o.dndKit||o.defaultPrevented||!0===e(n,t.options)&&(o.dndKit={capturedBy:t.sensor},q.current=r,Ze(n,t))}),[Ze]),tt=function(e,t){return(0,u.useMemo)((()=>e.reduce(((e,n)=>{const{sensor:r}=n;return[...e,...r.activators.map((e=>({eventName:e.eventName,handler:t(e.handler,n)})))]}),[])),[e,t])}(o,et);!function(e){(0,u.useEffect)((()=>{if(!p)return;const t=e.map((({sensor:e})=>null==e.setup?void 0:e.setup()));return()=>{for(const e of t)null==e||e()}}),e.map((({sensor:e})=>e)))}(o),w((()=>{ie.current=c}),Object.values(c)),(0,u.useEffect)((()=>{null!=O&&I(!0)}),[O]),(0,u.useEffect)((()=>{H||(Te.current=null),H&&Re&&!Te.current&&(Te.current=Re)}),[Re,H]),(0,u.useEffect)((()=>{const{onDragMove:e}=ie.current,{active:t,over:n}=Ne.current;if(!t)return;const r={active:t,delta:{x:Xe.x,y:Xe.y},over:n};L({type:P.DragMove,event:r}),null==e||e(r)}),[Xe.x,Xe.y]),(0,u.useEffect)((()=>{const{active:e,droppableContainers:t,scrollAdjustedTranslate:n}=Ne.current;if(!e||!q.current||!n)return;const{onDragOver:r}=ie.current,o=t.get(Ve),i=o&&o.rect.current?{id:o.id,rect:o.rect.current,data:o.data,disabled:o.disabled}:null,a={active:e,delta:{x:n.x,y:n.y},over:i};(0,f.unstable_batchedUpdates)((()=>{Je(i),L({type:P.DragOver,event:a}),null==r||r(a)}))}),[Ve]),w((()=>{Ne.current={active:H,activeNode:ve,collisionRect:Fe,droppableRects:ce,draggableNodes:B,draggingNodeRect:Pe,droppableContainers:_,over:Ge,scrollableAncestors:Oe,scrollAdjustedTranslate:Xe,translatedRect:Ye},z.current={initial:Pe,translated:Ye}}),[H,ve,Fe,B,Pe,ce,_,Ge,Oe,Xe,Ye]),function({acceleration:e,activator:t=pe.Pointer,canScroll:n,draggingRect:r,enabled:o,interval:i=5,order:a=ge.TreeOrder,pointerCoordinates:s,scrollableAncestors:l,scrollableAncestorRects:c,threshold:d}){const[f,p]=function(){const e=(0,u.useRef)(null);return[(0,u.useCallback)(((t,n)=>{e.current=setInterval(t,n)}),[]),(0,u.useCallback)((()=>{null!==e.current&&(clearInterval(e.current),e.current=null)}),[])]}(),g=(0,u.useRef)({x:1,y:1}),h=(0,u.useMemo)((()=>{switch(t){case pe.Pointer:return s?{top:s.y,bottom:s.y,left:s.x,right:s.x}:null;case pe.DraggableRect:return r}return null}),[t,r,s]),v=(0,u.useRef)(Y),m=(0,u.useRef)(null),b=(0,u.useCallback)((()=>{const e=m.current;if(!e)return;const t=g.current.x*v.current.x,n=g.current.y*v.current.y;e.scrollBy(t,n)}),[]),y=(0,u.useMemo)((()=>a===ge.TreeOrder?[...l].reverse():l),[a,l]);(0,u.useEffect)((()=>{if(o&&l.length&&h){for(const t of y){if(!1===(null==n?void 0:n(t)))continue;const r=l.indexOf(t),o=c[r];if(!o)continue;const{direction:a,speed:s}=ne(t,o,h,e,d);if(s.x>0||s.y>0)return p(),m.current=t,f(b,i),g.current=s,void(v.current=a)}g.current={x:0,y:0},v.current={x:0,y:0},p()}else p()}),[e,b,n,p,o,i,JSON.stringify(h),f,l,y,c,JSON.stringify(d)])}({...function(){const e=!1===(null==Z?void 0:Z.autoScrollEnabled),n="object"==typeof t?!1===t.enabled:!1===t,r=!e&&!n;return"object"==typeof t?{...t,enabled:r}:{enabled:r}}(),draggingRect:Ye,pointerCoordinates:Ue,scrollableAncestors:Oe,scrollableAncestorRects:Ae});const nt=(0,u.useMemo)((()=>({active:H,activeNode:ve,activeNodeRect:Re,activeNodeClientRect:Ce,activatorEvent:te,activators:tt,ariaDescribedById:{draggable:ae},containerNodeRect:Ie,dispatch:S,dragOverlay:Be,draggableNodes:B,droppableContainers:_,droppableRects:ce,over:Ge,recomputeLayouts:ue,scrollableAncestors:Oe,scrollableAncestorRects:Ae,willRecomputeLayouts:de,windowRect:ke})),[H,ve,Ce,Re,te,tt,Ie,Be,S,B,ae,_,ce,Ge,ue,Oe,Ae,de,ke]);return d().createElement(W.Provider,{value:N},d().createElement($.Provider,{value:nt},d().createElement(qe.Provider,{value:Qe},r)),d().createElement(X,{announcements:n,hiddenTextDescribedById:ae,screenReaderInstructions:l}))})),Ge=(0,u.createContext)(null),Je="button";function Qe(e,t,n){const r=e.slice();return r.splice(n<0?r.length+n:n,0,r.splice(t,1)[0]),r}function Ze(e){return null!==e&&e>=0}const et=({layoutRects:e,activeIndex:t,overIndex:n,index:r})=>{const o=Qe(e,n,t),i=e[r],a=o[r];return a&&i?{x:a.offsetLeft-i.offsetLeft,y:a.offsetTop-i.offsetTop,scaleX:a.width/i.width,scaleY:a.height/i.height}:null},tt={scaleX:1,scaleY:1},nt=({activeIndex:e,activeNodeRect:t,index:n,layoutRects:r,overIndex:o})=>{var i;const a=null!=(i=r[e])?i:t;if(!a)return null;if(n===e){const t=r[o];return t?{x:0,y:e<o?t.offsetTop+t.height-(a.offsetTop+a.height):t.offsetTop-a.offsetTop,...tt}:null}const s=function(e,t,n){const r=e[t],o=e[t-1],i=e[t+1];return r?n<t?o?r.offsetTop-(o.offsetTop+o.height):i?i.offsetTop-(r.offsetTop+r.height):0:i?i.offsetTop-(r.offsetTop+r.height):o?r.offsetTop-(o.offsetTop+o.height):0:0}(r,n,e);return n>e&&n<=o?{x:0,y:-a.height-s,...tt}:n<e&&n>=o?{x:0,y:a.height+s,...tt}:{x:0,y:0,...tt}},rt="Sortable",ot=d().createContext({activeIndex:-1,containerId:rt,disableTransforms:!1,items:[],overIndex:-1,useDragOverlay:!1,sortedRects:[],strategy:et,wasDragging:{current:!1}});function it({children:e,id:t,items:n,strategy:r=et}){const{active:o,dragOverlay:i,droppableRects:a,over:s,recomputeLayouts:l,willRecomputeLayouts:c}=(0,u.useContext)($),f=R(rt,t),p=Boolean(null!==i.rect),g=(0,u.useMemo)((()=>n.map((e=>"string"==typeof e?e:e.id))),[n]),h=null!=o,v=(0,u.useRef)(!1),m=o?g.indexOf(o.id):-1,b=-1!==m,y=s?g.indexOf(s.id):-1,x=(0,u.useRef)(g),D=function(e,t){return e.reduce(((e,n,r)=>{const o=t.get(n);return o&&(e[r]=o),e}),Array(e.length))}(g,a),E=(C=g,T=x.current,!(C.join()===T.join()));var C,T;const S=-1!==y&&-1===m||E;w((()=>{E&&b&&!c&&l()}),[E,b,l,c]),(0,u.useEffect)((()=>{x.current=g}),[g]),(0,u.useEffect)((()=>{const e=setTimeout((()=>{v.current=h}),100);return()=>clearTimeout(e)}),[h]);const M=(0,u.useMemo)((()=>({activeIndex:m,containerId:f,disableTransforms:S,items:g,overIndex:y,useDragOverlay:p,sortedRects:D,strategy:r,wasDragging:v})),[m,f,S,g,y,D,p,r,v]);return d().createElement(ot.Provider,{value:M},e)}const at=({id:e,items:t,activeIndex:n,overIndex:r})=>Qe(t,n,r).indexOf(e),st=({containerId:e,isSorting:t,wasDragging:n,index:r,items:o,newIndex:i,previousItems:a,previousContainerId:s,transition:l})=>!(!l||!n||a!==o&&r===i||!t&&(i===r||e!==s)),lt={duration:200,easing:"ease"},ct="transform",ut=N.Transition.toString({property:ct,duration:0,easing:"linear"}),dt={roleDescription:"sortable"};function ft({animateLayoutChanges:e=st,attributes:t,disabled:n,data:r,getNewIndex:o=at,id:i,strategy:a,transition:s=lt}){const{items:l,containerId:c,activeIndex:d,disableTransforms:f,sortedRects:p,overIndex:g,useDragOverlay:h,strategy:v,wasDragging:m}=(0,u.useContext)(ot),b=l.indexOf(i),y=(0,u.useMemo)((()=>({sortable:{containerId:c,index:b,items:l},...r})),[c,r,b,l]),{rect:x,node:E,setNodeRef:C}=function({data:e,disabled:t=!1,id:n}){const r=R("Droppable"),{active:o,dispatch:i,over:a}=(0,u.useContext)($),s=(0,u.useRef)(null),[l,c]=D(),d=me(e);return w((()=>(i({type:P.RegisterDroppable,element:{id:n,key:r,disabled:t,node:l,rect:s,data:d}}),()=>i({type:P.UnregisterDroppable,key:r,id:n}))),[n]),(0,u.useEffect)((()=>{i({type:P.SetDroppableDisabled,id:n,key:r,disabled:t})}),[t]),{active:o,rect:s,isOver:(null==a?void 0:a.id)===n,node:l,over:a,setNodeRef:c}}({id:i,data:y}),{active:T,activeNodeRect:S,activatorEvent:M,attributes:L,setNodeRef:k,listeners:I,isDragging:O,over:A,transform:B}=function({id:e,data:t,disabled:n=!1,attributes:r}){const o=R("Droppable"),{active:i,activeNodeRect:a,activatorEvent:s,ariaDescribedById:l,draggableNodes:c,droppableRects:d,activators:f,over:p}=(0,u.useContext)($),{role:g=Je,roleDescription:h="draggable",tabIndex:v=0}=null!=r?r:{},m=(null==i?void 0:i.id)===e,b=(0,u.useContext)(m?qe:Ge),[y,w]=D(),x=function(e,t){return(0,u.useMemo)((()=>e.reduce(((e,{eventName:n,handler:r})=>(e[n]=e=>{r(e,t)},e)),{})),[e,t])}(f,e),E=me(t);return(0,u.useEffect)((()=>(c[e]={id:e,key:o,node:y,data:E},()=>{const t=c[e];t&&t.key===o&&delete c[e]})),[c,e]),{active:i,activeNodeRect:a,activatorEvent:s,attributes:(0,u.useMemo)((()=>({role:g,tabIndex:v,"aria-pressed":!(!m||g!==Je)||void 0,"aria-roledescription":h,"aria-describedby":l.draggable})),[g,v,m,h,l.draggable]),droppableRects:d,isDragging:m,listeners:n?void 0:x,node:y,over:p,setNodeRef:w,transform:b}}({id:i,data:y,attributes:{...dt,...t},disabled:n}),j=function(...e){return(0,u.useMemo)((()=>t=>{e.forEach((e=>e(t)))}),e)}(C,k),_=Boolean(T),K=_&&m.current&&!f&&Ze(d)&&Ze(g),U=!h&&O,W=U&&K?B:null,X=K?null!=W?W:(null!=a?a:v)({layoutRects:p,activeNodeRect:S,activeIndex:d,overIndex:g,index:b}):null,Y=Ze(d)&&Ze(g)?o({id:i,items:l,activeIndex:d,overIndex:g}):b,F=(0,u.useRef)(l),z=l!==F.current,H=(0,u.useRef)(Y),q=(0,u.useRef)(c),V=e({active:T,containerId:c,isDragging:O,isSorting:_,id:i,index:b,items:l,newIndex:H.current,previousItems:F.current,previousContainerId:q.current,transition:s,wasDragging:m.current}),G=function({disabled:e,index:t,node:n,rect:r}){const[o,i]=(0,u.useState)(null),a=(0,u.useRef)(t);return w((()=>{if(!e&&t!==a.current&&n.current){const e=r.current;if(e){const t=se(n.current),r={x:e.offsetLeft-t.offsetLeft,y:e.offsetTop-t.offsetTop,scaleX:e.width/t.width,scaleY:e.height/t.height};(r.x||r.y)&&i(r)}}t!==a.current&&(a.current=t)}),[e,t,n,r]),(0,u.useEffect)((()=>{o&&requestAnimationFrame((()=>{i(null)}))}),[o]),o}({disabled:!V,index:b,node:E,rect:x});return(0,u.useEffect)((()=>{_&&H.current!==Y&&(H.current=Y),c!==q.current&&(q.current=c),l!==F.current&&(F.current=l)}),[_,Y,c,l]),{active:T,attributes:L,activatorEvent:M,rect:x,index:b,isSorting:_,isDragging:O,listeners:I,node:E,overIndex:g,over:A,setNodeRef:j,setDroppableNodeRef:C,setDraggableNodeRef:k,transform:null!=G?G:X,transition:G||z&&H.current===b?ut:!U&&s&&(_||V)?N.Transition.toString({...s,property:ct}):void 0}}const pt=[Ie.Down,Ie.Right,Ie.Up,Ie.Left],gt=(e,{context:{active:t,droppableContainers:n,translatedRect:r,scrollableAncestors:o}})=>{if(pt.includes(e.code)){if(e.preventDefault(),!t||!r)return;const a=[];n.getEnabled().forEach((t=>{if(!t||(null==t?void 0:t.disabled))return;const n=null==t?void 0:t.node.current;if(!n)return;const o=le(n),i={...t,rect:{current:o}};switch(e.code){case Ie.Down:r.top+r.height<=o.top&&a.push(i);break;case Ie.Up:r.top>=o.top+o.height&&a.push(i);break;case Ie.Left:r.left>=o.left+o.width&&a.push(i);break;case Ie.Right:r.left+r.width<=o.left&&a.push(i)}}));const s=(({collisionRect:e,droppableContainers:t})=>{let n=1/0,r=null;const o=ue(e,e.left,e.top);for(const e of t){const{rect:{current:t}}=e;if(t){const i=ue(t,ce(t)?t.left:void 0,ce(t)?t.top:void 0),a=o.reduce(((e,t,n)=>e+F(i[n],t)),0),s=Number((a/4).toFixed(4));s<n&&(n=s,r=e.id)}}return r})({active:t,collisionRect:r,droppableContainers:a});if(s){var i;const e=null==(i=n.get(s))?void 0:i.node.current;if(e){const t=G(e).some(((e,t)=>o[t]!==e)),n=le(e),i=t?{x:0,y:0}:{x:r.width-n.width,y:r.height-n.height};return{x:n.left-i.x,y:n.top-i.y}}}}},ht=(0,u.forwardRef)(((e,t)=>{var n,r,a,s,l,c,u,d;let{id:f,...p}=e;return(0,i.createElement)("div",o({},p,{ref:t,className:"itemBanner",id:null===(n=p.post)||void 0===n?void 0:n.id,key:null===(r=p.post)||void 0===r?void 0:r.id}),(0,i.createElement)("div",{className:"bannerCardImage",style:{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)) "+(null!=(null===(a=p.post)||void 0===a?void 0:a.imgurl)?",url("+p.post.imgurl+")":"")}}),(null===(s=p.post)||void 0===s||null===(l=s.tagText)||void 0===l?void 0:l.length)>0&&(0,i.createElement)("div",{className:"bannerCardTag"},(0,i.createElement)("p",{className:"bannerTagText"},null===(c=p.post)||void 0===c?void 0:c.tagText[0])),(0,i.createElement)("div",{className:"bannerCardContent"},(0,i.createElement)("h3",{className:"bannerCardTitle"},null===(u=p.post)||void 0===u?void 0:u.title.rendered),(0,i.createElement)("p",{className:"bannerCardDescription"},null===(d=p.post)||void 0===d?void 0:d.excerpt.raw),(0,i.createElement)("button",{className:"bannerCardButton"},"More Info")))}));(0,u.forwardRef)(((e,t)=>{let{id:n,...r}=e;return(0,i.createElement)("div",o({},r,{ref:t}),"heee ",n)})),(0,r.registerBlockType)("isceb-blocks/news-block",{edit:function(e){let{attributes:t,setAttributes:n}=e;const{selectedPosts:r}=t,[d,f]=(0,i.useState)(null),[p,g]=(0,i.useState)(r),{options:h,isLoaded:v}=(0,c.useSelect)((e=>{const{getEntityRecords:t,getMedia:n}=e("core"),{isResolving:r}=e("core/data"),o=t("postType","page",{per_page:-1,status:"publish"}),i=t("taxonomy","post_tag",{per_page:-1});return null==o||o.forEach((e=>{var t;e.featured_media&&(e.imgurl=null===(t=n(e.featured_media))||void 0===t?void 0:t.media_details.sizes.medium_large.source_url),e.tags&&(e.tagText=null==i?void 0:i.filter((t=>{var n;return null===(n=e.tags)||void 0===n?void 0:n.includes(t.id)})).map((e=>e.name)))})),{options:o,isLoaded:!r("core","getEntityRecords",["postType","page",{per_page:-1,status:"publish"}])}}),[]);function m(e){const{attributes:t,listeners:n,setNodeRef:r,transform:a,transition:s}=ft({id:e.id}),l={transform:N.Transform.toString(a),transition:s};return(0,i.createElement)(ht,o({post:e.post,ref:r,style:l},t,n))}(0,i.useEffect)((()=>{n({selectedPosts:p})}),[p]);const b=function(...e){return(0,u.useMemo)((()=>[...e].filter((e=>null!=e))),[...e])}(Me(We),Me(je,{coordinateGetter:gt}));return[(0,i.createElement)(s.InspectorControls,{key:"inspector"},(0,i.createElement)(l.SelectControl,{multiple:!0,value:p.map((e=>e.id)),onChange:function(e){let t=e.map((e=>parseInt(e)));g(h.filter((e=>t.includes(e.id))))},label:(0,a.__)("Select a Post (use CTRL to select multiple)"),options:v?null==h?void 0:h.map((e=>({label:e.title.rendered,value:e.id}))):[{label:"loading posts"}],className:"isceb-gutenberg-select"})),(0,i.createElement)("section",(0,s.useBlockProps)({className:"homepage-banners"}),(0,i.createElement)("div",{className:"container-banners"},(0,i.createElement)(Ve,{sensors:b,collisionDetection:H,onDragStart:function(e){const{active:t}=e;f(t.id)},onDragEnd:function(e){const{active:t,over:n}=e;t.id!==n.id&&g((e=>{const r=e.findIndex((e=>e.id==t.id)),o=e.findIndex((e=>e.id==n.id));return e[r].sortKey=o,e[o].sortKey=r,Qe(e,r,o)})),f(null)}},(0,i.createElement)(it,{items:p,strategy:nt},null==p?void 0:p.map((e=>(0,i.createElement)(m,{post:e,key:e.id,id:e.id})))))))]},save:function(e){let{attributes:t}=e;const{selectedPosts:n}=t;return(0,i.createElement)("section",s.useBlockProps.save({className:"homepage-banners"}),(0,i.createElement)("div",{className:"container-banners"},null==n?void 0:n.map((e=>{var t;return(0,i.createElement)("a",{href:e.link},(0,i.createElement)("div",{className:"itemBanner",key:e.id},(0,i.createElement)("div",{key:e.id,className:"bannerCardImage",style:{backgroundImage:`linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${e.imgurl})`}}),(null==e||null===(t=e.tagText)||void 0===t?void 0:t.length)>0&&(0,i.createElement)("div",{className:"bannerCardTag"},(0,i.createElement)("p",{className:"bannerTagText"},e.tagText[0])),(0,i.createElement)("div",{className:"bannerCardContent"},(0,i.createElement)("h3",{className:"bannerCardTitle"},e.title.rendered),(0,i.createElement)("p",{className:"bannerCardDescription"},e.excerpt.raw),(0,i.createElement)("button",{className:"bannerCardButton"},"More Info"))))}))))},attributes:{author:{type:"string"},authorImage:{type:"string",default:null},titleColor:{type:"string",default:"red"},topic:{type:"string",default:null},selectedPost:{type:"number",default:0},selectedPosts:{type:"array",default:[]},align:{type:"string",default:"full"}},supports:{align:!0,alignWide:!0},getEditWrapperProps:e=>({"data-align":"full"})})}},n={};function r(e){var o=n[e];if(void 0!==o)return o.exports;var i=n[e]={exports:{}};return t[e](i,i.exports,r),i.exports}r.m=t,e=[],r.O=function(t,n,o,i){if(!n){var a=1/0;for(u=0;u<e.length;u++){n=e[u][0],o=e[u][1],i=e[u][2];for(var s=!0,l=0;l<n.length;l++)(!1&i||a>=i)&&Object.keys(r.O).every((function(e){return r.O[e](n[l])}))?n.splice(l--,1):(s=!1,i<a&&(a=i));if(s){e.splice(u--,1);var c=o();void 0!==c&&(t=c)}}return t}i=i||0;for(var u=e.length;u>0&&e[u-1][2]>i;u--)e[u]=e[u-1];e[u]=[n,o,i]},r.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return r.d(t,{a:t}),t},r.d=function(e,t){for(var n in t)r.o(t,n)&&!r.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},function(){var e={204:0,344:0};r.O.j=function(t){return 0===e[t]};var t=function(t,n){var o,i,a=n[0],s=n[1],l=n[2],c=0;if(a.some((function(t){return 0!==e[t]}))){for(o in s)r.o(s,o)&&(r.m[o]=s[o]);if(l)var u=l(r)}for(t&&t(n);c<a.length;c++)i=a[c],r.o(e,i)&&e[i]&&e[i][0](),e[a[c]]=0;return r.O(u)},n=self.webpackChunkisceb_block=self.webpackChunkisceb_block||[];n.forEach(t.bind(null,0)),n.push=t.bind(null,n.push.bind(n))}();var o=r.O(void 0,[344],(function(){return r(436)}));o=r.O(o)}();
+/******/ (function() { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	var __webpack_modules__ = ({
+
+/***/ "./node_modules/@dnd-kit/accessibility/dist/accessibility.esm.js":
+/*!***********************************************************************!*\
+  !*** ./node_modules/@dnd-kit/accessibility/dist/accessibility.esm.js ***!
+  \***********************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "HiddenText": function() { return /* binding */ HiddenText; },
+/* harmony export */   "LiveRegion": function() { return /* binding */ LiveRegion; },
+/* harmony export */   "useAnnouncement": function() { return /* binding */ useAnnouncement; }
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const hiddenStyles = {
+  display: 'none'
+};
+function HiddenText({
+  id,
+  value
+}) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    id: id,
+    style: hiddenStyles
+  }, value);
+}
+
+const visuallyHidden = {
+  position: 'absolute',
+  width: 1,
+  height: 1,
+  margin: -1,
+  border: 0,
+  padding: 0,
+  overflow: 'hidden',
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(100%)',
+  whiteSpace: 'nowrap'
+};
+function LiveRegion({
+  id,
+  announcement
+}) {
+  return react__WEBPACK_IMPORTED_MODULE_0___default().createElement("div", {
+    id: id,
+    style: visuallyHidden,
+    role: "status",
+    "aria-live": "assertive",
+    "aria-atomic": true
+  }, announcement);
+}
+
+function useAnnouncement() {
+  const [announcement, setAnnouncement] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('');
+  const announce = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(value => {
+    if (value != null) {
+      setAnnouncement(value);
+    }
+  }, []);
+  return {
+    announce,
+    announcement
+  };
+}
+
+
+//# sourceMappingURL=accessibility.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@dnd-kit/core/dist/core.esm.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/@dnd-kit/core/dist/core.esm.js ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AutoScrollActivator": function() { return /* binding */ AutoScrollActivator; },
+/* harmony export */   "DndContext": function() { return /* binding */ DndContext; },
+/* harmony export */   "DragOverlay": function() { return /* binding */ DragOverlay; },
+/* harmony export */   "KeyboardCode": function() { return /* binding */ KeyboardCode; },
+/* harmony export */   "KeyboardSensor": function() { return /* binding */ KeyboardSensor; },
+/* harmony export */   "MeasuringFrequency": function() { return /* binding */ MeasuringFrequency; },
+/* harmony export */   "MeasuringStrategy": function() { return /* binding */ MeasuringStrategy; },
+/* harmony export */   "MouseSensor": function() { return /* binding */ MouseSensor; },
+/* harmony export */   "PointerSensor": function() { return /* binding */ PointerSensor; },
+/* harmony export */   "TouchSensor": function() { return /* binding */ TouchSensor; },
+/* harmony export */   "TraversalOrder": function() { return /* binding */ TraversalOrder; },
+/* harmony export */   "applyModifiers": function() { return /* binding */ applyModifiers; },
+/* harmony export */   "closestCenter": function() { return /* binding */ closestCenter; },
+/* harmony export */   "closestCorners": function() { return /* binding */ closestCorners; },
+/* harmony export */   "defaultAnnouncements": function() { return /* binding */ defaultAnnouncements; },
+/* harmony export */   "defaultCoordinates": function() { return /* binding */ defaultCoordinates; },
+/* harmony export */   "defaultDropAnimation": function() { return /* binding */ defaultDropAnimation; },
+/* harmony export */   "getBoundingClientRect": function() { return /* binding */ getBoundingClientRect; },
+/* harmony export */   "getLayoutRect": function() { return /* binding */ getLayoutRect; },
+/* harmony export */   "getScrollableAncestors": function() { return /* binding */ getScrollableAncestors; },
+/* harmony export */   "getViewRect": function() { return /* binding */ getViewRect; },
+/* harmony export */   "getViewportLayoutRect": function() { return /* binding */ getViewportLayoutRect; },
+/* harmony export */   "rectIntersection": function() { return /* binding */ rectIntersection; },
+/* harmony export */   "useDndContext": function() { return /* binding */ useDndContext; },
+/* harmony export */   "useDndMonitor": function() { return /* binding */ useDndMonitor; },
+/* harmony export */   "useDraggable": function() { return /* binding */ useDraggable; },
+/* harmony export */   "useDroppable": function() { return /* binding */ useDroppable; },
+/* harmony export */   "useSensor": function() { return /* binding */ useSensor; },
+/* harmony export */   "useSensors": function() { return /* binding */ useSensors; }
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "react-dom");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @dnd-kit/utilities */ "./node_modules/@dnd-kit/utilities/dist/utilities.esm.js");
+/* harmony import */ var _dnd_kit_accessibility__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @dnd-kit/accessibility */ "./node_modules/@dnd-kit/accessibility/dist/accessibility.esm.js");
+
+
+
+
+
+const screenReaderInstructions = {
+  draggable: `
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  `
+};
+const defaultAnnouncements = {
+  onDragStart(id) {
+    return `Picked up draggable item ${id}.`;
+  },
+
+  onDragOver(id, overId) {
+    if (overId) {
+      return `Draggable item ${id} was moved over droppable area ${overId}.`;
+    }
+
+    return `Draggable item ${id} is no longer over a droppable area.`;
+  },
+
+  onDragEnd(id, overId) {
+    if (overId) {
+      return `Draggable item ${id} was dropped over droppable area ${overId}`;
+    }
+
+    return `Draggable item ${id} was dropped.`;
+  },
+
+  onDragCancel(id) {
+    return `Dragging was cancelled. Draggable item ${id} was dropped.`;
+  }
+
+};
+
+var Action;
+
+(function (Action) {
+  Action["DragStart"] = "dragStart";
+  Action["DragMove"] = "dragMove";
+  Action["DragEnd"] = "dragEnd";
+  Action["DragCancel"] = "dragCancel";
+  Action["DragOver"] = "dragOver";
+  Action["RegisterDroppable"] = "registerDroppable";
+  Action["SetDroppableDisabled"] = "setDroppableDisabled";
+  Action["UnregisterDroppable"] = "unregisterDroppable";
+})(Action || (Action = {}));
+
+function noop(..._args) {}
+
+class DroppableContainersMap extends Map {
+  get(id) {
+    var _super$get;
+
+    return id != null ? (_super$get = super.get(id)) != null ? _super$get : undefined : undefined;
+  }
+
+  toArray() {
+    return Array.from(this.values());
+  }
+
+  getEnabled() {
+    return this.toArray().filter(({
+      disabled
+    }) => !disabled);
+  }
+
+  getNodeFor(id) {
+    var _this$get$node$curren, _this$get;
+
+    return (_this$get$node$curren = (_this$get = this.get(id)) == null ? void 0 : _this$get.node.current) != null ? _this$get$node$curren : undefined;
+  }
+
+}
+
+const Context = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)({
+  activatorEvent: null,
+  active: null,
+  activeNode: null,
+  activeNodeRect: null,
+  activeNodeClientRect: null,
+  activators: [],
+  ariaDescribedById: {
+    draggable: ''
+  },
+  containerNodeRect: null,
+  dispatch: noop,
+  draggableNodes: {},
+  droppableRects: /*#__PURE__*/new Map(),
+  droppableContainers: /*#__PURE__*/new DroppableContainersMap(),
+  over: null,
+  dragOverlay: {
+    nodeRef: {
+      current: null
+    },
+    rect: null,
+    setRef: noop
+  },
+  scrollableAncestors: [],
+  scrollableAncestorRects: [],
+  recomputeLayouts: noop,
+  windowRect: null,
+  willRecomputeLayouts: false
+});
+
+function getInitialState() {
+  return {
+    draggable: {
+      active: null,
+      initialCoordinates: {
+        x: 0,
+        y: 0
+      },
+      nodes: {},
+      translate: {
+        x: 0,
+        y: 0
+      }
+    },
+    droppable: {
+      containers: new DroppableContainersMap()
+    }
+  };
+}
+function reducer(state, action) {
+  switch (action.type) {
+    case Action.DragStart:
+      return { ...state,
+        draggable: { ...state.draggable,
+          initialCoordinates: action.initialCoordinates,
+          active: action.active
+        }
+      };
+
+    case Action.DragMove:
+      if (!state.draggable.active) {
+        return state;
+      }
+
+      return { ...state,
+        draggable: { ...state.draggable,
+          translate: {
+            x: action.coordinates.x - state.draggable.initialCoordinates.x,
+            y: action.coordinates.y - state.draggable.initialCoordinates.y
+          }
+        }
+      };
+
+    case Action.DragEnd:
+    case Action.DragCancel:
+      return { ...state,
+        draggable: { ...state.draggable,
+          active: null,
+          initialCoordinates: {
+            x: 0,
+            y: 0
+          },
+          translate: {
+            x: 0,
+            y: 0
+          }
+        }
+      };
+
+    case Action.RegisterDroppable:
+      {
+        const {
+          element
+        } = action;
+        const {
+          id
+        } = element;
+        const containers = new DroppableContainersMap(state.droppable.containers);
+        containers.set(id, element);
+        return { ...state,
+          droppable: { ...state.droppable,
+            containers
+          }
+        };
+      }
+
+    case Action.SetDroppableDisabled:
+      {
+        const {
+          id,
+          key,
+          disabled
+        } = action;
+        const element = state.droppable.containers.get(id);
+
+        if (!element || key !== element.key) {
+          return state;
+        }
+
+        const containers = new DroppableContainersMap(state.droppable.containers);
+        containers.set(id, { ...element,
+          disabled
+        });
+        return { ...state,
+          droppable: { ...state.droppable,
+            containers
+          }
+        };
+      }
+
+    case Action.UnregisterDroppable:
+      {
+        const {
+          id,
+          key
+        } = action;
+        const element = state.droppable.containers.get(id);
+
+        if (!element || key !== element.key) {
+          return state;
+        }
+
+        const containers = new DroppableContainersMap(state.droppable.containers);
+        containers.delete(id);
+        return { ...state,
+          droppable: { ...state.droppable,
+            containers
+          }
+        };
+      }
+
+    default:
+      {
+        return state;
+      }
+  }
+}
+
+const DndMonitorContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)({
+  type: null,
+  event: null
+});
+function useDndMonitor({
+  onDragStart,
+  onDragMove,
+  onDragOver,
+  onDragEnd,
+  onDragCancel
+}) {
+  const monitorState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(DndMonitorContext);
+  const previousMonitorState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(monitorState);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (monitorState !== previousMonitorState.current) {
+      const {
+        type,
+        event
+      } = monitorState;
+
+      switch (type) {
+        case Action.DragStart:
+          onDragStart == null ? void 0 : onDragStart(event);
+          break;
+
+        case Action.DragMove:
+          onDragMove == null ? void 0 : onDragMove(event);
+          break;
+
+        case Action.DragOver:
+          onDragOver == null ? void 0 : onDragOver(event);
+          break;
+
+        case Action.DragCancel:
+          onDragCancel == null ? void 0 : onDragCancel(event);
+          break;
+
+        case Action.DragEnd:
+          onDragEnd == null ? void 0 : onDragEnd(event);
+          break;
+      }
+
+      previousMonitorState.current = monitorState;
+    }
+  }, [monitorState, onDragStart, onDragMove, onDragOver, onDragEnd, onDragCancel]);
+}
+
+function Accessibility({
+  announcements = defaultAnnouncements,
+  hiddenTextDescribedById,
+  screenReaderInstructions
+}) {
+  const {
+    announce,
+    announcement
+  } = (0,_dnd_kit_accessibility__WEBPACK_IMPORTED_MODULE_3__.useAnnouncement)();
+  const liveRegionId = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useUniqueId)(`DndLiveRegion`);
+  const [mounted, setMounted] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    setMounted(true);
+  }, []);
+  useDndMonitor((0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => ({
+    onDragStart({
+      active
+    }) {
+      announce(announcements.onDragStart(active.id));
+    },
+
+    onDragMove({
+      active,
+      over
+    }) {
+      if (announcements.onDragMove) {
+        announce(announcements.onDragMove(active.id, over == null ? void 0 : over.id));
+      }
+    },
+
+    onDragOver({
+      active,
+      over
+    }) {
+      announce(announcements.onDragOver(active.id, over == null ? void 0 : over.id));
+    },
+
+    onDragEnd({
+      active,
+      over
+    }) {
+      announce(announcements.onDragEnd(active.id, over == null ? void 0 : over.id));
+    },
+
+    onDragCancel({
+      active
+    }) {
+      announce(announcements.onDragCancel(active.id));
+    }
+
+  }), [announce, announcements]));
+  return mounted ? (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.createPortal)(react__WEBPACK_IMPORTED_MODULE_0___default().createElement((react__WEBPACK_IMPORTED_MODULE_0___default().Fragment), null, react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_dnd_kit_accessibility__WEBPACK_IMPORTED_MODULE_3__.HiddenText, {
+    id: hiddenTextDescribedById,
+    value: screenReaderInstructions.draggable
+  }), react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_dnd_kit_accessibility__WEBPACK_IMPORTED_MODULE_3__.LiveRegion, {
+    id: liveRegionId,
+    announcement: announcement
+  })), document.body) : null;
+}
+
+const defaultCoordinates = /*#__PURE__*/Object.freeze({
+  x: 0,
+  y: 0
+});
+
+/**
+ * Returns the distance between two points
+ */
+function distanceBetween(p1, p2) {
+  return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+}
+
+function getRelativeTransformOrigin(event, rect) {
+  if ((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isKeyboardEvent)(event)) {
+    return '0 0';
+  }
+
+  const eventCoordinates = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getEventCoordinates)(event);
+  const transformOrigin = {
+    x: (eventCoordinates.x - rect.left) / rect.width * 100,
+    y: (eventCoordinates.y - rect.top) / rect.height * 100
+  };
+  return `${transformOrigin.x}% ${transformOrigin.y}%`;
+}
+
+/**
+ * Returns the coordinates of the center of a given ClientRect
+ */
+
+function centerOfRectangle(rect, left = rect.offsetLeft, top = rect.offsetTop) {
+  return {
+    x: left + rect.width * 0.5,
+    y: top + rect.height * 0.5
+  };
+}
+/**
+ * Returns the closest rectangle from an array of rectangles to the center of a given
+ * rectangle.
+ */
+
+
+const closestCenter = ({
+  collisionRect,
+  droppableContainers
+}) => {
+  const centerRect = centerOfRectangle(collisionRect, collisionRect.left, collisionRect.top);
+  let minDistanceToCenter = Infinity;
+  let minDroppableContainer = null;
+
+  for (const droppableContainer of droppableContainers) {
+    const {
+      rect: {
+        current: rect
+      }
+    } = droppableContainer;
+
+    if (rect) {
+      const distBetween = distanceBetween(centerOfRectangle(rect), centerRect);
+
+      if (distBetween < minDistanceToCenter) {
+        minDistanceToCenter = distBetween;
+        minDroppableContainer = droppableContainer.id;
+      }
+    }
+  }
+
+  return minDroppableContainer;
+};
+
+function adjustScale(transform, rect1, rect2) {
+  return { ...transform,
+    scaleX: rect1 && rect2 ? rect1.width / rect2.width : 1,
+    scaleY: rect1 && rect2 ? rect1.height / rect2.height : 1
+  };
+}
+
+function getRectDelta(rect1, rect2) {
+  return rect1 && rect2 ? {
+    x: rect1.left - rect2.left,
+    y: rect1.top - rect2.top
+  } : defaultCoordinates;
+}
+
+function createRectAdjustmentFn(modifier) {
+  return function adjustViewRect(viewRect, ...adjustments) {
+    return adjustments.reduce((acc, adjustment) => ({ ...acc,
+      top: acc.top + modifier * adjustment.y,
+      bottom: acc.bottom + modifier * adjustment.y,
+      left: acc.left + modifier * adjustment.x,
+      right: acc.right + modifier * adjustment.x,
+      offsetLeft: acc.offsetLeft + modifier * adjustment.x,
+      offsetTop: acc.offsetTop + modifier * adjustment.y
+    }), { ...viewRect
+    });
+  };
+}
+const getAdjustedRect = /*#__PURE__*/createRectAdjustmentFn(1);
+
+function isFixed(node, computedStyle = window.getComputedStyle(node)) {
+  return computedStyle.position === 'fixed';
+}
+
+function isScrollable(node, computedStyle = window.getComputedStyle(node)) {
+  const overflowRegex = /(auto|scroll|overlay)/;
+  const properties = ['overflow', 'overflowX', 'overflowY'];
+  return properties.find(property => {
+    const value = computedStyle[property];
+    return typeof value === 'string' ? overflowRegex.test(value) : false;
+  }) != null;
+}
+
+function getScrollableAncestors(element) {
+  const scrollParents = [];
+
+  function findScrollableAncestors(node) {
+    if (!node) {
+      return scrollParents;
+    }
+
+    if ((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isDocument)(node) && node.scrollingElement != null && !scrollParents.includes(node.scrollingElement)) {
+      scrollParents.push(node.scrollingElement);
+      return scrollParents;
+    }
+
+    if (!(0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isHTMLElement)(node) || (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isSVGElement)(node)) {
+      return scrollParents;
+    }
+
+    if (scrollParents.includes(node)) {
+      return scrollParents;
+    }
+
+    const computedStyle = window.getComputedStyle(node);
+
+    if (isScrollable(node, computedStyle)) {
+      scrollParents.push(node);
+    }
+
+    if (isFixed(node, computedStyle)) {
+      return scrollParents;
+    }
+
+    return findScrollableAncestors(node.parentNode);
+  }
+
+  return element ? findScrollableAncestors(element.parentNode) : scrollParents;
+}
+
+function getScrollableElement(element) {
+  if (!_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.canUseDOM || !element) {
+    return null;
+  }
+
+  if ((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isWindow)(element)) {
+    return element;
+  }
+
+  if (!(0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isNode)(element)) {
+    return null;
+  }
+
+  if ((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isDocument)(element) || element === (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getOwnerDocument)(element).scrollingElement) {
+    return window;
+  }
+
+  if ((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isHTMLElement)(element)) {
+    return element;
+  }
+
+  return null;
+}
+
+function getScrollCoordinates(element) {
+  if ((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isWindow)(element)) {
+    return {
+      x: element.scrollX,
+      y: element.scrollY
+    };
+  }
+
+  return {
+    x: element.scrollLeft,
+    y: element.scrollTop
+  };
+}
+
+var Direction;
+
+(function (Direction) {
+  Direction[Direction["Forward"] = 1] = "Forward";
+  Direction[Direction["Backward"] = -1] = "Backward";
+})(Direction || (Direction = {}));
+
+function getScrollPosition(scrollingContainer) {
+  const minScroll = {
+    x: 0,
+    y: 0
+  };
+  const maxScroll = {
+    x: scrollingContainer.scrollWidth - scrollingContainer.clientWidth,
+    y: scrollingContainer.scrollHeight - scrollingContainer.clientHeight
+  };
+  const isTop = scrollingContainer.scrollTop <= minScroll.y;
+  const isLeft = scrollingContainer.scrollLeft <= minScroll.x;
+  const isBottom = scrollingContainer.scrollTop >= maxScroll.y;
+  const isRight = scrollingContainer.scrollLeft >= maxScroll.x;
+  return {
+    isTop,
+    isLeft,
+    isBottom,
+    isRight,
+    maxScroll,
+    minScroll
+  };
+}
+
+function isDocumentScrollingElement(element) {
+  if (!_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.canUseDOM || !element) {
+    return false;
+  }
+
+  return element === document.scrollingElement;
+}
+
+const defaultThreshold = {
+  x: 0.2,
+  y: 0.2
+};
+function getScrollDirectionAndSpeed(scrollContainer, scrollContainerRect, {
+  top,
+  left,
+  right,
+  bottom
+}, acceleration = 10, thresholdPercentage = defaultThreshold) {
+  const {
+    clientHeight,
+    clientWidth
+  } = scrollContainer;
+  const finalScrollContainerRect = isDocumentScrollingElement(scrollContainer) ? {
+    top: 0,
+    left: 0,
+    right: clientWidth,
+    bottom: clientHeight,
+    width: clientWidth,
+    height: clientHeight
+  } : scrollContainerRect;
+  const {
+    isTop,
+    isBottom,
+    isLeft,
+    isRight
+  } = getScrollPosition(scrollContainer);
+  const direction = {
+    x: 0,
+    y: 0
+  };
+  const speed = {
+    x: 0,
+    y: 0
+  };
+  const threshold = {
+    height: finalScrollContainerRect.height * thresholdPercentage.y,
+    width: finalScrollContainerRect.width * thresholdPercentage.x
+  };
+
+  if (!isTop && top <= finalScrollContainerRect.top + threshold.height) {
+    // Scroll Up
+    direction.y = Direction.Backward;
+    speed.y = acceleration * Math.abs((finalScrollContainerRect.top + threshold.height - top) / threshold.height);
+  } else if (!isBottom && bottom >= finalScrollContainerRect.bottom - threshold.height) {
+    // Scroll Down
+    direction.y = Direction.Forward;
+    speed.y = acceleration * Math.abs((finalScrollContainerRect.bottom - threshold.height - bottom) / threshold.height);
+  }
+
+  if (!isRight && right >= finalScrollContainerRect.right - threshold.width) {
+    // Scroll Right
+    direction.x = Direction.Forward;
+    speed.x = acceleration * Math.abs((finalScrollContainerRect.right - threshold.width - right) / threshold.width);
+  } else if (!isLeft && left <= finalScrollContainerRect.left + threshold.width) {
+    // Scroll Left
+    direction.x = Direction.Backward;
+    speed.x = acceleration * Math.abs((finalScrollContainerRect.left + threshold.width - left) / threshold.width);
+  }
+
+  return {
+    direction,
+    speed
+  };
+}
+
+function getScrollElementRect(element) {
+  if (element === document.scrollingElement) {
+    const {
+      innerWidth,
+      innerHeight
+    } = window;
+    return {
+      top: 0,
+      left: 0,
+      right: innerWidth,
+      bottom: innerHeight,
+      width: innerWidth,
+      height: innerHeight
+    };
+  }
+
+  const {
+    top,
+    left,
+    right,
+    bottom
+  } = element.getBoundingClientRect();
+  return {
+    top,
+    left,
+    right,
+    bottom,
+    width: element.clientWidth,
+    height: element.clientHeight
+  };
+}
+
+function getScrollOffsets(scrollableAncestors) {
+  return scrollableAncestors.reduce((acc, node) => {
+    return (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.add)(acc, getScrollCoordinates(node));
+  }, defaultCoordinates);
+}
+
+function getEdgeOffset(node, parent, offset = defaultCoordinates) {
+  if (!node || !(0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isHTMLElement)(node)) {
+    return offset;
+  }
+
+  const nodeOffset = {
+    x: offset.x + node.offsetLeft,
+    y: offset.y + node.offsetTop
+  };
+
+  if (node.offsetParent === parent) {
+    return nodeOffset;
+  }
+
+  return getEdgeOffset(node.offsetParent, parent, nodeOffset);
+}
+
+function getLayoutRect(element) {
+  const {
+    offsetWidth: width,
+    offsetHeight: height
+  } = element;
+  const {
+    x: offsetLeft,
+    y: offsetTop
+  } = getEdgeOffset(element, null);
+  return {
+    width,
+    height,
+    offsetTop,
+    offsetLeft
+  };
+}
+function getViewportLayoutRect(element) {
+  const {
+    width,
+    height,
+    top,
+    left
+  } = element.getBoundingClientRect();
+  const scrollableAncestors = getScrollableAncestors(element);
+  const scrollOffsets = getScrollOffsets(scrollableAncestors);
+  return {
+    width,
+    height,
+    offsetTop: top + scrollOffsets.y,
+    offsetLeft: left + scrollOffsets.x
+  };
+}
+function getBoundingClientRect(element) {
+  if ((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isWindow)(element)) {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    return {
+      top: 0,
+      left: 0,
+      right: width,
+      bottom: height,
+      width,
+      height,
+      offsetTop: 0,
+      offsetLeft: 0
+    };
+  }
+
+  const {
+    offsetTop,
+    offsetLeft
+  } = getLayoutRect(element);
+  const {
+    width,
+    height,
+    top,
+    bottom,
+    left,
+    right
+  } = element.getBoundingClientRect();
+  return {
+    width,
+    height,
+    top,
+    bottom,
+    right,
+    left,
+    offsetTop,
+    offsetLeft
+  };
+}
+function getViewRect(element) {
+  const {
+    width,
+    height,
+    offsetTop,
+    offsetLeft
+  } = getLayoutRect(element);
+  const scrollableAncestors = getScrollableAncestors(element);
+  const scrollOffsets = getScrollOffsets(scrollableAncestors);
+  const top = offsetTop - scrollOffsets.y;
+  const left = offsetLeft - scrollOffsets.x;
+  return {
+    width,
+    height,
+    top,
+    bottom: top + height,
+    right: left + width,
+    left,
+    offsetTop,
+    offsetLeft
+  };
+}
+
+function isViewRect(entry) {
+  return 'top' in entry;
+}
+
+/**
+ * Returns the coordinates of the corners of a given rectangle:
+ * [TopLeft {x, y}, TopRight {x, y}, BottomLeft {x, y}, BottomRight {x, y}]
+ */
+
+function cornersOfRectangle(rect, left = rect.offsetLeft, top = rect.offsetTop) {
+  return [{
+    x: left,
+    y: top
+  }, {
+    x: left + rect.width,
+    y: top
+  }, {
+    x: left,
+    y: top + rect.height
+  }, {
+    x: left + rect.width,
+    y: top + rect.height
+  }];
+}
+/**
+ * Returns the closest rectangle from an array of rectangles to the corners of
+ * another rectangle.
+ */
+
+
+const closestCorners = ({
+  collisionRect,
+  droppableContainers
+}) => {
+  let minDistanceToCorners = Infinity;
+  let minDistanceContainer = null;
+  const corners = cornersOfRectangle(collisionRect, collisionRect.left, collisionRect.top);
+
+  for (const droppableContainer of droppableContainers) {
+    const {
+      rect: {
+        current: rect
+      }
+    } = droppableContainer;
+
+    if (rect) {
+      const rectCorners = cornersOfRectangle(rect, isViewRect(rect) ? rect.left : undefined, isViewRect(rect) ? rect.top : undefined);
+      const distances = corners.reduce((accumulator, corner, index) => {
+        return accumulator + distanceBetween(rectCorners[index], corner);
+      }, 0);
+      const effectiveDistance = Number((distances / 4).toFixed(4));
+
+      if (effectiveDistance < minDistanceToCorners) {
+        minDistanceToCorners = effectiveDistance;
+        minDistanceContainer = droppableContainer.id;
+      }
+    }
+  }
+
+  return minDistanceContainer;
+};
+
+/**
+ * Returns the intersecting rectangle area between two rectangles
+ */
+function getIntersectionRatio(entry, target) {
+  const top = Math.max(target.top, entry.offsetTop);
+  const left = Math.max(target.left, entry.offsetLeft);
+  const right = Math.min(target.left + target.width, entry.offsetLeft + entry.width);
+  const bottom = Math.min(target.top + target.height, entry.offsetTop + entry.height);
+  const width = right - left;
+  const height = bottom - top;
+
+  if (left < right && top < bottom) {
+    const targetArea = target.width * target.height;
+    const entryArea = entry.width * entry.height;
+    const intersectionArea = width * height;
+    const intersectionRatio = intersectionArea / (targetArea + entryArea - intersectionArea);
+    return Number(intersectionRatio.toFixed(4));
+  } // Rectangles do not overlap, or overlap has an area of zero (edge/corner overlap)
+
+
+  return 0;
+}
+/**
+ * Returns the rectangle that has the greatest intersection area with a given
+ * rectangle in an array of rectangles.
+ */
+
+
+const rectIntersection = ({
+  collisionRect,
+  droppableContainers
+}) => {
+  let maxIntersectionRatio = 0;
+  let maxIntersectingDroppableContainer = null;
+
+  for (const droppableContainer of droppableContainers) {
+    const {
+      rect: {
+        current: rect
+      }
+    } = droppableContainer;
+
+    if (rect) {
+      const intersectionRatio = getIntersectionRatio(rect, collisionRect);
+
+      if (intersectionRatio > maxIntersectionRatio) {
+        maxIntersectionRatio = intersectionRatio;
+        maxIntersectingDroppableContainer = droppableContainer.id;
+      }
+    }
+  }
+
+  return maxIntersectingDroppableContainer;
+};
+
+var AutoScrollActivator;
+
+(function (AutoScrollActivator) {
+  AutoScrollActivator[AutoScrollActivator["Pointer"] = 0] = "Pointer";
+  AutoScrollActivator[AutoScrollActivator["DraggableRect"] = 1] = "DraggableRect";
+})(AutoScrollActivator || (AutoScrollActivator = {}));
+
+var TraversalOrder;
+
+(function (TraversalOrder) {
+  TraversalOrder[TraversalOrder["TreeOrder"] = 0] = "TreeOrder";
+  TraversalOrder[TraversalOrder["ReversedTreeOrder"] = 1] = "ReversedTreeOrder";
+})(TraversalOrder || (TraversalOrder = {}));
+
+function useAutoScroller({
+  acceleration,
+  activator = AutoScrollActivator.Pointer,
+  canScroll,
+  draggingRect,
+  enabled,
+  interval = 5,
+  order = TraversalOrder.TreeOrder,
+  pointerCoordinates,
+  scrollableAncestors,
+  scrollableAncestorRects,
+  threshold
+}) {
+  const [setAutoScrollInterval, clearAutoScrollInterval] = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useInterval)();
+  const scrollSpeed = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)({
+    x: 1,
+    y: 1
+  });
+  const rect = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    switch (activator) {
+      case AutoScrollActivator.Pointer:
+        return pointerCoordinates ? {
+          top: pointerCoordinates.y,
+          bottom: pointerCoordinates.y,
+          left: pointerCoordinates.x,
+          right: pointerCoordinates.x
+        } : null;
+
+      case AutoScrollActivator.DraggableRect:
+        return draggingRect;
+    }
+
+    return null;
+  }, [activator, draggingRect, pointerCoordinates]);
+  const scrollDirection = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(defaultCoordinates);
+  const scrollContainerRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const autoScroll = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    const scrollContainer = scrollContainerRef.current;
+
+    if (!scrollContainer) {
+      return;
+    }
+
+    const scrollLeft = scrollSpeed.current.x * scrollDirection.current.x;
+    const scrollTop = scrollSpeed.current.y * scrollDirection.current.y;
+    scrollContainer.scrollBy(scrollLeft, scrollTop);
+  }, []);
+  const sortedScrollableAncestors = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => order === TraversalOrder.TreeOrder ? [...scrollableAncestors].reverse() : scrollableAncestors, [order, scrollableAncestors]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!enabled || !scrollableAncestors.length || !rect) {
+      clearAutoScrollInterval();
+      return;
+    }
+
+    for (const scrollContainer of sortedScrollableAncestors) {
+      if ((canScroll == null ? void 0 : canScroll(scrollContainer)) === false) {
+        continue;
+      }
+
+      const index = scrollableAncestors.indexOf(scrollContainer);
+      const scrolllContainerRect = scrollableAncestorRects[index];
+
+      if (!scrolllContainerRect) {
+        continue;
+      }
+
+      const {
+        direction,
+        speed
+      } = getScrollDirectionAndSpeed(scrollContainer, scrolllContainerRect, rect, acceleration, threshold);
+
+      if (speed.x > 0 || speed.y > 0) {
+        clearAutoScrollInterval();
+        scrollContainerRef.current = scrollContainer;
+        setAutoScrollInterval(autoScroll, interval);
+        scrollSpeed.current = speed;
+        scrollDirection.current = direction;
+        return;
+      }
+    }
+
+    scrollSpeed.current = {
+      x: 0,
+      y: 0
+    };
+    scrollDirection.current = {
+      x: 0,
+      y: 0
+    };
+    clearAutoScrollInterval();
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  [acceleration, autoScroll, canScroll, clearAutoScrollInterval, enabled, interval, // eslint-disable-next-line react-hooks/exhaustive-deps
+  JSON.stringify(rect), setAutoScrollInterval, scrollableAncestors, sortedScrollableAncestors, scrollableAncestorRects, // eslint-disable-next-line react-hooks/exhaustive-deps
+  JSON.stringify(threshold)]);
+}
+
+function useCachedNode(draggableNodes, id) {
+  const draggableNode = id !== null ? draggableNodes[id] : undefined;
+  const node = draggableNode ? draggableNode.node.current : null;
+  return (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useLazyMemo)(cachedNode => {
+    var _ref;
+
+    if (id === null) {
+      return null;
+    } // In some cases, the draggable node can unmount while dragging
+    // This is the case for virtualized lists. In those situations,
+    // we fall back to the last known value for that node.
+
+
+    return (_ref = node != null ? node : cachedNode) != null ? _ref : null;
+  }, [node, id]);
+}
+
+function useCombineActivators(sensors, getSyntheticHandler) {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => sensors.reduce((accumulator, sensor) => {
+    const {
+      sensor: Sensor
+    } = sensor;
+    const sensorActivators = Sensor.activators.map(activator => ({
+      eventName: activator.eventName,
+      handler: getSyntheticHandler(activator.handler, sensor)
+    }));
+    return [...accumulator, ...sensorActivators];
+  }, []), [sensors, getSyntheticHandler]);
+}
+
+function useData(data) {
+  const dataRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(data);
+  (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useIsomorphicLayoutEffect)(() => {
+    if (dataRef.current !== data) {
+      dataRef.current = data;
+    }
+  }, [data]);
+  return dataRef;
+}
+
+var MeasuringStrategy;
+
+(function (MeasuringStrategy) {
+  MeasuringStrategy[MeasuringStrategy["Always"] = 0] = "Always";
+  MeasuringStrategy[MeasuringStrategy["BeforeDragging"] = 1] = "BeforeDragging";
+  MeasuringStrategy[MeasuringStrategy["WhileDragging"] = 2] = "WhileDragging";
+})(MeasuringStrategy || (MeasuringStrategy = {}));
+
+var MeasuringFrequency;
+
+(function (MeasuringFrequency) {
+  MeasuringFrequency["Optimized"] = "optimized";
+})(MeasuringFrequency || (MeasuringFrequency = {}));
+
+const defaultValue = /*#__PURE__*/new Map();
+const defaultConfig = {
+  measure: getLayoutRect,
+  strategy: MeasuringStrategy.WhileDragging,
+  frequency: MeasuringFrequency.Optimized
+};
+function useDroppableMeasuring(containers, {
+  dragging,
+  dependencies,
+  config
+}) {
+  const [willRecomputeLayouts, setWillRecomputeLayouts] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const {
+    frequency,
+    measure,
+    strategy
+  } = { ...defaultConfig,
+    ...config
+  };
+  const containersRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(containers);
+  const recomputeLayouts = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => setWillRecomputeLayouts(true), []);
+  const recomputeLayoutsTimeoutId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const disabled = isDisabled();
+  const layoutRectMap = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useLazyMemo)(previousValue => {
+    if (disabled && !dragging) {
+      return defaultValue;
+    }
+
+    if (!previousValue || previousValue === defaultValue || containersRef.current !== containers || willRecomputeLayouts) {
+      for (let container of containers) {
+        if (!container) {
+          continue;
+        }
+
+        container.rect.current = container.node.current ? measure(container.node.current) : null;
+      }
+
+      return createLayoutRectMap(containers);
+    }
+
+    return previousValue;
+  }, [containers, dragging, disabled, measure, willRecomputeLayouts]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    containersRef.current = containers;
+  }, [containers]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (willRecomputeLayouts) {
+      setWillRecomputeLayouts(false);
+    }
+  }, [willRecomputeLayouts]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function recompute() {
+    if (disabled) {
+      return;
+    }
+
+    requestAnimationFrame(recomputeLayouts);
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  [dragging, disabled]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function forceRecomputeLayouts() {
+    if (disabled || typeof frequency !== 'number' || recomputeLayoutsTimeoutId.current !== null) {
+      return;
+    }
+
+    recomputeLayoutsTimeoutId.current = setTimeout(() => {
+      recomputeLayouts();
+      recomputeLayoutsTimeoutId.current = null;
+    }, frequency);
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  [frequency, disabled, recomputeLayouts, ...dependencies]);
+  return {
+    layoutRectMap,
+    recomputeLayouts,
+    willRecomputeLayouts
+  };
+
+  function isDisabled() {
+    switch (strategy) {
+      case MeasuringStrategy.Always:
+        return false;
+
+      case MeasuringStrategy.BeforeDragging:
+        return dragging;
+
+      default:
+        return !dragging;
+    }
+  }
+}
+
+function createLayoutRectMap(containers) {
+  const layoutRectMap = new Map();
+
+  if (containers) {
+    for (const container of containers) {
+      if (!container) {
+        continue;
+      }
+
+      const {
+        id,
+        rect
+      } = container;
+
+      if (rect.current == null) {
+        continue;
+      }
+
+      layoutRectMap.set(id, rect.current);
+    }
+  }
+
+  return layoutRectMap;
+}
+
+function useScrollOffsets(elements) {
+  const [scrollCoordinates, setScrollCoordinates] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const prevElements = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(elements); // To-do: Throttle the handleScroll callback
+
+  const handleScroll = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(event => {
+    const scrollingElement = getScrollableElement(event.target);
+
+    if (!scrollingElement) {
+      return;
+    }
+
+    setScrollCoordinates(scrollCoordinates => {
+      if (!scrollCoordinates) {
+        return null;
+      }
+
+      scrollCoordinates.set(scrollingElement, getScrollCoordinates(scrollingElement));
+      return new Map(scrollCoordinates);
+    });
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const previousElements = prevElements.current;
+
+    if (elements !== previousElements) {
+      cleanup(previousElements);
+      const entries = elements.map(element => {
+        const scrollableElement = getScrollableElement(element);
+
+        if (scrollableElement) {
+          scrollableElement.addEventListener('scroll', handleScroll, {
+            passive: true
+          });
+          return [scrollableElement, getScrollCoordinates(scrollableElement)];
+        }
+
+        return null;
+      }).filter(entry => entry != null);
+      setScrollCoordinates(entries.length ? new Map(entries) : null);
+      prevElements.current = elements;
+    }
+
+    return () => {
+      cleanup(elements);
+      cleanup(previousElements);
+    };
+
+    function cleanup(elements) {
+      elements.forEach(element => {
+        const scrollableElement = getScrollableElement(element);
+        scrollableElement == null ? void 0 : scrollableElement.removeEventListener('scroll', handleScroll);
+      });
+    }
+  }, [handleScroll, elements]);
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    if (elements.length) {
+      return scrollCoordinates ? Array.from(scrollCoordinates.values()).reduce((acc, coordinates) => (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.add)(acc, coordinates), defaultCoordinates) : getScrollOffsets(elements);
+    }
+
+    return defaultCoordinates;
+  }, [elements, scrollCoordinates]);
+}
+
+const defaultValue$1 = [];
+function useScrollableAncestors(node) {
+  const previousNode = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(node);
+  const ancestors = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useLazyMemo)(previousValue => {
+    if (!node) {
+      return defaultValue$1;
+    }
+
+    if (previousValue && node && previousNode.current && node.parentNode === previousNode.current.parentNode) {
+      return previousValue;
+    }
+
+    return getScrollableAncestors(node);
+  }, [node]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    previousNode.current = node;
+  }, [node]);
+  return ancestors;
+}
+
+function useSensorSetup(sensors) {
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.canUseDOM) {
+      return;
+    }
+
+    const teardownFns = sensors.map(({
+      sensor
+    }) => sensor.setup == null ? void 0 : sensor.setup());
+    return () => {
+      for (const teardown of teardownFns) {
+        teardown == null ? void 0 : teardown();
+      }
+    };
+  }, // TO-DO: Sensors lenght could theoretically change which would not be a valid dependency
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  sensors.map(({
+    sensor
+  }) => sensor));
+}
+
+function useSyntheticListeners(listeners, id) {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    return listeners.reduce((acc, {
+      eventName,
+      handler
+    }) => {
+      acc[eventName] = event => {
+        handler(event, id);
+      };
+
+      return acc;
+    }, {});
+  }, [listeners, id]);
+}
+
+const useClientRect = /*#__PURE__*/createUseRectFn(getBoundingClientRect);
+const useClientRects = /*#__PURE__*/createUseRectsFn(getBoundingClientRect);
+function useRect(element, getRect, forceRecompute) {
+  const previousElement = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(element);
+  return (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useLazyMemo)(previousValue => {
+    if (!element) {
+      return null;
+    }
+
+    if (forceRecompute || !previousValue && element || element !== previousElement.current) {
+      if ((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isHTMLElement)(element) && element.parentNode == null) {
+        return null;
+      }
+
+      return getRect(element);
+    }
+
+    return previousValue != null ? previousValue : null;
+  }, [element, forceRecompute, getRect]);
+}
+function createUseRectFn(getRect) {
+  return (element, forceRecompute) => useRect(element, getRect, forceRecompute);
+}
+
+function createUseRectsFn(getRect) {
+  const defaultValue = [];
+  return function useRects(elements, forceRecompute) {
+    const previousElements = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(elements);
+    return (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useLazyMemo)(previousValue => {
+      if (!elements.length) {
+        return defaultValue;
+      }
+
+      if (forceRecompute || !previousValue && elements.length || elements !== previousElements.current) {
+        return elements.map(element => getRect(element));
+      }
+
+      return previousValue != null ? previousValue : defaultValue;
+    }, [elements, forceRecompute]);
+  };
+}
+
+function getMeasurableNode(node) {
+  if (!node) {
+    return null;
+  }
+
+  if (node.children.length > 1) {
+    return node;
+  }
+
+  const firstChild = node.children[0];
+  return (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isHTMLElement)(firstChild) ? firstChild : node;
+}
+
+function getDragOverlayRect(element) {
+  const {
+    width,
+    height,
+    offsetLeft,
+    offsetTop
+  } = getLayoutRect(element);
+  return {
+    top: offsetTop,
+    bottom: offsetTop + height,
+    left: offsetLeft,
+    right: offsetLeft + width,
+    width,
+    height,
+    offsetTop,
+    offsetLeft
+  };
+}
+
+const useDragOverlayRect = /*#__PURE__*/createUseRectFn(getDragOverlayRect);
+function useDragOverlayMeasuring({
+  disabled,
+  forceRecompute
+}) {
+  const [nodeRef, setRef] = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useNodeRef)();
+  const rect = useDragOverlayRect(disabled ? null : getMeasurableNode(nodeRef.current), forceRecompute);
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => ({
+    nodeRef,
+    rect,
+    setRef
+  }), [rect, nodeRef, setRef]);
+}
+
+function useSensor(sensor, options) {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => ({
+    sensor,
+    options: options != null ? options : {}
+  }), // eslint-disable-next-line react-hooks/exhaustive-deps
+  [sensor, options]);
+}
+
+function useSensors(...sensors) {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => [...sensors].filter(sensor => sensor != null), // eslint-disable-next-line react-hooks/exhaustive-deps
+  [...sensors]);
+}
+
+class Listeners {
+  constructor(target) {
+    this.target = target;
+    this.listeners = [];
+
+    this.removeAll = () => {
+      this.listeners.forEach(listener => {
+        var _this$target;
+
+        return (_this$target = this.target) == null ? void 0 : _this$target.removeEventListener(...listener);
+      });
+    };
+  }
+
+  add(eventName, handler, options) {
+    var _this$target2;
+
+    (_this$target2 = this.target) == null ? void 0 : _this$target2.addEventListener(eventName, handler, options);
+    this.listeners.push([eventName, handler, options]);
+  }
+
+}
+
+function getEventListenerTarget(target) {
+  // If the `event.target` element is removed from the document events will still be targeted
+  // at it, and hence won't always bubble up to the window or document anymore.
+  // If there is any risk of an element being removed while it is being dragged,
+  // the best practice is to attach the event listeners directly to the target.
+  // https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
+  const {
+    EventTarget
+  } = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getWindow)(target);
+  return target instanceof EventTarget ? target : (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getOwnerDocument)(target);
+}
+
+function hasExceededDistance(delta, measurement) {
+  const dx = Math.abs(delta.x);
+  const dy = Math.abs(delta.y);
+
+  if (typeof measurement === 'number') {
+    return Math.sqrt(dx ** 2 + dy ** 2) > measurement;
+  }
+
+  if ('x' in measurement && 'y' in measurement) {
+    return dx > measurement.x && dy > measurement.y;
+  }
+
+  if ('x' in measurement) {
+    return dx > measurement.x;
+  }
+
+  if ('y' in measurement) {
+    return dy > measurement.y;
+  }
+
+  return false;
+}
+
+var EventName;
+
+(function (EventName) {
+  EventName["Click"] = "click";
+  EventName["DragStart"] = "dragstart";
+  EventName["Keydown"] = "keydown";
+  EventName["ContextMenu"] = "contextmenu";
+  EventName["Resize"] = "resize";
+  EventName["SelectionChange"] = "selectionchange";
+  EventName["VisibilityChange"] = "visibilitychange";
+})(EventName || (EventName = {}));
+
+function preventDefault(event) {
+  event.preventDefault();
+}
+function stopPropagation(event) {
+  event.stopPropagation();
+}
+
+var KeyboardCode;
+
+(function (KeyboardCode) {
+  KeyboardCode["Space"] = "Space";
+  KeyboardCode["Down"] = "ArrowDown";
+  KeyboardCode["Right"] = "ArrowRight";
+  KeyboardCode["Left"] = "ArrowLeft";
+  KeyboardCode["Up"] = "ArrowUp";
+  KeyboardCode["Esc"] = "Escape";
+  KeyboardCode["Enter"] = "Enter";
+})(KeyboardCode || (KeyboardCode = {}));
+
+const defaultKeyboardCodes = {
+  start: [KeyboardCode.Space, KeyboardCode.Enter],
+  cancel: [KeyboardCode.Esc],
+  end: [KeyboardCode.Space, KeyboardCode.Enter]
+};
+const defaultKeyboardCoordinateGetter = (event, {
+  currentCoordinates
+}) => {
+  switch (event.code) {
+    case KeyboardCode.Right:
+      return { ...currentCoordinates,
+        x: currentCoordinates.x + 25
+      };
+
+    case KeyboardCode.Left:
+      return { ...currentCoordinates,
+        x: currentCoordinates.x - 25
+      };
+
+    case KeyboardCode.Down:
+      return { ...currentCoordinates,
+        y: currentCoordinates.y + 25
+      };
+
+    case KeyboardCode.Up:
+      return { ...currentCoordinates,
+        y: currentCoordinates.y - 25
+      };
+  }
+
+  return undefined;
+};
+
+class KeyboardSensor {
+  constructor(props) {
+    this.props = props;
+    this.autoScrollEnabled = false;
+    this.coordinates = defaultCoordinates;
+    const {
+      event: {
+        target
+      }
+    } = props;
+    this.props = props;
+    this.listeners = new Listeners((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getOwnerDocument)(target));
+    this.windowListeners = new Listeners((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getWindow)(target));
+    this.handleKeyDown = this.handleKeyDown.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.attach();
+  }
+
+  attach() {
+    this.handleStart();
+    this.windowListeners.add(EventName.Resize, this.handleCancel);
+    this.windowListeners.add(EventName.VisibilityChange, this.handleCancel);
+    setTimeout(() => this.listeners.add(EventName.Keydown, this.handleKeyDown));
+  }
+
+  handleStart() {
+    const {
+      activeNode,
+      onStart
+    } = this.props;
+
+    if (!activeNode.node.current) {
+      throw new Error('Active draggable node is undefined');
+    }
+
+    const activeNodeRect = getBoundingClientRect(activeNode.node.current);
+    const coordinates = {
+      x: activeNodeRect.left,
+      y: activeNodeRect.top
+    };
+    this.coordinates = coordinates;
+    onStart(coordinates);
+  }
+
+  handleKeyDown(event) {
+    if ((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isKeyboardEvent)(event)) {
+      const {
+        coordinates
+      } = this;
+      const {
+        active,
+        context,
+        options
+      } = this.props;
+      const {
+        keyboardCodes = defaultKeyboardCodes,
+        coordinateGetter = defaultKeyboardCoordinateGetter,
+        scrollBehavior = 'smooth'
+      } = options;
+      const {
+        code
+      } = event;
+
+      if (keyboardCodes.end.includes(code)) {
+        this.handleEnd(event);
+        return;
+      }
+
+      if (keyboardCodes.cancel.includes(code)) {
+        this.handleCancel(event);
+        return;
+      }
+
+      const newCoordinates = coordinateGetter(event, {
+        active,
+        context: context.current,
+        currentCoordinates: coordinates
+      });
+
+      if (newCoordinates) {
+        const scrollDelta = {
+          x: 0,
+          y: 0
+        };
+        const {
+          scrollableAncestors
+        } = context.current;
+
+        for (const scrollContainer of scrollableAncestors) {
+          const direction = event.code;
+          const coordinatesDelta = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.subtract)(newCoordinates, coordinates);
+          const {
+            isTop,
+            isRight,
+            isLeft,
+            isBottom,
+            maxScroll,
+            minScroll
+          } = getScrollPosition(scrollContainer);
+          const scrollElementRect = getScrollElementRect(scrollContainer);
+          const clampedCoordinates = {
+            x: Math.min(direction === KeyboardCode.Right ? scrollElementRect.right - scrollElementRect.width / 2 : scrollElementRect.right, Math.max(direction === KeyboardCode.Right ? scrollElementRect.left : scrollElementRect.left + scrollElementRect.width / 2, newCoordinates.x)),
+            y: Math.min(direction === KeyboardCode.Down ? scrollElementRect.bottom - scrollElementRect.height / 2 : scrollElementRect.bottom, Math.max(direction === KeyboardCode.Down ? scrollElementRect.top : scrollElementRect.top + scrollElementRect.height / 2, newCoordinates.y))
+          };
+          const canScrollX = direction === KeyboardCode.Right && !isRight || direction === KeyboardCode.Left && !isLeft;
+          const canScrollY = direction === KeyboardCode.Down && !isBottom || direction === KeyboardCode.Up && !isTop;
+
+          if (canScrollX && clampedCoordinates.x !== newCoordinates.x) {
+            const canFullyScrollToNewCoordinates = direction === KeyboardCode.Right && scrollContainer.scrollLeft + coordinatesDelta.x <= maxScroll.x || direction === KeyboardCode.Left && scrollContainer.scrollLeft + coordinatesDelta.x >= minScroll.x;
+
+            if (canFullyScrollToNewCoordinates) {
+              // We don't need to update coordinates, the scroll adjustment alone will trigger
+              // logic to auto-detect the new container we are over
+              scrollContainer.scrollBy({
+                left: coordinatesDelta.x,
+                behavior: scrollBehavior
+              });
+              return;
+            }
+
+            scrollDelta.x = direction === KeyboardCode.Right ? scrollContainer.scrollLeft - maxScroll.x : scrollContainer.scrollLeft - minScroll.x;
+            scrollContainer.scrollBy({
+              left: -scrollDelta.x,
+              behavior: scrollBehavior
+            });
+            break;
+          } else if (canScrollY && clampedCoordinates.y !== newCoordinates.y) {
+            const canFullyScrollToNewCoordinates = direction === KeyboardCode.Down && scrollContainer.scrollTop + coordinatesDelta.y <= maxScroll.y || direction === KeyboardCode.Up && scrollContainer.scrollTop + coordinatesDelta.y >= minScroll.y;
+
+            if (canFullyScrollToNewCoordinates) {
+              // We don't need to update coordinates, the scroll adjustment alone will trigger
+              // logic to auto-detect the new container we are over
+              scrollContainer.scrollBy({
+                top: coordinatesDelta.y,
+                behavior: scrollBehavior
+              });
+              return;
+            }
+
+            scrollDelta.y = direction === KeyboardCode.Down ? scrollContainer.scrollTop - maxScroll.y : scrollContainer.scrollTop - minScroll.y;
+            scrollContainer.scrollBy({
+              top: -scrollDelta.y,
+              behavior: scrollBehavior
+            });
+            break;
+          }
+        }
+
+        this.handleMove(event, (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.add)(newCoordinates, scrollDelta));
+      }
+    }
+  }
+
+  handleMove(event, coordinates) {
+    const {
+      onMove
+    } = this.props;
+    event.preventDefault();
+    onMove(coordinates);
+    this.coordinates = coordinates;
+  }
+
+  handleEnd(event) {
+    const {
+      onEnd
+    } = this.props;
+    event.preventDefault();
+    this.detach();
+    onEnd();
+  }
+
+  handleCancel(event) {
+    const {
+      onCancel
+    } = this.props;
+    event.preventDefault();
+    this.detach();
+    onCancel();
+  }
+
+  detach() {
+    this.listeners.removeAll();
+    this.windowListeners.removeAll();
+  }
+
+}
+KeyboardSensor.activators = [{
+  eventName: 'onKeyDown',
+  handler: (event, {
+    keyboardCodes = defaultKeyboardCodes,
+    onActivation
+  }) => {
+    const {
+      code
+    } = event.nativeEvent;
+
+    if (keyboardCodes.start.includes(code)) {
+      event.preventDefault();
+      onActivation == null ? void 0 : onActivation({
+        event: event.nativeEvent
+      });
+      return true;
+    }
+
+    return false;
+  }
+}];
+
+function isDistanceConstraint(constraint) {
+  return Boolean(constraint && 'distance' in constraint);
+}
+
+function isDelayConstraint(constraint) {
+  return Boolean(constraint && 'delay' in constraint);
+}
+
+class AbstractPointerSensor {
+  constructor(props, events, listenerTarget = getEventListenerTarget(props.event.target)) {
+    this.props = props;
+    this.events = events;
+    this.autoScrollEnabled = true;
+    this.activated = false;
+    this.timeoutId = null;
+    const {
+      event
+    } = props;
+    const {
+      target
+    } = event;
+    this.props = props;
+    this.events = events;
+    this.document = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getOwnerDocument)(target);
+    this.documentListeners = new Listeners(this.document);
+    this.listeners = new Listeners(listenerTarget);
+    this.windowListeners = new Listeners((0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getWindow)(target));
+    this.initialCoordinates = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getEventCoordinates)(event);
+    this.handleStart = this.handleStart.bind(this);
+    this.handleMove = this.handleMove.bind(this);
+    this.handleEnd = this.handleEnd.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleKeydown = this.handleKeydown.bind(this);
+    this.removeTextSelection = this.removeTextSelection.bind(this);
+    this.attach();
+  }
+
+  attach() {
+    const {
+      events,
+      props: {
+        options: {
+          activationConstraint
+        }
+      }
+    } = this;
+    this.listeners.add(events.move.name, this.handleMove, {
+      passive: false
+    });
+    this.listeners.add(events.end.name, this.handleEnd);
+    this.windowListeners.add(EventName.Resize, this.handleCancel);
+    this.windowListeners.add(EventName.DragStart, preventDefault);
+    this.windowListeners.add(EventName.VisibilityChange, this.handleCancel);
+    this.windowListeners.add(EventName.ContextMenu, preventDefault);
+    this.documentListeners.add(EventName.Keydown, this.handleKeydown);
+
+    if (activationConstraint) {
+      if (isDistanceConstraint(activationConstraint)) {
+        return;
+      }
+
+      if (isDelayConstraint(activationConstraint)) {
+        this.timeoutId = setTimeout(this.handleStart, activationConstraint.delay);
+        return;
+      }
+    }
+
+    this.handleStart();
+  }
+
+  detach() {
+    this.listeners.removeAll();
+    this.windowListeners.removeAll(); // Wait until the next event loop before removing document listeners
+    // This is necessary because we listen for `click` and `selection` events on the document
+
+    setTimeout(this.documentListeners.removeAll, 50);
+
+    if (this.timeoutId !== null) {
+      clearTimeout(this.timeoutId);
+      this.timeoutId = null;
+    }
+  }
+
+  handleStart() {
+    const {
+      initialCoordinates
+    } = this;
+    const {
+      onStart
+    } = this.props;
+
+    if (initialCoordinates) {
+      this.activated = true; // Stop propagation of click events once activation constraints are met
+
+      this.documentListeners.add(EventName.Click, stopPropagation, {
+        capture: true
+      }); // Remove any text selection from the document
+
+      this.removeTextSelection(); // Prevent further text selection while dragging
+
+      this.documentListeners.add(EventName.SelectionChange, this.removeTextSelection);
+      onStart(initialCoordinates);
+    }
+  }
+
+  handleMove(event) {
+    const {
+      activated,
+      initialCoordinates,
+      props
+    } = this;
+    const {
+      onMove,
+      options: {
+        activationConstraint
+      }
+    } = props;
+
+    if (!initialCoordinates) {
+      return;
+    }
+
+    const coordinates = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getEventCoordinates)(event);
+    const delta = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.subtract)(initialCoordinates, coordinates);
+
+    if (!activated && activationConstraint) {
+      // Constraint validation
+      if (isDelayConstraint(activationConstraint)) {
+        if (hasExceededDistance(delta, activationConstraint.tolerance)) {
+          return this.handleCancel();
+        }
+
+        return;
+      }
+
+      if (isDistanceConstraint(activationConstraint)) {
+        if (activationConstraint.tolerance != null && hasExceededDistance(delta, activationConstraint.tolerance)) {
+          return this.handleCancel();
+        }
+
+        if (hasExceededDistance(delta, activationConstraint.distance)) {
+          return this.handleStart();
+        }
+
+        return;
+      }
+    }
+
+    if (event.cancelable) {
+      event.preventDefault();
+    }
+
+    onMove(coordinates);
+  }
+
+  handleEnd() {
+    const {
+      onEnd
+    } = this.props;
+    this.detach();
+    onEnd();
+  }
+
+  handleCancel() {
+    const {
+      onCancel
+    } = this.props;
+    this.detach();
+    onCancel();
+  }
+
+  handleKeydown(event) {
+    if (event.code === KeyboardCode.Esc) {
+      this.handleCancel();
+    }
+  }
+
+  removeTextSelection() {
+    var _this$document$getSel;
+
+    (_this$document$getSel = this.document.getSelection()) == null ? void 0 : _this$document$getSel.removeAllRanges();
+  }
+
+}
+
+const events = {
+  move: {
+    name: 'pointermove'
+  },
+  end: {
+    name: 'pointerup'
+  }
+};
+class PointerSensor extends AbstractPointerSensor {
+  constructor(props) {
+    const {
+      event
+    } = props; // Pointer events stop firing if the target is unmounted while dragging
+    // Therefore we attach listeners to the owner document instead
+
+    const listenerTarget = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getOwnerDocument)(event.target);
+    super(props, events, listenerTarget);
+  }
+
+}
+PointerSensor.activators = [{
+  eventName: 'onPointerDown',
+  handler: ({
+    nativeEvent: event
+  }, {
+    onActivation
+  }) => {
+    if (!event.isPrimary || event.button !== 0) {
+      return false;
+    }
+
+    onActivation == null ? void 0 : onActivation({
+      event
+    });
+    return true;
+  }
+}];
+
+const events$1 = {
+  move: {
+    name: 'mousemove'
+  },
+  end: {
+    name: 'mouseup'
+  }
+};
+var MouseButton;
+
+(function (MouseButton) {
+  MouseButton[MouseButton["RightClick"] = 2] = "RightClick";
+})(MouseButton || (MouseButton = {}));
+
+class MouseSensor extends AbstractPointerSensor {
+  constructor(props) {
+    super(props, events$1, (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getOwnerDocument)(props.event.target));
+  }
+
+}
+MouseSensor.activators = [{
+  eventName: 'onMouseDown',
+  handler: ({
+    nativeEvent: event
+  }, {
+    onActivation
+  }) => {
+    if (event.button === MouseButton.RightClick) {
+      return false;
+    }
+
+    onActivation == null ? void 0 : onActivation({
+      event
+    });
+    return true;
+  }
+}];
+
+const events$2 = {
+  move: {
+    name: 'touchmove'
+  },
+  end: {
+    name: 'touchend'
+  }
+};
+class TouchSensor extends AbstractPointerSensor {
+  constructor(props) {
+    super(props, events$2);
+  }
+
+  static setup() {
+    // Adding a non-capture and non-passive `touchmove` listener in order
+    // to force `event.preventDefault()` calls to work in dynamically added
+    // touchmove event handlers. This is required for iOS Safari.
+    window.addEventListener(events$2.move.name, noop, {
+      capture: false,
+      passive: false
+    });
+    return function teardown() {
+      window.removeEventListener(events$2.move.name, noop);
+    }; // We create a new handler because the teardown function of another sensor
+    // could remove our event listener if we use a referentially equal listener.
+
+    function noop() {}
+  }
+
+}
+TouchSensor.activators = [{
+  eventName: 'onTouchStart',
+  handler: ({
+    nativeEvent: event
+  }, {
+    onActivation
+  }) => {
+    const {
+      touches
+    } = event;
+
+    if (touches.length > 1) {
+      return false;
+    }
+
+    onActivation == null ? void 0 : onActivation({
+      event
+    });
+    return true;
+  }
+}];
+
+function applyModifiers(modifiers, {
+  transform,
+  ...args
+}) {
+  return (modifiers == null ? void 0 : modifiers.length) ? modifiers.reduce((accumulator, modifier) => {
+    return modifier({
+      transform: accumulator,
+      ...args
+    });
+  }, transform) : transform;
+}
+
+const defaultSensors = [{
+  sensor: PointerSensor,
+  options: {}
+}, {
+  sensor: KeyboardSensor,
+  options: {}
+}];
+const defaultData = {
+  current: {}
+};
+const ActiveDraggableContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)({ ...defaultCoordinates,
+  scaleX: 1,
+  scaleY: 1
+});
+const DndContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.memo)(function DndContext({
+  id,
+  autoScroll = true,
+  announcements,
+  children,
+  sensors = defaultSensors,
+  collisionDetection = rectIntersection,
+  measuring,
+  modifiers,
+  screenReaderInstructions: screenReaderInstructions$1 = screenReaderInstructions,
+  ...props
+}) {
+  var _measuring$draggable$, _measuring$draggable, _sensorContext$curren, _dragOverlay$rect, _over$rect;
+
+  const store = (0,react__WEBPACK_IMPORTED_MODULE_0__.useReducer)(reducer, undefined, getInitialState);
+  const [state, dispatch] = store;
+  const [monitorState, setMonitorState] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(() => ({
+    type: null,
+    event: null
+  }));
+  const [isDragging, setIsDragging] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  const {
+    draggable: {
+      active: activeId,
+      nodes: draggableNodes,
+      translate
+    },
+    droppable: {
+      containers: droppableContainers
+    }
+  } = state;
+  const node = activeId ? draggableNodes[activeId] : null;
+  const activeRects = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)({
+    initial: null,
+    translated: null
+  });
+  const active = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    var _node$data;
+
+    return activeId != null ? {
+      id: activeId,
+      // It's possible for the active node to unmount while dragging
+      data: (_node$data = node == null ? void 0 : node.data) != null ? _node$data : defaultData,
+      rect: activeRects
+    } : null;
+  }, [activeId, node]);
+  const activeRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const [activeSensor, setActiveSensor] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const [activatorEvent, setActivatorEvent] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const latestProps = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(props);
+  const draggableDescribedById = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useUniqueId)(`DndDescribedBy`, id);
+  const enabledDroppableContainers = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    return droppableContainers.getEnabled();
+  }, [droppableContainers]);
+  const {
+    layoutRectMap: droppableRects,
+    recomputeLayouts,
+    willRecomputeLayouts
+  } = useDroppableMeasuring(enabledDroppableContainers, {
+    dragging: isDragging,
+    dependencies: [translate.x, translate.y],
+    config: measuring == null ? void 0 : measuring.droppable
+  });
+  const activeNode = useCachedNode(draggableNodes, activeId);
+  const activationCoordinates = activatorEvent ? (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.getEventCoordinates)(activatorEvent) : null;
+  const activeNodeRect = useRect(activeNode, (_measuring$draggable$ = measuring == null ? void 0 : (_measuring$draggable = measuring.draggable) == null ? void 0 : _measuring$draggable.measure) != null ? _measuring$draggable$ : getViewRect);
+  const activeNodeClientRect = useClientRect(activeNode);
+  const initialActiveNodeRectRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const initialActiveNodeRect = initialActiveNodeRectRef.current;
+  const sensorContext = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)({
+    active: null,
+    activeNode,
+    collisionRect: null,
+    droppableRects,
+    draggableNodes,
+    draggingNodeRect: null,
+    droppableContainers,
+    over: null,
+    scrollableAncestors: [],
+    scrollAdjustedTranslate: null,
+    translatedRect: null
+  });
+  const overNode = droppableContainers.getNodeFor((_sensorContext$curren = sensorContext.current.over) == null ? void 0 : _sensorContext$curren.id);
+  const windowRect = useClientRect(activeNode ? activeNode.ownerDocument.defaultView : null);
+  const containerNodeRect = useClientRect(activeNode ? activeNode.parentElement : null);
+  const scrollableAncestors = useScrollableAncestors(activeId ? overNode != null ? overNode : activeNode : null);
+  const scrollableAncestorRects = useClientRects(scrollableAncestors);
+  const dragOverlay = useDragOverlayMeasuring({
+    disabled: activeId == null,
+    forceRecompute: willRecomputeLayouts
+  }); // Use the rect of the drag overlay if it is mounted
+
+  const draggingNodeRect = (_dragOverlay$rect = dragOverlay.rect) != null ? _dragOverlay$rect : activeNodeRect; // The delta between the previous and new position of the draggable node
+  // is only relevant when there is no drag overlay
+
+  const nodeRectDelta = draggingNodeRect === activeNodeRect ? getRectDelta(activeNodeRect, initialActiveNodeRect) : defaultCoordinates;
+  const modifiedTranslate = applyModifiers(modifiers, {
+    transform: {
+      x: translate.x - nodeRectDelta.x,
+      y: translate.y - nodeRectDelta.y,
+      scaleX: 1,
+      scaleY: 1
+    },
+    activatorEvent,
+    active,
+    activeNodeRect: activeNodeClientRect,
+    containerNodeRect,
+    draggingNodeRect,
+    over: sensorContext.current.over,
+    overlayNodeRect: dragOverlay.rect,
+    scrollableAncestors,
+    scrollableAncestorRects,
+    windowRect
+  });
+  const pointerCoordinates = activationCoordinates ? (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.add)(activationCoordinates, translate) : null;
+  const scrollAdjustment = useScrollOffsets(scrollableAncestors);
+  const scrollAdjustedTranslate = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.add)(modifiedTranslate, scrollAdjustment);
+  const translatedRect = draggingNodeRect ? getAdjustedRect(draggingNodeRect, modifiedTranslate) : null;
+  const collisionRect = translatedRect ? getAdjustedRect(translatedRect, scrollAdjustment) : null;
+  const overId = active && collisionRect ? collisionDetection({
+    active,
+    collisionRect,
+    droppableContainers: enabledDroppableContainers
+  }) : null;
+  const [over, setOver] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const transform = adjustScale(modifiedTranslate, (_over$rect = over == null ? void 0 : over.rect) != null ? _over$rect : null, activeNodeRect);
+  const instantiateSensor = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((event, {
+    sensor: Sensor,
+    options
+  }) => {
+    if (!activeRef.current) {
+      return;
+    }
+
+    const activeNode = draggableNodes[activeRef.current];
+
+    if (!activeNode) {
+      return;
+    }
+
+    const sensorInstance = new Sensor({
+      active: activeRef.current,
+      activeNode,
+      event: event.nativeEvent,
+      options,
+      // Sensors need to be instantiated with refs for arguments that change over time
+      // otherwise they are frozen in time with the stale arguments
+      context: sensorContext,
+
+      onStart(initialCoordinates) {
+        const id = activeRef.current;
+
+        if (!id) {
+          return;
+        }
+
+        const node = draggableNodes[id];
+
+        if (!node) {
+          return;
+        }
+
+        const {
+          onDragStart
+        } = latestProps.current;
+        const event = {
+          active: {
+            id,
+            data: node.data,
+            rect: activeRects
+          }
+        };
+        (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.unstable_batchedUpdates)(() => {
+          dispatch({
+            type: Action.DragStart,
+            initialCoordinates,
+            active: id
+          });
+          setMonitorState({
+            type: Action.DragStart,
+            event
+          });
+        });
+        onDragStart == null ? void 0 : onDragStart(event);
+      },
+
+      onMove(coordinates) {
+        dispatch({
+          type: Action.DragMove,
+          coordinates
+        });
+      },
+
+      onEnd: createHandler(Action.DragEnd),
+      onCancel: createHandler(Action.DragCancel)
+    });
+    (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.unstable_batchedUpdates)(() => {
+      setActiveSensor(sensorInstance);
+      setActivatorEvent(event.nativeEvent);
+    });
+
+    function createHandler(type) {
+      return async function handler() {
+        const {
+          active,
+          over,
+          scrollAdjustedTranslate
+        } = sensorContext.current;
+        let event = null;
+
+        if (active && scrollAdjustedTranslate) {
+          const {
+            cancelDrop
+          } = latestProps.current;
+          event = {
+            active: active,
+            delta: scrollAdjustedTranslate,
+            over
+          };
+
+          if (type === Action.DragEnd && typeof cancelDrop === 'function') {
+            const shouldCancel = await Promise.resolve(cancelDrop(event));
+
+            if (shouldCancel) {
+              type = Action.DragCancel;
+            }
+          }
+        }
+
+        activeRef.current = null;
+        (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.unstable_batchedUpdates)(() => {
+          dispatch({
+            type
+          });
+          setOver(null);
+          setIsDragging(false);
+          setActiveSensor(null);
+          setActivatorEvent(null);
+
+          if (event) {
+            setMonitorState({
+              type,
+              event
+            });
+          }
+        });
+
+        if (event) {
+          const {
+            onDragCancel,
+            onDragEnd
+          } = latestProps.current;
+          const handler = type === Action.DragEnd ? onDragEnd : onDragCancel;
+          handler == null ? void 0 : handler(event);
+        }
+      };
+    }
+  }, [dispatch, draggableNodes]);
+  const bindActivatorToSensorInstantiator = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((handler, sensor) => {
+    return (event, active) => {
+      const nativeEvent = event.nativeEvent;
+
+      if ( // No active draggable
+      activeRef.current !== null || // Event has already been captured
+      nativeEvent.dndKit || nativeEvent.defaultPrevented) {
+        return;
+      }
+
+      if (handler(event, sensor.options) === true) {
+        nativeEvent.dndKit = {
+          capturedBy: sensor.sensor
+        };
+        activeRef.current = active;
+        instantiateSensor(event, sensor);
+      }
+    };
+  }, [instantiateSensor]);
+  const activators = useCombineActivators(sensors, bindActivatorToSensorInstantiator);
+  useSensorSetup(sensors);
+  (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useIsomorphicLayoutEffect)(() => {
+    latestProps.current = props;
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  Object.values(props));
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (activeId != null) {
+      setIsDragging(true);
+    }
+  }, [activeId]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!active) {
+      initialActiveNodeRectRef.current = null;
+    }
+
+    if (active && activeNodeRect && !initialActiveNodeRectRef.current) {
+      initialActiveNodeRectRef.current = activeNodeRect;
+    }
+  }, [activeNodeRect, active]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const {
+      onDragMove
+    } = latestProps.current;
+    const {
+      active,
+      over
+    } = sensorContext.current;
+
+    if (!active) {
+      return;
+    }
+
+    const event = {
+      active,
+      delta: {
+        x: scrollAdjustedTranslate.x,
+        y: scrollAdjustedTranslate.y
+      },
+      over
+    };
+    setMonitorState({
+      type: Action.DragMove,
+      event
+    });
+    onDragMove == null ? void 0 : onDragMove(event);
+  }, [scrollAdjustedTranslate.x, scrollAdjustedTranslate.y]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const {
+      active,
+      droppableContainers,
+      scrollAdjustedTranslate
+    } = sensorContext.current;
+
+    if (!active || !activeRef.current || !scrollAdjustedTranslate) {
+      return;
+    }
+
+    const {
+      onDragOver
+    } = latestProps.current;
+    const overContainer = droppableContainers.get(overId);
+    const over = overContainer && overContainer.rect.current ? {
+      id: overContainer.id,
+      rect: overContainer.rect.current,
+      data: overContainer.data,
+      disabled: overContainer.disabled
+    } : null;
+    const event = {
+      active,
+      delta: {
+        x: scrollAdjustedTranslate.x,
+        y: scrollAdjustedTranslate.y
+      },
+      over
+    };
+    (0,react_dom__WEBPACK_IMPORTED_MODULE_1__.unstable_batchedUpdates)(() => {
+      setOver(over);
+      setMonitorState({
+        type: Action.DragOver,
+        event
+      });
+      onDragOver == null ? void 0 : onDragOver(event);
+    });
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  [overId]);
+  (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useIsomorphicLayoutEffect)(() => {
+    sensorContext.current = {
+      active,
+      activeNode,
+      collisionRect,
+      droppableRects,
+      draggableNodes,
+      draggingNodeRect,
+      droppableContainers,
+      over,
+      scrollableAncestors,
+      scrollAdjustedTranslate: scrollAdjustedTranslate,
+      translatedRect
+    };
+    activeRects.current = {
+      initial: draggingNodeRect,
+      translated: translatedRect
+    };
+  }, [active, activeNode, collisionRect, draggableNodes, draggingNodeRect, droppableRects, droppableContainers, over, scrollableAncestors, scrollAdjustedTranslate, translatedRect]);
+  useAutoScroller({ ...getAutoScrollerOptions(),
+    draggingRect: translatedRect,
+    pointerCoordinates,
+    scrollableAncestors,
+    scrollableAncestorRects
+  });
+  const contextValue = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    const memoizedContext = {
+      active,
+      activeNode,
+      activeNodeRect,
+      activeNodeClientRect,
+      activatorEvent,
+      activators,
+      ariaDescribedById: {
+        draggable: draggableDescribedById
+      },
+      containerNodeRect,
+      dispatch,
+      dragOverlay,
+      draggableNodes,
+      droppableContainers,
+      droppableRects,
+      over,
+      recomputeLayouts,
+      scrollableAncestors,
+      scrollableAncestorRects,
+      willRecomputeLayouts,
+      windowRect
+    };
+    return memoizedContext;
+  }, [active, activeNode, activeNodeClientRect, activeNodeRect, activatorEvent, activators, containerNodeRect, dragOverlay, dispatch, draggableNodes, draggableDescribedById, droppableContainers, droppableRects, over, recomputeLayouts, scrollableAncestors, scrollableAncestorRects, willRecomputeLayouts, windowRect]);
+  return react__WEBPACK_IMPORTED_MODULE_0___default().createElement(DndMonitorContext.Provider, {
+    value: monitorState
+  }, react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Context.Provider, {
+    value: contextValue
+  }, react__WEBPACK_IMPORTED_MODULE_0___default().createElement(ActiveDraggableContext.Provider, {
+    value: transform
+  }, children)), react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Accessibility, {
+    announcements: announcements,
+    hiddenTextDescribedById: draggableDescribedById,
+    screenReaderInstructions: screenReaderInstructions$1
+  }));
+
+  function getAutoScrollerOptions() {
+    const activeSensorDisablesAutoscroll = (activeSensor == null ? void 0 : activeSensor.autoScrollEnabled) === false;
+    const autoScrollGloballyDisabled = typeof autoScroll === 'object' ? autoScroll.enabled === false : autoScroll === false;
+    const enabled = !activeSensorDisablesAutoscroll && !autoScrollGloballyDisabled;
+
+    if (typeof autoScroll === 'object') {
+      return { ...autoScroll,
+        enabled
+      };
+    }
+
+    return {
+      enabled
+    };
+  }
+});
+
+const NullContext = /*#__PURE__*/(0,react__WEBPACK_IMPORTED_MODULE_0__.createContext)(null);
+const defaultRole = 'button';
+const ID_PREFIX = 'Droppable';
+function useDraggable({
+  id,
+  data,
+  disabled = false,
+  attributes
+}) {
+  const key = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useUniqueId)(ID_PREFIX);
+  const {
+    active,
+    activeNodeRect,
+    activatorEvent,
+    ariaDescribedById,
+    draggableNodes,
+    droppableRects,
+    activators,
+    over
+  } = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(Context);
+  const {
+    role = defaultRole,
+    roleDescription = 'draggable',
+    tabIndex = 0
+  } = attributes != null ? attributes : {};
+  const isDragging = (active == null ? void 0 : active.id) === id;
+  const transform = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(isDragging ? ActiveDraggableContext : NullContext);
+  const [node, setNodeRef] = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useNodeRef)();
+  const listeners = useSyntheticListeners(activators, id);
+  const dataRef = useData(data);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    draggableNodes[id] = {
+      id,
+      key,
+      node,
+      data: dataRef
+    };
+    return () => {
+      const node = draggableNodes[id];
+
+      if (node && node.key === key) {
+        delete draggableNodes[id];
+      }
+    };
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  [draggableNodes, id]);
+  const memoizedAttributes = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => ({
+    role,
+    tabIndex,
+    'aria-pressed': isDragging && role === defaultRole ? true : undefined,
+    'aria-roledescription': roleDescription,
+    'aria-describedby': ariaDescribedById.draggable
+  }), [role, tabIndex, isDragging, roleDescription, ariaDescribedById.draggable]);
+  return {
+    active,
+    activeNodeRect,
+    activatorEvent,
+    attributes: memoizedAttributes,
+    droppableRects,
+    isDragging,
+    listeners: disabled ? undefined : listeners,
+    node,
+    over,
+    setNodeRef,
+    transform
+  };
+}
+
+function useDndContext() {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(Context);
+}
+
+const ID_PREFIX$1 = 'Droppable';
+function useDroppable({
+  data,
+  disabled = false,
+  id
+}) {
+  const key = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useUniqueId)(ID_PREFIX$1);
+  const {
+    active,
+    dispatch,
+    over
+  } = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(Context);
+  const rect = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const [nodeRef, setNodeRef] = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useNodeRef)();
+  const dataRef = useData(data);
+  (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useIsomorphicLayoutEffect)(() => {
+    dispatch({
+      type: Action.RegisterDroppable,
+      element: {
+        id,
+        key,
+        disabled,
+        node: nodeRef,
+        rect,
+        data: dataRef
+      }
+    });
+    return () => dispatch({
+      type: Action.UnregisterDroppable,
+      key,
+      id
+    });
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  [id]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    dispatch({
+      type: Action.SetDroppableDisabled,
+      id,
+      key,
+      disabled
+    });
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  [disabled]);
+  return {
+    active,
+    rect,
+    isOver: (over == null ? void 0 : over.id) === id,
+    node: nodeRef,
+    over,
+    setNodeRef
+  };
+}
+
+function useDropAnimation({
+  animate,
+  adjustScale,
+  activeId,
+  draggableNodes,
+  duration,
+  easing,
+  dragSourceOpacity,
+  node,
+  transform
+}) {
+  const [dropAnimationComplete, setDropAnimationComplete] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (!animate || !activeId || !easing || !duration) {
+      if (animate) {
+        setDropAnimationComplete(true);
+      }
+
+      return;
+    }
+
+    requestAnimationFrame(() => {
+      var _draggableNodes$activ;
+
+      const finalNode = (_draggableNodes$activ = draggableNodes[activeId]) == null ? void 0 : _draggableNodes$activ.node.current;
+
+      if (transform && node && finalNode && finalNode.parentNode !== null) {
+        const fromNode = getMeasurableNode(node);
+
+        if (fromNode) {
+          const from = fromNode.getBoundingClientRect();
+          const to = getViewRect(finalNode);
+          const delta = {
+            x: from.left - to.left,
+            y: from.top - to.top
+          };
+
+          if (Math.abs(delta.x) || Math.abs(delta.y)) {
+            const scaleDelta = {
+              scaleX: adjustScale ? to.width * transform.scaleX / from.width : 1,
+              scaleY: adjustScale ? to.height * transform.scaleY / from.height : 1
+            };
+            const finalTransform = _dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.CSS.Transform.toString({
+              x: transform.x - delta.x,
+              y: transform.y - delta.y,
+              ...scaleDelta
+            });
+            const originalOpacity = finalNode.style.opacity;
+
+            if (dragSourceOpacity != null) {
+              finalNode.style.opacity = `${dragSourceOpacity}`;
+            }
+
+            const nodeAnimation = node.animate([{
+              transform: _dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.CSS.Transform.toString(transform)
+            }, {
+              transform: finalTransform
+            }], {
+              easing,
+              duration
+            });
+
+            nodeAnimation.onfinish = () => {
+              node.style.display = 'none';
+              setDropAnimationComplete(true);
+
+              if (finalNode && dragSourceOpacity != null) {
+                finalNode.style.opacity = originalOpacity;
+              }
+            };
+
+            return;
+          }
+        }
+      }
+
+      setDropAnimationComplete(true);
+    });
+  }, [animate, activeId, adjustScale, draggableNodes, duration, easing, dragSourceOpacity, node, transform]);
+  (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useIsomorphicLayoutEffect)(() => {
+    if (dropAnimationComplete) {
+      setDropAnimationComplete(false);
+    }
+  }, [dropAnimationComplete]);
+  return dropAnimationComplete;
+}
+
+const defaultTransition = activatorEvent => {
+  const isKeyboardActivator = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.isKeyboardEvent)(activatorEvent);
+  return isKeyboardActivator ? 'transform 250ms ease' : undefined;
+};
+
+const defaultDropAnimation = {
+  duration: 250,
+  easing: 'ease',
+  dragSourceOpacity: 0
+};
+const DragOverlay = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().memo(({
+  adjustScale = false,
+  children,
+  dropAnimation = defaultDropAnimation,
+  style: styleProp,
+  transition = defaultTransition,
+  modifiers,
+  wrapperElement = 'div',
+  className,
+  zIndex = 999
+}) => {
+  var _active$id, _attributesSnapshot$c;
+
+  const {
+    active,
+    activeNodeRect,
+    activeNodeClientRect,
+    containerNodeRect,
+    draggableNodes,
+    activatorEvent,
+    over,
+    dragOverlay,
+    scrollableAncestors,
+    scrollableAncestorRects,
+    windowRect
+  } = useDndContext();
+  const transform = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(ActiveDraggableContext);
+  const modifiedTransform = applyModifiers(modifiers, {
+    activatorEvent,
+    active,
+    activeNodeRect: activeNodeClientRect,
+    containerNodeRect,
+    draggingNodeRect: dragOverlay.rect,
+    over,
+    overlayNodeRect: dragOverlay.rect,
+    scrollableAncestors,
+    scrollableAncestorRects,
+    transform,
+    windowRect
+  });
+  const isDragging = active !== null;
+  const finalTransform = adjustScale ? modifiedTransform : { ...modifiedTransform,
+    scaleX: 1,
+    scaleY: 1
+  };
+  const initialNodeRect = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useLazyMemo)(previousValue => {
+    if (isDragging) {
+      return previousValue != null ? previousValue : activeNodeRect;
+    }
+
+    return null;
+  }, [isDragging, activeNodeRect]);
+  const style = initialNodeRect ? {
+    position: 'fixed',
+    width: initialNodeRect.width,
+    height: initialNodeRect.height,
+    top: initialNodeRect.top,
+    left: initialNodeRect.left,
+    zIndex,
+    transform: _dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.CSS.Transform.toString(finalTransform),
+    touchAction: 'none',
+    transformOrigin: adjustScale && activatorEvent ? getRelativeTransformOrigin(activatorEvent, initialNodeRect) : undefined,
+    transition: typeof transition === 'function' ? transition(activatorEvent) : transition,
+    ...styleProp
+  } : undefined;
+  const attributes = isDragging ? {
+    style,
+    children,
+    className,
+    transform: finalTransform
+  } : undefined;
+  const attributesSnapshot = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(attributes);
+  const derivedAttributes = attributes != null ? attributes : attributesSnapshot.current;
+  const {
+    children: finalChildren,
+    transform: _,
+    ...otherAttributes
+  } = derivedAttributes != null ? derivedAttributes : {};
+  const prevActiveId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)((_active$id = active == null ? void 0 : active.id) != null ? _active$id : null);
+  const dropAnimationComplete = useDropAnimation({
+    animate: Boolean(dropAnimation && prevActiveId.current && !active),
+    adjustScale,
+    activeId: prevActiveId.current,
+    draggableNodes,
+    duration: dropAnimation == null ? void 0 : dropAnimation.duration,
+    easing: dropAnimation == null ? void 0 : dropAnimation.easing,
+    dragSourceOpacity: dropAnimation == null ? void 0 : dropAnimation.dragSourceOpacity,
+    node: dragOverlay.nodeRef.current,
+    transform: (_attributesSnapshot$c = attributesSnapshot.current) == null ? void 0 : _attributesSnapshot$c.transform
+  });
+  const shouldRender = Boolean(finalChildren && (children || dropAnimation && !dropAnimationComplete));
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if ((active == null ? void 0 : active.id) !== prevActiveId.current) {
+      var _active$id2;
+
+      prevActiveId.current = (_active$id2 = active == null ? void 0 : active.id) != null ? _active$id2 : null;
+    }
+
+    if (active && attributesSnapshot.current !== attributes) {
+      attributesSnapshot.current = attributes;
+    }
+  }, [active, attributes]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (dropAnimationComplete) {
+      attributesSnapshot.current = undefined;
+    }
+  }, [dropAnimationComplete]);
+
+  if (!shouldRender) {
+    return null;
+  }
+
+  return react__WEBPACK_IMPORTED_MODULE_0___default().createElement(wrapperElement, { ...otherAttributes,
+    ref: dragOverlay.setRef
+  }, finalChildren);
+});
+
+
+//# sourceMappingURL=core.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@dnd-kit/sortable/dist/sortable.esm.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/@dnd-kit/sortable/dist/sortable.esm.js ***!
+  \*************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "SortableContext": function() { return /* binding */ SortableContext; },
+/* harmony export */   "arrayMove": function() { return /* binding */ arrayMove; },
+/* harmony export */   "arraySwap": function() { return /* binding */ arraySwap; },
+/* harmony export */   "defaultAnimateLayoutChanges": function() { return /* binding */ defaultAnimateLayoutChanges; },
+/* harmony export */   "defaultNewIndexGetter": function() { return /* binding */ defaultNewIndexGetter; },
+/* harmony export */   "horizontalListSortingStrategy": function() { return /* binding */ horizontalListSortingStrategy; },
+/* harmony export */   "rectSortingStrategy": function() { return /* binding */ rectSortingStrategy; },
+/* harmony export */   "rectSwappingStrategy": function() { return /* binding */ rectSwappingStrategy; },
+/* harmony export */   "sortableKeyboardCoordinates": function() { return /* binding */ sortableKeyboardCoordinates; },
+/* harmony export */   "useSortable": function() { return /* binding */ useSortable; },
+/* harmony export */   "verticalListSortingStrategy": function() { return /* binding */ verticalListSortingStrategy; }
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @dnd-kit/core */ "./node_modules/@dnd-kit/core/dist/core.esm.js");
+/* harmony import */ var _dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @dnd-kit/utilities */ "./node_modules/@dnd-kit/utilities/dist/utilities.esm.js");
+
+
+
+
+/**
+ * Move an array item to a different position. Returns a new array with the item moved to the new position.
+ */
+function arrayMove(array, from, to) {
+  const newArray = array.slice();
+  newArray.splice(to < 0 ? newArray.length + to : to, 0, newArray.splice(from, 1)[0]);
+  return newArray;
+}
+
+/**
+ * Swap an array item to a different position. Returns a new array with the item swapped to the new position.
+ */
+function arraySwap(array, from, to) {
+  const newArray = array.slice();
+  newArray[from] = array[to];
+  newArray[to] = array[from];
+  return newArray;
+}
+
+function getSortedRects(items, layoutRects) {
+  return items.reduce((accumulator, id, index) => {
+    const layoutRect = layoutRects.get(id);
+
+    if (layoutRect) {
+      accumulator[index] = layoutRect;
+    }
+
+    return accumulator;
+  }, Array(items.length));
+}
+
+function isValidIndex(index) {
+  return index !== null && index >= 0;
+}
+
+// To-do: We should be calculating scale transformation
+const defaultScale = {
+  scaleX: 1,
+  scaleY: 1
+};
+const horizontalListSortingStrategy = ({
+  layoutRects,
+  activeNodeRect: fallbackActiveRect,
+  activeIndex,
+  overIndex,
+  index
+}) => {
+  var _layoutRects$activeIn;
+
+  const activeNodeRect = (_layoutRects$activeIn = layoutRects[activeIndex]) != null ? _layoutRects$activeIn : fallbackActiveRect;
+
+  if (!activeNodeRect) {
+    return null;
+  }
+
+  const itemGap = getItemGap(layoutRects, index, activeIndex);
+
+  if (index === activeIndex) {
+    const newIndexRect = layoutRects[overIndex];
+
+    if (!newIndexRect) {
+      return null;
+    }
+
+    return {
+      x: activeIndex < overIndex ? newIndexRect.offsetLeft + newIndexRect.width - (activeNodeRect.offsetLeft + activeNodeRect.width) : newIndexRect.offsetLeft - activeNodeRect.offsetLeft,
+      y: 0,
+      ...defaultScale
+    };
+  }
+
+  if (index > activeIndex && index <= overIndex) {
+    return {
+      x: -activeNodeRect.width - itemGap,
+      y: 0,
+      ...defaultScale
+    };
+  }
+
+  if (index < activeIndex && index >= overIndex) {
+    return {
+      x: activeNodeRect.width + itemGap,
+      y: 0,
+      ...defaultScale
+    };
+  }
+
+  return {
+    x: 0,
+    y: 0,
+    ...defaultScale
+  };
+};
+
+function getItemGap(layoutRects, index, activeIndex) {
+  const currentRect = layoutRects[index];
+  const previousRect = layoutRects[index - 1];
+  const nextRect = layoutRects[index + 1];
+
+  if (!currentRect || !previousRect && !nextRect) {
+    return 0;
+  }
+
+  if (activeIndex < index) {
+    return previousRect ? currentRect.offsetLeft - (previousRect.offsetLeft + previousRect.width) : nextRect.offsetLeft - (currentRect.offsetLeft + currentRect.width);
+  }
+
+  return nextRect ? nextRect.offsetLeft - (currentRect.offsetLeft + currentRect.width) : currentRect.offsetLeft - (previousRect.offsetLeft + previousRect.width);
+}
+
+const rectSortingStrategy = ({
+  layoutRects,
+  activeIndex,
+  overIndex,
+  index
+}) => {
+  const newRects = arrayMove(layoutRects, overIndex, activeIndex);
+  const oldRect = layoutRects[index];
+  const newRect = newRects[index];
+
+  if (!newRect || !oldRect) {
+    return null;
+  }
+
+  return {
+    x: newRect.offsetLeft - oldRect.offsetLeft,
+    y: newRect.offsetTop - oldRect.offsetTop,
+    scaleX: newRect.width / oldRect.width,
+    scaleY: newRect.height / oldRect.height
+  };
+};
+
+const rectSwappingStrategy = ({
+  activeIndex,
+  index,
+  layoutRects,
+  overIndex
+}) => {
+  let oldRect;
+  let newRect;
+
+  if (index === activeIndex) {
+    oldRect = layoutRects[index];
+    newRect = layoutRects[overIndex];
+  }
+
+  if (index === overIndex) {
+    oldRect = layoutRects[index];
+    newRect = layoutRects[activeIndex];
+  }
+
+  if (!newRect || !oldRect) {
+    return null;
+  }
+
+  return {
+    x: newRect.offsetLeft - oldRect.offsetLeft,
+    y: newRect.offsetTop - oldRect.offsetTop,
+    scaleX: newRect.width / oldRect.width,
+    scaleY: newRect.height / oldRect.height
+  };
+};
+
+// To-do: We should be calculating scale transformation
+const defaultScale$1 = {
+  scaleX: 1,
+  scaleY: 1
+};
+const verticalListSortingStrategy = ({
+  activeIndex,
+  activeNodeRect: fallbackActiveRect,
+  index,
+  layoutRects,
+  overIndex
+}) => {
+  var _layoutRects$activeIn;
+
+  const activeNodeRect = (_layoutRects$activeIn = layoutRects[activeIndex]) != null ? _layoutRects$activeIn : fallbackActiveRect;
+
+  if (!activeNodeRect) {
+    return null;
+  }
+
+  if (index === activeIndex) {
+    const overIndexRect = layoutRects[overIndex];
+
+    if (!overIndexRect) {
+      return null;
+    }
+
+    return {
+      x: 0,
+      y: activeIndex < overIndex ? overIndexRect.offsetTop + overIndexRect.height - (activeNodeRect.offsetTop + activeNodeRect.height) : overIndexRect.offsetTop - activeNodeRect.offsetTop,
+      ...defaultScale$1
+    };
+  }
+
+  const itemGap = getItemGap$1(layoutRects, index, activeIndex);
+
+  if (index > activeIndex && index <= overIndex) {
+    return {
+      x: 0,
+      y: -activeNodeRect.height - itemGap,
+      ...defaultScale$1
+    };
+  }
+
+  if (index < activeIndex && index >= overIndex) {
+    return {
+      x: 0,
+      y: activeNodeRect.height + itemGap,
+      ...defaultScale$1
+    };
+  }
+
+  return {
+    x: 0,
+    y: 0,
+    ...defaultScale$1
+  };
+};
+
+function getItemGap$1(layoutRects, index, activeIndex) {
+  const currentRect = layoutRects[index];
+  const previousRect = layoutRects[index - 1];
+  const nextRect = layoutRects[index + 1];
+
+  if (!currentRect) {
+    return 0;
+  }
+
+  if (activeIndex < index) {
+    return previousRect ? currentRect.offsetTop - (previousRect.offsetTop + previousRect.height) : nextRect ? nextRect.offsetTop - (currentRect.offsetTop + currentRect.height) : 0;
+  }
+
+  return nextRect ? nextRect.offsetTop - (currentRect.offsetTop + currentRect.height) : previousRect ? currentRect.offsetTop - (previousRect.offsetTop + previousRect.height) : 0;
+}
+
+const ID_PREFIX = 'Sortable';
+const Context = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createContext({
+  activeIndex: -1,
+  containerId: ID_PREFIX,
+  disableTransforms: false,
+  items: [],
+  overIndex: -1,
+  useDragOverlay: false,
+  sortedRects: [],
+  strategy: rectSortingStrategy,
+  wasDragging: {
+    current: false
+  }
+});
+function SortableContext({
+  children,
+  id,
+  items: userDefinedItems,
+  strategy = rectSortingStrategy
+}) {
+  const {
+    active,
+    dragOverlay,
+    droppableRects,
+    over,
+    recomputeLayouts,
+    willRecomputeLayouts
+  } = (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.useDndContext)();
+  const containerId = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useUniqueId)(ID_PREFIX, id);
+  const useDragOverlay = Boolean(dragOverlay.rect !== null);
+  const items = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => userDefinedItems.map(item => typeof item === 'string' ? item : item.id), [userDefinedItems]);
+  const isDragging = active != null;
+  const wasDragging = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(false);
+  const activeIndex = active ? items.indexOf(active.id) : -1;
+  const isSorting = activeIndex !== -1;
+  const overIndex = over ? items.indexOf(over.id) : -1;
+  const previousItemsRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(items);
+  const sortedRects = getSortedRects(items, droppableRects);
+  const itemsHaveChanged = !isEqual(items, previousItemsRef.current);
+  const disableTransforms = overIndex !== -1 && activeIndex === -1 || itemsHaveChanged;
+  (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useIsomorphicLayoutEffect)(() => {
+    if (itemsHaveChanged && isSorting && !willRecomputeLayouts) {
+      // To-do: Add partial recompution of only subset of rects
+      recomputeLayouts();
+    }
+  }, [itemsHaveChanged, isSorting, recomputeLayouts, willRecomputeLayouts]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    previousItemsRef.current = items;
+  }, [items]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    const timeoutId = setTimeout(() => {
+      wasDragging.current = isDragging;
+    }, 100);
+    return () => clearTimeout(timeoutId);
+  }, [isDragging]);
+  const contextValue = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => ({
+    activeIndex,
+    containerId,
+    disableTransforms,
+    items,
+    overIndex,
+    useDragOverlay,
+    sortedRects,
+    strategy,
+    wasDragging
+  }), [activeIndex, containerId, disableTransforms, items, overIndex, sortedRects, useDragOverlay, strategy, wasDragging]);
+  return react__WEBPACK_IMPORTED_MODULE_0___default().createElement(Context.Provider, {
+    value: contextValue
+  }, children);
+}
+
+function isEqual(arr1, arr2) {
+  return arr1.join() === arr2.join();
+}
+
+const defaultNewIndexGetter = ({
+  id,
+  items,
+  activeIndex,
+  overIndex
+}) => arrayMove(items, activeIndex, overIndex).indexOf(id);
+const defaultAnimateLayoutChanges = ({
+  containerId,
+  isSorting,
+  wasDragging,
+  index,
+  items,
+  newIndex,
+  previousItems,
+  previousContainerId,
+  transition
+}) => {
+  if (!transition || !wasDragging) {
+    return false;
+  }
+
+  if (previousItems !== items && index === newIndex) {
+    return false;
+  }
+
+  if (isSorting) {
+    return true;
+  }
+
+  return newIndex !== index && containerId === previousContainerId;
+};
+const defaultTransition = {
+  duration: 200,
+  easing: 'ease'
+};
+const transitionProperty = 'transform';
+const disabledTransition = /*#__PURE__*/_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.CSS.Transition.toString({
+  property: transitionProperty,
+  duration: 0,
+  easing: 'linear'
+});
+const defaultAttributes = {
+  roleDescription: 'sortable'
+};
+
+/*
+ * When the index of an item changes while sorting,
+ * we need to temporarily disable the transforms
+ */
+
+function useDerivedTransform({
+  disabled,
+  index,
+  node,
+  rect
+}) {
+  const [derivedTransform, setDerivedtransform] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null);
+  const previousIndex = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(index);
+  (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useIsomorphicLayoutEffect)(() => {
+    if (!disabled && index !== previousIndex.current && node.current) {
+      const initial = rect.current;
+
+      if (initial) {
+        const current = (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.getBoundingClientRect)(node.current);
+        const delta = {
+          x: initial.offsetLeft - current.offsetLeft,
+          y: initial.offsetTop - current.offsetTop,
+          scaleX: initial.width / current.width,
+          scaleY: initial.height / current.height
+        };
+
+        if (delta.x || delta.y) {
+          setDerivedtransform(delta);
+        }
+      }
+    }
+
+    if (index !== previousIndex.current) {
+      previousIndex.current = index;
+    }
+  }, [disabled, index, node, rect]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (derivedTransform) {
+      requestAnimationFrame(() => {
+        setDerivedtransform(null);
+      });
+    }
+  }, [derivedTransform]);
+  return derivedTransform;
+}
+
+function useSortable({
+  animateLayoutChanges = defaultAnimateLayoutChanges,
+  attributes: userDefinedAttributes,
+  disabled,
+  data: customData,
+  getNewIndex = defaultNewIndexGetter,
+  id,
+  strategy: localStrategy,
+  transition = defaultTransition
+}) {
+  const {
+    items,
+    containerId,
+    activeIndex,
+    disableTransforms,
+    sortedRects,
+    overIndex,
+    useDragOverlay,
+    strategy: globalStrategy,
+    wasDragging
+  } = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(Context);
+  const index = items.indexOf(id);
+  const data = (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => ({
+    sortable: {
+      containerId,
+      index,
+      items
+    },
+    ...customData
+  }), [containerId, customData, index, items]);
+  const {
+    rect,
+    node,
+    setNodeRef: setDroppableNodeRef
+  } = (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.useDroppable)({
+    id,
+    data
+  });
+  const {
+    active,
+    activeNodeRect,
+    activatorEvent,
+    attributes,
+    setNodeRef: setDraggableNodeRef,
+    listeners,
+    isDragging,
+    over,
+    transform
+  } = (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.useDraggable)({
+    id,
+    data,
+    attributes: { ...defaultAttributes,
+      ...userDefinedAttributes
+    },
+    disabled
+  });
+  const setNodeRef = (0,_dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.useCombinedRefs)(setDroppableNodeRef, setDraggableNodeRef);
+  const isSorting = Boolean(active);
+  const displaceItem = isSorting && wasDragging.current && !disableTransforms && isValidIndex(activeIndex) && isValidIndex(overIndex);
+  const shouldDisplaceDragSource = !useDragOverlay && isDragging;
+  const dragSourceDisplacement = shouldDisplaceDragSource && displaceItem ? transform : null;
+  const strategy = localStrategy != null ? localStrategy : globalStrategy;
+  const finalTransform = displaceItem ? dragSourceDisplacement != null ? dragSourceDisplacement : strategy({
+    layoutRects: sortedRects,
+    activeNodeRect,
+    activeIndex,
+    overIndex,
+    index
+  }) : null;
+  const newIndex = isValidIndex(activeIndex) && isValidIndex(overIndex) ? getNewIndex({
+    id,
+    items,
+    activeIndex,
+    overIndex
+  }) : index;
+  const prevItems = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(items);
+  const itemsHaveChanged = items !== prevItems.current;
+  const prevNewIndex = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(newIndex);
+  const previousContainerId = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(containerId);
+  const shouldAnimateLayoutChanges = animateLayoutChanges({
+    active,
+    containerId,
+    isDragging,
+    isSorting,
+    id,
+    index,
+    items,
+    newIndex: prevNewIndex.current,
+    previousItems: prevItems.current,
+    previousContainerId: previousContainerId.current,
+    transition,
+    wasDragging: wasDragging.current
+  });
+  const derivedTransform = useDerivedTransform({
+    disabled: !shouldAnimateLayoutChanges,
+    index,
+    node,
+    rect
+  });
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (isSorting && prevNewIndex.current !== newIndex) {
+      prevNewIndex.current = newIndex;
+    }
+
+    if (containerId !== previousContainerId.current) {
+      previousContainerId.current = containerId;
+    }
+
+    if (items !== prevItems.current) {
+      prevItems.current = items;
+    }
+  }, [isSorting, newIndex, containerId, items]);
+  return {
+    active,
+    attributes,
+    activatorEvent,
+    rect,
+    index,
+    isSorting,
+    isDragging,
+    listeners,
+    node,
+    overIndex,
+    over,
+    setNodeRef,
+    setDroppableNodeRef,
+    setDraggableNodeRef,
+    transform: derivedTransform != null ? derivedTransform : finalTransform,
+    transition: getTransition()
+  };
+
+  function getTransition() {
+    if ( // Temporarily disable transitions for a single frame to set up derived transforms
+    derivedTransform || // Or to prevent items jumping to back to their "new" position when items change
+    itemsHaveChanged && prevNewIndex.current === index) {
+      return disabledTransition;
+    }
+
+    if (shouldDisplaceDragSource || !transition) {
+      return undefined;
+    }
+
+    if (isSorting || shouldAnimateLayoutChanges) {
+      return _dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_2__.CSS.Transition.toString({ ...transition,
+        property: transitionProperty
+      });
+    }
+
+    return undefined;
+  }
+}
+
+const directions = [_dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.KeyboardCode.Down, _dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.KeyboardCode.Right, _dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.KeyboardCode.Up, _dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.KeyboardCode.Left];
+const sortableKeyboardCoordinates = (event, {
+  context: {
+    active,
+    droppableContainers,
+    translatedRect,
+    scrollableAncestors
+  }
+}) => {
+  if (directions.includes(event.code)) {
+    event.preventDefault();
+
+    if (!active || !translatedRect) {
+      return;
+    }
+
+    const filteredContainers = [];
+    droppableContainers.getEnabled().forEach(entry => {
+      if (!entry || (entry == null ? void 0 : entry.disabled)) {
+        return;
+      }
+
+      const node = entry == null ? void 0 : entry.node.current;
+
+      if (!node) {
+        return;
+      }
+
+      const rect = (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.getViewRect)(node);
+      const container = { ...entry,
+        rect: {
+          current: rect
+        }
+      };
+
+      switch (event.code) {
+        case _dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.KeyboardCode.Down:
+          if (translatedRect.top + translatedRect.height <= rect.top) {
+            filteredContainers.push(container);
+          }
+
+          break;
+
+        case _dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.KeyboardCode.Up:
+          if (translatedRect.top >= rect.top + rect.height) {
+            filteredContainers.push(container);
+          }
+
+          break;
+
+        case _dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.KeyboardCode.Left:
+          if (translatedRect.left >= rect.left + rect.width) {
+            filteredContainers.push(container);
+          }
+
+          break;
+
+        case _dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.KeyboardCode.Right:
+          if (translatedRect.left + translatedRect.width <= rect.left) {
+            filteredContainers.push(container);
+          }
+
+          break;
+      }
+    });
+    const closestId = (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.closestCorners)({
+      active,
+      collisionRect: translatedRect,
+      droppableContainers: filteredContainers
+    });
+
+    if (closestId) {
+      var _droppableContainers$;
+
+      const newNode = (_droppableContainers$ = droppableContainers.get(closestId)) == null ? void 0 : _droppableContainers$.node.current;
+
+      if (newNode) {
+        const newScrollAncestors = (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.getScrollableAncestors)(newNode);
+        const hasDifferentScrollAncestors = newScrollAncestors.some((element, index) => scrollableAncestors[index] !== element);
+        const newRect = (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_1__.getViewRect)(newNode);
+        const offset = hasDifferentScrollAncestors ? {
+          x: 0,
+          y: 0
+        } : {
+          x: translatedRect.width - newRect.width,
+          y: translatedRect.height - newRect.height
+        };
+        const newCoordinates = {
+          x: newRect.left - offset.x,
+          y: newRect.top - offset.y
+        };
+        return newCoordinates;
+      }
+    }
+  }
+
+  return undefined;
+};
+
+
+//# sourceMappingURL=sortable.esm.js.map
+
+
+/***/ }),
+
+/***/ "./node_modules/@dnd-kit/utilities/dist/utilities.esm.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/@dnd-kit/utilities/dist/utilities.esm.js ***!
+  \***************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "CSS": function() { return /* binding */ CSS; },
+/* harmony export */   "add": function() { return /* binding */ add; },
+/* harmony export */   "canUseDOM": function() { return /* binding */ canUseDOM; },
+/* harmony export */   "getEventCoordinates": function() { return /* binding */ getEventCoordinates; },
+/* harmony export */   "getOwnerDocument": function() { return /* binding */ getOwnerDocument; },
+/* harmony export */   "getWindow": function() { return /* binding */ getWindow; },
+/* harmony export */   "hasViewportRelativeCoordinates": function() { return /* binding */ hasViewportRelativeCoordinates; },
+/* harmony export */   "isDocument": function() { return /* binding */ isDocument; },
+/* harmony export */   "isHTMLElement": function() { return /* binding */ isHTMLElement; },
+/* harmony export */   "isKeyboardEvent": function() { return /* binding */ isKeyboardEvent; },
+/* harmony export */   "isNode": function() { return /* binding */ isNode; },
+/* harmony export */   "isSVGElement": function() { return /* binding */ isSVGElement; },
+/* harmony export */   "isTouchEvent": function() { return /* binding */ isTouchEvent; },
+/* harmony export */   "isWindow": function() { return /* binding */ isWindow; },
+/* harmony export */   "subtract": function() { return /* binding */ subtract; },
+/* harmony export */   "useCombinedRefs": function() { return /* binding */ useCombinedRefs; },
+/* harmony export */   "useInterval": function() { return /* binding */ useInterval; },
+/* harmony export */   "useIsomorphicLayoutEffect": function() { return /* binding */ useIsomorphicLayoutEffect; },
+/* harmony export */   "useLazyMemo": function() { return /* binding */ useLazyMemo; },
+/* harmony export */   "useNodeRef": function() { return /* binding */ useNodeRef; },
+/* harmony export */   "useUniqueId": function() { return /* binding */ useUniqueId; }
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function useCombinedRefs(...refs) {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => node => {
+    refs.forEach(ref => ref(node));
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  refs);
+}
+
+// https://github.com/facebook/react/blob/master/packages/shared/ExecutionEnvironment.js
+const canUseDOM = typeof window !== 'undefined' && typeof window.document !== 'undefined' && typeof window.document.createElement !== 'undefined';
+
+function isWindow(element) {
+  const elementString = Object.prototype.toString.call(element);
+  return elementString === '[object Window]' || // In Electron context the Window object serializes to [object global]
+  elementString === '[object global]';
+}
+
+function isNode(node) {
+  return 'nodeType' in node;
+}
+
+function getWindow(target) {
+  var _target$ownerDocument, _target$ownerDocument2;
+
+  if (!target) {
+    return window;
+  }
+
+  if (isWindow(target)) {
+    return target;
+  }
+
+  if (!isNode(target)) {
+    return window;
+  }
+
+  return (_target$ownerDocument = (_target$ownerDocument2 = target.ownerDocument) == null ? void 0 : _target$ownerDocument2.defaultView) != null ? _target$ownerDocument : window;
+}
+
+function isDocument(node) {
+  const {
+    Document
+  } = getWindow(node);
+  return node instanceof Document;
+}
+
+function isHTMLElement(node) {
+  if (isWindow(node)) {
+    return false;
+  }
+
+  return node instanceof getWindow(node).HTMLElement;
+}
+
+function isSVGElement(node) {
+  return node instanceof getWindow(node).SVGElement;
+}
+
+function getOwnerDocument(target) {
+  if (!target) {
+    return document;
+  }
+
+  if (isWindow(target)) {
+    return target.document;
+  }
+
+  if (!isNode(target)) {
+    return document;
+  }
+
+  if (isDocument(target)) {
+    return target;
+  }
+
+  if (isHTMLElement(target)) {
+    return target.ownerDocument;
+  }
+
+  return document;
+}
+
+/**
+ * A hook that resolves to useEffect on the server and useLayoutEffect on the client
+ * @param callback {function} Callback function that is invoked when the dependencies of the hook change
+ */
+
+const useIsomorphicLayoutEffect = canUseDOM ? react__WEBPACK_IMPORTED_MODULE_0__.useLayoutEffect : react__WEBPACK_IMPORTED_MODULE_0__.useEffect;
+
+function useInterval() {
+  const intervalRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const set = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)((listener, duration) => {
+    intervalRef.current = setInterval(listener, duration);
+  }, []);
+  const clear = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(() => {
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, []);
+  return [set, clear];
+}
+
+function useLazyMemo(callback, dependencies) {
+  const valueRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)();
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    const newValue = callback(valueRef.current);
+    valueRef.current = newValue;
+    return newValue;
+  }, // eslint-disable-next-line react-hooks/exhaustive-deps
+  [...dependencies]);
+}
+
+function useNodeRef() {
+  const node = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  const setNodeRef = (0,react__WEBPACK_IMPORTED_MODULE_0__.useCallback)(element => {
+    node.current = element;
+  }, []);
+  return [node, setNodeRef];
+}
+
+let ids = {};
+function useUniqueId(prefix, value) {
+  return (0,react__WEBPACK_IMPORTED_MODULE_0__.useMemo)(() => {
+    if (value) {
+      return value;
+    }
+
+    const id = ids[prefix] == null ? 0 : ids[prefix] + 1;
+    ids[prefix] = id;
+    return `${prefix}-${id}`;
+  }, [prefix, value]);
+}
+
+function createAdjustmentFn(modifier) {
+  return (object, ...adjustments) => {
+    return adjustments.reduce((accumulator, adjustment) => {
+      const entries = Object.entries(adjustment);
+
+      for (const [key, valueAdjustment] of entries) {
+        const value = accumulator[key];
+
+        if (value != null) {
+          accumulator[key] = value + modifier * valueAdjustment;
+        }
+      }
+
+      return accumulator;
+    }, { ...object
+    });
+  };
+}
+
+const add = /*#__PURE__*/createAdjustmentFn(1);
+const subtract = /*#__PURE__*/createAdjustmentFn(-1);
+
+function hasViewportRelativeCoordinates(event) {
+  return 'clientX' in event && 'clientY' in event;
+}
+
+function isKeyboardEvent(event) {
+  if (!event) {
+    return false;
+  }
+
+  const {
+    KeyboardEvent
+  } = getWindow(event.target);
+  return KeyboardEvent && event instanceof KeyboardEvent;
+}
+
+function isTouchEvent(event) {
+  if (!event) {
+    return false;
+  }
+
+  const {
+    TouchEvent
+  } = getWindow(event.target);
+  return TouchEvent && event instanceof TouchEvent;
+}
+
+/**
+ * Returns the normalized x and y coordinates for mouse and touch events.
+ */
+
+function getEventCoordinates(event) {
+  if (isTouchEvent(event)) {
+    if (event.touches && event.touches.length) {
+      const {
+        clientX: x,
+        clientY: y
+      } = event.touches[0];
+      return {
+        x,
+        y
+      };
+    } else if (event.changedTouches && event.changedTouches.length) {
+      const {
+        clientX: x,
+        clientY: y
+      } = event.changedTouches[0];
+      return {
+        x,
+        y
+      };
+    }
+  }
+
+  if (hasViewportRelativeCoordinates(event)) {
+    return {
+      x: event.clientX,
+      y: event.clientY
+    };
+  }
+
+  return {
+    x: 0,
+    y: 0
+  };
+}
+
+const CSS = /*#__PURE__*/Object.freeze({
+  Translate: {
+    toString(transform) {
+      if (!transform) {
+        return;
+      }
+
+      const {
+        x,
+        y
+      } = transform;
+      return `translate3d(${x ? Math.round(x) : 0}px, ${y ? Math.round(y) : 0}px, 0)`;
+    }
+
+  },
+  Scale: {
+    toString(transform) {
+      if (!transform) {
+        return;
+      }
+
+      const {
+        scaleX,
+        scaleY
+      } = transform;
+      return `scaleX(${scaleX}) scaleY(${scaleY})`;
+    }
+
+  },
+  Transform: {
+    toString(transform) {
+      if (!transform) {
+        return;
+      }
+
+      return [CSS.Translate.toString(transform), CSS.Scale.toString(transform)].join(' ');
+    }
+
+  },
+  Transition: {
+    toString({
+      property,
+      duration,
+      easing
+    }) {
+      return `${property} ${duration}ms ${easing}`;
+    }
+
+  }
+});
+
+
+//# sourceMappingURL=utilities.esm.js.map
+
+
+/***/ }),
+
+/***/ "./isceb-blocks/isceb-news-block/src/components/bannerItem.js":
+/*!********************************************************************!*\
+  !*** ./isceb-blocks/isceb-news-block/src/components/bannerItem.js ***!
+  \********************************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BannerItem": function() { return /* binding */ BannerItem; }
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
+
+
+
+const BannerItem = (0,react__WEBPACK_IMPORTED_MODULE_2__.forwardRef)((_ref, ref) => {
+  var _props$post, _props$post2, _props$post3, _props$post4, _props$post4$tagText, _props$post5, _props$post6, _props$post7;
+
+  let {
+    id,
+    ...props
+  } = _ref;
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, props, {
+    ref: ref,
+    className: "itemBanner",
+    id: (_props$post = props.post) === null || _props$post === void 0 ? void 0 : _props$post.id,
+    key: (_props$post2 = props.post) === null || _props$post2 === void 0 ? void 0 : _props$post2.id
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "bannerCardImage",
+    style: {
+      backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)) " + (((_props$post3 = props.post) === null || _props$post3 === void 0 ? void 0 : _props$post3.imgurl) != undefined ? ",url(" + props.post.imgurl + ")" : '')
+    }
+  }), ((_props$post4 = props.post) === null || _props$post4 === void 0 ? void 0 : (_props$post4$tagText = _props$post4.tagText) === null || _props$post4$tagText === void 0 ? void 0 : _props$post4$tagText.length) > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "bannerCardTag"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("p", {
+    className: "bannerTagText"
+  }, (_props$post5 = props.post) === null || _props$post5 === void 0 ? void 0 : _props$post5.tagText[0])), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "bannerCardContent"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("h3", {
+    className: "bannerCardTitle"
+  }, (_props$post6 = props.post) === null || _props$post6 === void 0 ? void 0 : _props$post6.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("p", {
+    className: "bannerCardDescription"
+  }, (_props$post7 = props.post) === null || _props$post7 === void 0 ? void 0 : _props$post7.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("button", {
+    className: "bannerCardButton"
+  }, "More Info")));
+});
+
+/***/ }),
+
+/***/ "./isceb-blocks/isceb-news-block/src/edit.js":
+/*!***************************************************!*\
+  !*** ./isceb-blocks/isceb-news-block/src/edit.js ***!
+  \***************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Item": function() { return /* binding */ Item; },
+/* harmony export */   "default": function() { return /* binding */ Edit; }
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/helpers/extends */ "./node_modules/@babel/runtime/helpers/esm/extends.js");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/components */ "@wordpress/components");
+/* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
+/* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @dnd-kit/core */ "./node_modules/@dnd-kit/core/dist/core.esm.js");
+/* harmony import */ var _dnd_kit_sortable__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @dnd-kit/sortable */ "./node_modules/@dnd-kit/sortable/dist/sortable.esm.js");
+/* harmony import */ var _dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @dnd-kit/utilities */ "./node_modules/@dnd-kit/utilities/dist/utilities.esm.js");
+/* harmony import */ var _components_bannerItem__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/bannerItem */ "./isceb-blocks/isceb-news-block/src/components/bannerItem.js");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./editor.scss */ "./isceb-blocks/isceb-news-block/src/editor.scss");
+
+
+
+/**
+ * Retrieves the translation of text.
+ *
+ * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
+ */
+
+/**
+ * React hook that is used to mark the block wrapper element.
+ * It provides all the necessary props like the class name.
+ *
+ * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
+ */
+
+
+
+
+
+
+
+
+
+
+/**
+ * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
+ * Those files can contain any CSS code that gets applied to the editor.
+ *
+ * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
+ */
+
+
+const Item = (0,react__WEBPACK_IMPORTED_MODULE_6__.forwardRef)((_ref, ref) => {
+  let {
+    id,
+    ...props
+  } = _ref;
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, props, {
+    ref: ref
+  }), "heee ", id);
+});
+function Edit(_ref2) {
+  let {
+    attributes,
+    setAttributes
+  } = _ref2;
+  const {
+    selectedPosts,
+    subheading,
+    description
+  } = attributes;
+  const [activeId, setActiveId] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(null);
+  const [items, setItems] = (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useState)(selectedPosts);
+  const {
+    options,
+    isLoaded
+  } = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_5__.useSelect)(select => {
+    const {
+      getEntityRecords,
+      getMedia
+    } = select('core');
+    const {
+      isResolving
+    } = select('core/data');
+    const postCollection = getEntityRecords('postType', 'page', {
+      per_page: -1,
+      status: 'publish'
+    });
+    const tagsCollection = getEntityRecords('taxonomy', 'post_tag', {
+      per_page: -1
+    });
+    postCollection === null || postCollection === void 0 ? void 0 : postCollection.forEach(post => {
+      if (post.featured_media) {
+        var _getMedia;
+
+        post.imgurl = (_getMedia = getMedia(post.featured_media)) === null || _getMedia === void 0 ? void 0 : _getMedia.media_details.sizes.medium_large.source_url;
+      }
+
+      if (post.tags) {
+        post.tagText = tagsCollection === null || tagsCollection === void 0 ? void 0 : tagsCollection.filter(tag => {
+          var _post$tags;
+
+          return (_post$tags = post.tags) === null || _post$tags === void 0 ? void 0 : _post$tags.includes(tag.id);
+        }).map(tag => tag.name);
+      }
+    });
+    return {
+      options: postCollection,
+      isLoaded: !isResolving('core', 'getEntityRecords', ['postType', 'page', {
+        per_page: -1,
+        status: 'publish'
+      }])
+    };
+  }, []); //Triggers every time items array is changed
+
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.useEffect)(() => {
+    setAttributes({
+      selectedPosts: items
+    });
+  }, [items]);
+
+  function onSelectedPageChange(selectedPages) {
+    let selectedPagesNumberParsed = selectedPages.map(post => {
+      return parseInt(post);
+    });
+    setItems(options.filter(post => selectedPagesNumberParsed.includes(post.id)));
+  }
+
+  function SortableItem(props) {
+    const {
+      attributes,
+      listeners,
+      setNodeRef,
+      transform,
+      transition
+    } = (0,_dnd_kit_sortable__WEBPACK_IMPORTED_MODULE_8__.useSortable)({
+      id: props.id
+    });
+    const style = {
+      transform: _dnd_kit_utilities__WEBPACK_IMPORTED_MODULE_9__.CSS.Transform.toString(transform),
+      transition
+    };
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_components_bannerItem__WEBPACK_IMPORTED_MODULE_10__.BannerItem, (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({
+      post: props.post,
+      ref: setNodeRef,
+      style: style
+    }, attributes, listeners));
+  }
+
+  const sensors = (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.useSensors)((0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.useSensor)(_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.PointerSensor), (0,_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.useSensor)(_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.KeyboardSensor, {
+    coordinateGetter: _dnd_kit_sortable__WEBPACK_IMPORTED_MODULE_8__.sortableKeyboardCoordinates
+  }));
+
+  function handleDragEnd(event) {
+    const {
+      active,
+      over
+    } = event;
+
+    if (active.id !== over.id) {
+      setItems(items => {
+        const oldIndex = items.findIndex(obj => obj.id == active.id);
+        const newIndex = items.findIndex(obj => obj.id == over.id);
+        items[oldIndex].sortKey = newIndex;
+        items[newIndex].sortKey = oldIndex;
+        return (0,_dnd_kit_sortable__WEBPACK_IMPORTED_MODULE_8__.arrayMove)(items, oldIndex, newIndex);
+        ;
+      });
+    }
+
+    setActiveId(null);
+  }
+
+  function handleDragStart(event) {
+    const {
+      active
+    } = event;
+    setActiveId(active.id);
+  }
+
+  const onChangeHeading = (newsBlockHeading, newsBlockDescription) => {
+    setAttributes({
+      subheading: newsBlockHeading
+    });
+  };
+
+  const onChangeDescription = newsBlockDescription => {
+    setAttributes({
+      description: newsBlockDescription
+    });
+  }; // console.log(subheading);
+
+
+  return [(0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.InspectorControls, {
+    key: "inspector"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_4__.SelectControl, {
+    multiple: true,
+    value: items.map(post => {
+      return post.id;
+    }),
+    onChange: onSelectedPageChange,
+    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_2__.__)('Select a Post (use CTRL to select multiple)'),
+    options: isLoaded ? options === null || options === void 0 ? void 0 : options.map(post => ({
+      label: post.title.rendered,
+      value: post.id
+    })) : [{
+      label: 'loading posts'
+    }],
+    className: "isceb-gutenberg-select"
+  })), // <section>
+  // </section>,
+  (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", (0,_babel_runtime_helpers_extends__WEBPACK_IMPORTED_MODULE_0__["default"])({}, (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.useBlockProps)({
+    className: "wrapper isceb-homepage-wrapper"
+  }), {
+    id: "full-width-page-wrapper"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "container-fluid",
+    id: "content"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "mainMessage"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+    tagName: "h1",
+    className: "isceb-news-block-heading-h1",
+    value: subheading,
+    onChange: onChangeHeading,
+    placeholder: "Subheading Goes Here"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_3__.RichText, {
+    tagName: "p",
+    className: "isceb-news-block-heading-p",
+    value: description,
+    onChange: onChangeDescription,
+    placeholder: "Description goes here"
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("section", {
+    className: "homepage-banners"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)("div", {
+    className: "container-banners"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.DndContext, {
+    sensors: sensors,
+    collisionDetection: _dnd_kit_core__WEBPACK_IMPORTED_MODULE_7__.closestCenter,
+    onDragStart: handleDragStart,
+    onDragEnd: handleDragEnd
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(_dnd_kit_sortable__WEBPACK_IMPORTED_MODULE_8__.SortableContext, {
+    items: items,
+    strategy: _dnd_kit_sortable__WEBPACK_IMPORTED_MODULE_8__.verticalListSortingStrategy
+  }, items === null || items === void 0 ? void 0 : items.map(post => (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_1__.createElement)(SortableItem, {
+    post: post,
+    key: post.id,
+    id: post.id
+  }))))))))];
+}
+
+/***/ }),
+
+/***/ "./isceb-blocks/isceb-news-block/src/index.js":
+/*!****************************************************!*\
+  !*** ./isceb-blocks/isceb-news-block/src/index.js ***!
+  \****************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
+/* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./isceb-blocks/isceb-news-block/src/style.scss");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./isceb-blocks/isceb-news-block/src/edit.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./isceb-blocks/isceb-news-block/src/save.js");
+/**
+ * Registers a new block provided a unique name and an object defining its behavior.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
+ */
+
+/**
+ * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
+ * All files containing `style` keyword are bundled together. The code used
+ * gets applied both to the front of your site and to the editor.
+ *
+ * @see https://www.npmjs.com/package/@wordpress/scripts#using-css
+ */
+
+
+/**
+ * Internal dependencies
+ */
+
+
+
+/**
+ * Every block starts by registering a new block type definition.
+ *
+ * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
+ */
+
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)('isceb-blocks/news-block', {
+  /**
+   * @see ./edit.js
+   */
+  edit: _edit__WEBPACK_IMPORTED_MODULE_2__["default"],
+
+  /**
+   * @see ./save.js
+   */
+  save: _save__WEBPACK_IMPORTED_MODULE_3__["default"],
+  attributes: {
+    author: {
+      type: 'string'
+    },
+    authorImage: {
+      type: 'string',
+      default: null
+    },
+    titleColor: {
+      type: 'string',
+      default: 'red'
+    },
+    topic: {
+      type: 'string',
+      default: null
+    },
+    selectedPost: {
+      type: 'number',
+      default: 0
+    },
+    selectedPosts: {
+      type: 'array',
+      default: []
+    },
+    align: {
+      type: 'string',
+      default: 'full'
+    },
+    subheading: {
+      type: 'string'
+    },
+    description: {
+      type: 'string'
+    }
+  },
+  supports: {
+    align: true,
+    alignWide: true
+  },
+
+  getEditWrapperProps(attributes) {
+    return {
+      'data-align': 'full'
+    };
+  }
+
+});
+
+/***/ }),
+
+/***/ "./isceb-blocks/isceb-news-block/src/save.js":
+/*!***************************************************!*\
+  !*** ./isceb-blocks/isceb-news-block/src/save.js ***!
+  \***************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ save; }
+/* harmony export */ });
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/element */ "@wordpress/element");
+/* harmony import */ var _wordpress_element__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_element__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @wordpress/i18n */ "@wordpress/i18n");
+/* harmony import */ var _wordpress_i18n__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @wordpress/block-editor */ "@wordpress/block-editor");
+/* harmony import */ var _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__);
+
+
+/**
+ * Retrieves the translation of text.
+ *
+ * @see https://developer.wordpress.org/block-editor/packages/packages-i18n/
+ */
+
+/**
+ * React hook that is used to mark the block wrapper element.
+ * It provides all the necessary props like the class name.
+ *
+ * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
+ */
+
+
+/**
+ * The save function defines the way in which the different attributes should
+ * be combined into the final markup, which is then serialized by the block
+ * editor into `post_content`.
+ *
+ * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#save
+ *
+ * @return {WPElement} Element to render.
+ */
+
+function save(_ref) {
+  let {
+    attributes
+  } = _ref;
+  const {
+    selectedPosts,
+    subheading,
+    description
+  } = attributes;
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wrapper isceb-homepage-wrapper",
+    id: "full-width-page-wrapper"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "container-fluid",
+    id: "content"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "mainMessage"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText.Content, {
+    tagName: "h1",
+    className: "isceb-news-block-heading-h1",
+    value: subheading
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.RichText.Content, {
+    tagName: "p",
+    className: "isceb-news-block-heading-p",
+    value: description
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save({
+    className: "homepage-banners"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "container-banners"
+  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => {
+    var _post$tagText;
+
+    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: post.link
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "itemBanner",
+      key: post.id
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      key: post.id,
+      className: "bannerCardImage",
+      style: {
+        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`
+      }
+    }), (post === null || post === void 0 ? void 0 : (_post$tagText = post.tagText) === null || _post$tagText === void 0 ? void 0 : _post$tagText.length) > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "bannerCardTag"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "bannerTagText"
+    }, post.tagText[0])), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      className: "bannerCardContent"
+    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
+      className: "bannerCardTitle"
+    }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      className: "bannerCardDescription"
+    }, post.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
+      className: "bannerCardButton"
+    }, "More Info"))));
+  })))));
+}
+
+/***/ }),
+
+/***/ "./isceb-blocks/isceb-news-block/src/editor.scss":
+/*!*******************************************************!*\
+  !*** ./isceb-blocks/isceb-news-block/src/editor.scss ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "./isceb-blocks/isceb-news-block/src/style.scss":
+/*!******************************************************!*\
+  !*** ./isceb-blocks/isceb-news-block/src/style.scss ***!
+  \******************************************************/
+/***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+// extracted by mini-css-extract-plugin
+
+
+/***/ }),
+
+/***/ "react":
+/*!************************!*\
+  !*** external "React" ***!
+  \************************/
+/***/ (function(module) {
+
+module.exports = window["React"];
+
+/***/ }),
+
+/***/ "react-dom":
+/*!***************************!*\
+  !*** external "ReactDOM" ***!
+  \***************************/
+/***/ (function(module) {
+
+module.exports = window["ReactDOM"];
+
+/***/ }),
+
+/***/ "@wordpress/block-editor":
+/*!*************************************!*\
+  !*** external ["wp","blockEditor"] ***!
+  \*************************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["blockEditor"];
+
+/***/ }),
+
+/***/ "@wordpress/blocks":
+/*!********************************!*\
+  !*** external ["wp","blocks"] ***!
+  \********************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["blocks"];
+
+/***/ }),
+
+/***/ "@wordpress/components":
+/*!************************************!*\
+  !*** external ["wp","components"] ***!
+  \************************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["components"];
+
+/***/ }),
+
+/***/ "@wordpress/data":
+/*!******************************!*\
+  !*** external ["wp","data"] ***!
+  \******************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["data"];
+
+/***/ }),
+
+/***/ "@wordpress/element":
+/*!*********************************!*\
+  !*** external ["wp","element"] ***!
+  \*********************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["element"];
+
+/***/ }),
+
+/***/ "@wordpress/i18n":
+/*!******************************!*\
+  !*** external ["wp","i18n"] ***!
+  \******************************/
+/***/ (function(module) {
+
+module.exports = window["wp"]["i18n"];
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime/helpers/esm/extends.js":
+/*!************************************************************!*\
+  !*** ./node_modules/@babel/runtime/helpers/esm/extends.js ***!
+  \************************************************************/
+/***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": function() { return /* binding */ _extends; }
+/* harmony export */ });
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	!function() {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = function(result, chunkIds, fn, priority) {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var chunkIds = deferred[i][0];
+/******/ 				var fn = deferred[i][1];
+/******/ 				var priority = deferred[i][2];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every(function(key) { return __webpack_require__.O[key](chunkIds[j]); })) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					var r = fn();
+/******/ 					if (r !== undefined) result = r;
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	!function() {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = function(module) {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				function() { return module['default']; } :
+/******/ 				function() { return module; };
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	!function() {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = function(exports, definition) {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	!function() {
+/******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	!function() {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = function(exports) {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	}();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	!function() {
+/******/ 		// no baseURI
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"isceb-blocks/isceb-news-block": 0,
+/******/ 			"style-isceb-blocks/isceb-news-block": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		__webpack_require__.O.j = function(chunkId) { return installedChunks[chunkId] === 0; };
+/******/ 		
+/******/ 		// install a JSONP callback for chunk loading
+/******/ 		var webpackJsonpCallback = function(parentChunkLoadingFunction, data) {
+/******/ 			var chunkIds = data[0];
+/******/ 			var moreModules = data[1];
+/******/ 			var runtime = data[2];
+/******/ 			// add "moreModules" to the modules object,
+/******/ 			// then flag all "chunkIds" as loaded and fire callback
+/******/ 			var moduleId, chunkId, i = 0;
+/******/ 			if(chunkIds.some(function(id) { return installedChunks[id] !== 0; })) {
+/******/ 				for(moduleId in moreModules) {
+/******/ 					if(__webpack_require__.o(moreModules, moduleId)) {
+/******/ 						__webpack_require__.m[moduleId] = moreModules[moduleId];
+/******/ 					}
+/******/ 				}
+/******/ 				if(runtime) var result = runtime(__webpack_require__);
+/******/ 			}
+/******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkIds[i]] = 0;
+/******/ 			}
+/******/ 			return __webpack_require__.O(result);
+/******/ 		}
+/******/ 		
+/******/ 		var chunkLoadingGlobal = self["webpackChunkisceb_block"] = self["webpackChunkisceb_block"] || [];
+/******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
+/******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
+/******/ 	}();
+/******/ 	
+/************************************************************************/
+/******/ 	
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["style-isceb-blocks/isceb-news-block"], function() { return __webpack_require__("./isceb-blocks/isceb-news-block/src/index.js"); })
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
+/******/ 	
+/******/ })()
+;
+//# sourceMappingURL=isceb-news-block.js.map

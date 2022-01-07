@@ -4,10 +4,7 @@
  * Replace them with your own styles or remove the file completely.
  */
 
-.wp-block-isceb-blocks-author-block {
-	// border: 1px dotted #f00;
-	// margin: 5px;
-}
+
 
 $primary: #1f476b;
 $secondary: #d3ebf8;
@@ -99,4 +96,18 @@ $secondary: #d3ebf8;
 //Fix for height problem select control
 .isceb-gutenberg-select > div > select[id^="inspector-select-control-"] {
 	height: auto !important;
+}
+
+.mainMessage {
+	padding-top: 15px;
+	background-color: $primary;
+	color: white;
+}
+
+.mainMessage>* {
+	margin: 0;
+	text-align: center;
+}
+.mainMessage .isceb-news-block-heading-p {
+	margin-bottom: 0;
 }

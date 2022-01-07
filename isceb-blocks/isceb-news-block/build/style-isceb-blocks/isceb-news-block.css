@@ -93,23 +93,4 @@
   color: #1F476B;
 }
 
-.mainMessage {
-  padding-top: 15px;
-  background-color: #1F476B;
-  color: white;
-}
-
-.mainMessage > * {
-  margin: 0;
-  text-align: center;
-}
-
-.mainMessage .isceb-news-block-heading-p {
-  margin-bottom: 0;
-}
-
-.isceb-homepage-wrapper {
-  margin: 0px calc(50% - 50vw);
-}
-
 /*# sourceMappingURL=isceb-news-block.css.map*/

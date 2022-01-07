@@ -30,7 +30,7 @@ registerBlockType('isceb-blocks/news-block', {
     /**
      * @see ./edit.js
      */
-    edit:Edit ,
+    edit: Edit,
 
     /**
      * @see ./save.js
@@ -55,24 +55,30 @@ registerBlockType('isceb-blocks/news-block', {
         selectedPost: {
             type: 'number',
             default: 0,
-        }, 
-        selectedPosts:{
+        },
+        selectedPosts: {
             type: 'array',
             default: [],
         },
-        align:{
-            type:'string',
-            default:'full',
+        align: {
+            type: 'string',
+            default: 'full',
+        },
+        subheading: {
+            type: 'string',
+        },
+        description: {
+            type: 'string',
         }
 
     },
-    supports:{
-        align:true,
-        alignWide:true,
+    supports: {
+        align: true,
+        alignWide: true,
     },
     getEditWrapperProps(attributes) {
         return {
-          'data-align': 'full'
+            'data-align': 'full'
         };
-      },
+    },
 });

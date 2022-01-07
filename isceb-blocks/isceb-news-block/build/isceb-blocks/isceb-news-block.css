@@ -96,19 +96,4 @@
   height: auto !important;
 }
 
-.mainMessage {
-  padding-top: 15px;
-  background-color: #1f476b;
-  color: white;
-}
-
-.mainMessage > * {
-  margin: 0;
-  text-align: center;
-}
-
-.mainMessage .isceb-news-block-heading-p {
-  margin-bottom: 0;
-}
-
 /*# sourceMappingURL=isceb-news-block.css.map*/

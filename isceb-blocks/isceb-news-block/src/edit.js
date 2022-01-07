@@ -11,10 +11,10 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-import { useBlockProps, InspectorControls, ColorPalette, MediaUpload } from '@wordpress/block-editor';
-import { SelectControl } from '@wordpress/components';
+import { useBlockProps, InspectorControls, ColorPalette, MediaUpload, RichText } from '@wordpress/block-editor';
+import { SelectControl, TextControl } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
-import { useState,useEffect } from '@wordpress/element'
+import { useState, useEffect } from '@wordpress/element'
 import React, { forwardRef, setState } from 'react';
 
 
@@ -55,41 +55,43 @@ export const Item = forwardRef(({ id, ...props }, ref) => {
 
 export default function Edit({ attributes, setAttributes }) {
 	const {
-		selectedPosts
+		selectedPosts,
+		subheading,
+		description
 	} = attributes;
 
 	const [activeId, setActiveId] = useState(null);
 	const [items, setItems] = useState(selectedPosts);
-	
-	const { options ,isLoaded } = useSelect(
+
+	const { options, isLoaded } = useSelect(
 		(select) => {
-			const { getEntityRecords, getMedia} = select('core');
-			const {isResolving} = select('core/data');
+			const { getEntityRecords, getMedia } = select('core');
+			const { isResolving } = select('core/data');
 			const postCollection = getEntityRecords('postType', 'page', { per_page: -1, status: 'publish' });
 			const tagsCollection = getEntityRecords('taxonomy', 'post_tag', { per_page: -1 });
-			
+
 
 
 			postCollection?.forEach(post => {
-				if ( post.featured_media) {
+				if (post.featured_media) {
 					post.imgurl = getMedia(post.featured_media)?.media_details.sizes.medium_large.source_url;
 				}
-				if(post.tags){
+				if (post.tags) {
 					post.tagText = tagsCollection?.filter(tag => post.tags?.includes(tag.id)).map(tag => tag.name);
 				}
 			});
 
-			
 
-			return { options: postCollection, isLoaded: !isResolving('core','getEntityRecords',['postType','page',{ per_page: -1, status: 'publish' }])  }
+
+			return { options: postCollection, isLoaded: !isResolving('core', 'getEntityRecords', ['postType', 'page', { per_page: -1, status: 'publish' }]) }
 		}, []
 	);
 
 	//Triggers every time items array is changed
-	useEffect(()=>{
+	useEffect(() => {
 		setAttributes({ selectedPosts: items });
-	},[items])
-	
+	}, [items])
+
 	function onSelectedPageChange(selectedPages) {
 		let selectedPagesNumberParsed = selectedPages.map(post => { return parseInt(post) });
 
@@ -148,6 +150,16 @@ export default function Edit({ attributes, setAttributes }) {
 		setActiveId(active.id);
 	}
 
+	const onChangeHeading = (newsBlockHeading, newsBlockDescription) => {
+		setAttributes({ subheading: newsBlockHeading });
+	}
+	const onChangeDescription = (newsBlockDescription) => {
+		setAttributes({ description: newsBlockDescription });
+	}
+
+
+	// console.log(subheading);
+
 	return [
 		<InspectorControls key='inspector'>
 			<SelectControl
@@ -155,35 +167,70 @@ export default function Edit({ attributes, setAttributes }) {
 				value={items.map(post => { return post.id })}
 				onChange={onSelectedPageChange}
 				label={__('Select a Post (use CTRL to select multiple)')}
-				options={isLoaded ? options?.map(post => ({ label: post.title.rendered, value: post.id })): [{label: 'loading posts'}]}
+				options={isLoaded ? options?.map(post => ({ label: post.title.rendered, value: post.id })) : [{ label: 'loading posts' }]}
 				className='isceb-gutenberg-select'
 			/>
 		</InspectorControls>
 		,
-		<section {...useBlockProps({ className: "homepage-banners" })}  >
-			<div className="container-banners">
-				< DndContext
-					sensors={sensors}
-					collisionDetection={closestCenter}
-					onDragStart={handleDragStart}
-					onDragEnd={handleDragEnd}
-				>
-					<SortableContext
-						items={items}
-						strategy={verticalListSortingStrategy}
-					>
-						
-						{
-						items?.map(post => <SortableItem post={post} key={post.id} id={post.id} />)}
-					</SortableContext>
-					{/* 
+		// <section>
+
+
+		// </section>,
+		<div {...useBlockProps({ className: "wrapper isceb-homepage-wrapper" })} id="full-width-page-wrapper">
+			{/* TOOD: clean and check the classes like "wrapper" */}
+
+			<div className="container-fluid" id="content">
+				<div className="mainMessage">
+					
+					<RichText
+						tagName='h1'
+						className='isceb-news-block-heading-h1'
+						value={subheading}
+						onChange={onChangeHeading}
+						placeholder="Subheading Goes Here"
+					/>
+
+						<RichText
+							tagName='p'
+							className='isceb-news-block-heading-p'
+							value={description}
+							onChange={onChangeDescription}
+							placeholder="Description goes here"
+
+						/>
+				
+				</div>
+
+				<section  className="homepage-banners" >
+
+					<div className="container-banners">
+
+						< DndContext
+							sensors={sensors}
+							collisionDetection={closestCenter}
+							onDragStart={handleDragStart}
+							onDragEnd={handleDragEnd}
+						>
+							<SortableContext
+								items={items}
+								strategy={verticalListSortingStrategy}
+							>
+
+								{
+									items?.map(post => <SortableItem post={post} key={post.id} id={post.id} />)}
+							</SortableContext>
+							{/* 
 					Activate if you want to see something else when dragging the element
 					<DragOverlay>
 						{activeId ? <BannerItem post={items.find(post => {post.id == activeId})} id={activeId} /> : null}
 					</DragOverlay>
 					 */}
-				</DndContext >
+						</DndContext >
+					</div>
+				</section>
+
 			</div>
-		</section>
+		</div>
+
 	]
 }

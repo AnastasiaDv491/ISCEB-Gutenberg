@@ -93,3 +93,21 @@ $secondary:  #d3ebf8;
 	font-weight: bold;
 	color: $primary;
 }
+
+.mainMessage {
+	padding-top: 15px;
+	background-color: $primary;
+	color: white;
+}
+
+.mainMessage>* {
+	margin: 0;
+	text-align: center;
+}
+.mainMessage .isceb-news-block-heading-p {
+	margin-bottom: 0;
+}
+
+.isceb-homepage-wrapper{
+	margin: 0px calc(50% - 50vw);
+}
