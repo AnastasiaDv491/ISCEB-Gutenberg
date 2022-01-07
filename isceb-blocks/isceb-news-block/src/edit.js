@@ -58,28 +58,30 @@ export default function Edit({ attributes, setAttributes }) {
 		selectedPosts
 	} = attributes;
 
-
 	const [activeId, setActiveId] = useState(null);
-
 	const [items, setItems] = useState(selectedPosts);
 	
-	
-	const { options =__( '...retrieving' ) , isLoaded } = useSelect(
+	const { options ,isLoaded } = useSelect(
 		(select) => {
-			const { getEntityRecords } = select('core');
-			let postCollection = getEntityRecords('postType', 'page', { per_page: -1, status: 'publish' });
-			let tagsCollection = getEntityRecords('taxonomy', 'post_tag', { per_page: -1 });
+			const { getEntityRecords, getMedia} = select('core');
+			const {isResolving} = select('core/data');
+			const postCollection = getEntityRecords('postType', 'page', { per_page: -1, status: 'publish' });
+			const tagsCollection = getEntityRecords('taxonomy', 'post_tag', { per_page: -1 });
+			
 
 
 			postCollection?.forEach(post => {
-				post.imgurl = select('core').getMedia(post.featured_media)?.media_details.sizes.medium_large.source_url;
-				post.tagText = tagsCollection?.filter(tag => post.tags?.includes(tag.id)).map(tag => tag.name);
-
+				if ( post.featured_media) {
+					post.imgurl = getMedia(post.featured_media)?.media_details.sizes.medium_large.source_url;
+				}
+				if(post.tags){
+					post.tagText = tagsCollection?.filter(tag => post.tags?.includes(tag.id)).map(tag => tag.name);
+				}
 			});
 
-			console.log(postCollection)
+			
 
-			return { options: postCollection, isLoaded: true }
+			return { options: postCollection, isLoaded: !isResolving('core','getEntityRecords',['postType','page',{ per_page: -1, status: 'publish' }])  }
 		}, []
 	);
 
@@ -88,14 +90,11 @@ export default function Edit({ attributes, setAttributes }) {
 		setAttributes({ selectedPosts: items });
 	},[items])
 	
-	
-
 	function onSelectedPageChange(selectedPages) {
 		let selectedPagesNumberParsed = selectedPages.map(post => { return parseInt(post) });
 
 		setItems(options.filter(post => selectedPagesNumberParsed.includes(post.id)));
 	}
-
 
 	function SortableItem(props) {
 		const {
@@ -116,7 +115,6 @@ export default function Edit({ attributes, setAttributes }) {
 			<BannerItem post={props.post} ref={setNodeRef} style={style} {...attributes} {...listeners}></BannerItem>
 		);
 	}
-
 
 	const sensors = useSensors(
 		useSensor(PointerSensor),
@@ -150,7 +148,6 @@ export default function Edit({ attributes, setAttributes }) {
 		setActiveId(active.id);
 	}
 
-
 	return [
 		<InspectorControls key='inspector'>
 			<SelectControl
@@ -158,12 +155,11 @@ export default function Edit({ attributes, setAttributes }) {
 				value={items.map(post => { return post.id })}
 				onChange={onSelectedPageChange}
 				label={__('Select a Post (use CTRL to select multiple)')}
-				options={options?.map(post => ({ label: post.title.rendered, value: post.id }))}
+				options={isLoaded ? options?.map(post => ({ label: post.title.rendered, value: post.id })): [{label: 'loading posts'}]}
 				className='isceb-gutenberg-select'
 			/>
 		</InspectorControls>
 		,
-
 		<section {...useBlockProps({ className: "homepage-banners" })}  >
 			<div className="container-banners">
 				< DndContext
@@ -189,6 +185,5 @@ export default function Edit({ attributes, setAttributes }) {
 				</DndContext >
 			</div>
 		</section>
-
 	]
 }

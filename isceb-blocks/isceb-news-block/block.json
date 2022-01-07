@@ -11,7 +11,7 @@
 		"html": false
 	},
 	"textdomain": "isceb-block",
-	"editorScript": "file:./build/index.js",
-	"editorStyle": "file:./build/index.css",
-	"style": "file:./build/style-index.css"
+	"editorScript": "file:../../build/isceb-blocks/isceb-news-block.js",
+	"editorStyle": "file:../../build/isceb-blocks/isceb-news-block.css",
+	"style": "file:../../build/style-isceb-blocks/isceb-news-block.css"
 }
