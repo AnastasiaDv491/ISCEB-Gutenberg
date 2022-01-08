@@ -1,0 +1,17 @@
+{
+	"$schema": "https://json.schemastore.org/block.json",
+	"apiVersion": 2,
+	"name": "isceb-blocks/image-text-block",
+	"version": "0.1.0",
+	"title": "ISCEB Image Text Block",
+	"category": "widgets",
+	"icon": "smiley",
+	"description": "Example block written with ESNext standard and JSX support – build step required.",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "isceb-block",
+	"editorScript": "file:../../build/isceb-blocks/isceb-image-text-block.js",
+	"editorStyle": "file:../../build/isceb-blocks/isceb-image-text-block.css",
+	"style": "file:../../build/style-isceb-blocks/isceb-image-text-block.css"
+}

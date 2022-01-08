@@ -25,7 +25,8 @@ function isceb_blocks_init()
 {
 	$isceb_blocks = array(
 		'isceb-author-block/',
-		'isceb-news-block/'
+		'isceb-news-block/',
+		'isceb-image-text-block/',
 	);
 
 	foreach ($isceb_blocks as $block) {
