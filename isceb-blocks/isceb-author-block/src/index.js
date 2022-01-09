@@ -37,11 +37,12 @@ registerBlockType('isceb-blocks/author-block', {
 	save,
 	attributes: {
         author:{
-            type: 'string'
+            type: 'string',
+            default:''
         },
         authorImage:{
             type: 'string',
-            default: null
+            default: ''
         },
         titleColor:{
             type: 'string',
@@ -49,11 +50,11 @@ registerBlockType('isceb-blocks/author-block', {
         },
         topic: {
             type:'string',
-            default: null
+            default: ''
         },
         date: {
             type:'integer',
-            default:null
+            default:0
         }
     },
 });

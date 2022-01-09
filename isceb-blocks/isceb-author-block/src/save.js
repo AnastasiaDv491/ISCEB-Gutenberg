@@ -30,25 +30,22 @@ export default function save({ attributes }) {
 		date
 	} = attributes;
 	return (
-		<div {...useBlockProps.save()}>
-			<div class="isceb-standard-page-title-head-topic">
-				<h6>Topic: {topic}</h6>
+		<div {...useBlockProps.save({ className: "isceb-gutenberg-block-wrapper" })}>
+			<div className="isceb-standard-page-head">
+				<div className="isceb-standard-page-title-head-topic">
+					<h6>Topic: {topic}</h6>
 
+				</div>
+				<div className="isceb-standard-page-date">
+					<h6 >{date}</h6>
+				</div>
 			</div>
-			<div class="isceb-standard-page-date">
-				<h6 >{date}</h6>
-			</div>
-			<div class="isceb-standard-page-head-container">
-				<img src={authorImage} style={{
-					borderRadius: '50%',
-					height: '60px',
-					width: '60px',
-					border: '5px solid #1F476B'
-					// boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
-				}}
-					class="isceb-standard-page-author-img"
+
+			<div className="isceb-standard-page-head-container test-class">
+				<img src={authorImage}
+					className="isceb-standard-page-author-img"
 				/>
-				<h6 class="isceb-standard-page-author">{author} </h6>
+				<h6 className="isceb-standard-page-author">{author} </h6>
 
 			</div>
 		</div>

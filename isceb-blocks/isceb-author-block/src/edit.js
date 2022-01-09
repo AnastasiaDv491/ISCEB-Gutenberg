@@ -13,6 +13,7 @@ import { __ } from '@wordpress/i18n';
  */
 import { useBlockProps, InspectorControls, ColorPalette, MediaUpload } from '@wordpress/block-editor';
 import { PanelBody, IconButton } from '@wordpress/components';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -39,6 +40,14 @@ export default function Edit({ attributes, setAttributes }) {
 		date
 	} = attributes;
 
+	const currentDate = useSelect(
+		(select) => {
+			// TODO: parce the dat
+			// console.log(select( 'core/editor' ));
+			return select( 'core/editor' ).getEditedPostAttribute( 'date' );
+			// console.log(select( 'core/editor' ).getEditedPostAttribute('date'));
+		},[]
+	);
 	function onSelectAuthorImage(image) {
 		//improve with right resolution 
 		console.log(image);
@@ -62,6 +71,8 @@ export default function Edit({ attributes, setAttributes }) {
 		setAttributes({ date: date.target.value });
 
 	}
+
+	console.log(currentDate);
 
 	return ([
 		<InspectorControls style={{ marginBottom: '40px' }}>
@@ -88,25 +99,28 @@ export default function Edit({ attributes, setAttributes }) {
 				/>
 			</PanelBody>
 		</InspectorControls>,
-		<div {...useBlockProps()} class="isceb-gutenberg-block-wrapper">
-			<div class="isceb-standard-page-title-head-topic">
-				<p>Topic: </p>
-				<input type="text" onChange={updateTopic} value={attributes.topic} placeholder="Post topic" />
+		<div {...useBlockProps({ className: "isceb-gutenberg-block-wrapper" })} >
+			<div className="isceb-standard-page-head">
+				<div className="isceb-standard-page-title-head-topic">
+					<p>Topic: </p>
+					<input type="text" onChange={updateTopic} value={topic} placeholder="Post topic" />
+				</div>
+				<div className="isceb-standard-page-date">
+					{currentDate}
+					{/* <input type="text" onChange={updateDate} value={date} placeholder="Post date" /> */}
+				</div>
 			</div>
-			<div class="isceb-standard-page-date">
-				<input type="text" onChange={updateDate} value={attributes.date} placeholder="Post date" />
-			</div>
-			<div class="isceb-standard-page-head-container">
-				<input type="text" onChange={updateAuthor} value={attributes.author} style={{ color: titleColor }} placeholder="Name of the page's author" class="isceb-standard-page-author" />
+
+			<div className="isceb-standard-page-head-container test-class">
 				<img src={authorImage}
-					style={{
-						borderRadius: '50%',
-						height: '60px',
-						width: '60px',
-						border: '5px solid #1F476B'
-						// boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
-					}}
-					class="isceb-standard-page-author-img" />
+					className="isceb-standard-page-author-img"
+				/>
+				<input type="text"
+					onChange={updateAuthor}
+					value={author}
+					style={{ color: titleColor }}
+					placeholder="Name of the page's author"
+					className="isceb-standard-page-author" />
 
 
 
