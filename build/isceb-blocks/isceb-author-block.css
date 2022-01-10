@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*!************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./isceb-blocks/isceb-author-block/src/editor.scss ***!
   \************************************************************************************************************************************************************************************************************************************************************************/
@@ -34,3 +35,6 @@
 }
 
 /*# sourceMappingURL=isceb-author-block.css.map*/
+=======
+.isceb-gutenberg-block-wrapper{-ms-grid-columns:(1fr)[1];-ms-grid-rows:(1fr)[2];grid-column-gap:0;grid-row-gap:0;display:-ms-grid;display:grid;grid-template-columns:repeat(1,1fr);grid-template-rows:repeat(2,1fr)}.isceb-standard-page-date,.isceb-standard-page-head-container,.isceb-standard-page-title-head-topic{margin:auto}
+>>>>>>> a13ea5527ad8cc7f9b820c4dabfed04bf09a2d3b
