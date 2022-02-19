@@ -5,6 +5,7 @@
  */
 import { registerBlockType } from '@wordpress/blocks';
 
+
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
  * All files containing `style` keyword are bundled together. The code used
@@ -25,36 +26,59 @@ import save from './save';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
-registerBlockType('isceb-blocks/author-block', {
-	/**
-	 * @see ./edit.js
-	 */
-	edit: Edit,
+registerBlockType('isceb-blocks/image-text-block', {
+    /**
+     * @see ./edit.js
+     */
+    edit: Edit,
 
-	/**
-	 * @see ./save.js
-	 */
-	save,
-	attributes: {
-        author:{
-            type: 'string',
-            default:''
+    /**
+     * @see ./save.js
+     */
+    save,
+    attributes: {
+        author: {
+            type: 'string'
         },
-        authorImage:{
+        authorImage: {
             type: 'string',
-            default: ''
+            default: null
         },
-        titleColor:{
+        titleColor: {
             type: 'string',
             default: 'red'
         },
         topic: {
-            type:'string',
-            default: ''
+            type: 'string',
+            default: null
         },
-        date: {
-            type:'integer',
-            default:0
+        selectedPost: {
+            type: 'number',
+            default: 0,
+        },
+        selectedPosts: {
+            type: 'array',
+            default: [],
+        },
+        align: {
+            type: 'string',
+            default: 'full',
+        },
+        subheading: {
+            type: 'string',
+        },
+        description: {
+            type: 'string',
         }
+
+    },
+    supports: {
+        align: true,
+        alignWide: true,
+    },
+    getEditWrapperProps(attributes) {
+        return {
+            'data-align': 'full'
+        };
     },
 });

@@ -21,15 +21,16 @@
  *
  * @see https://developer.wordpress.org/block-editor/how-to-guides/block-tutorial/writing-your-first-block-type/
  */
-function isceb_author_block_isceb_block_block_init()
+function isceb_blocks_init()
 {
-	register_block_type(plugin_dir_path(__FILE__) . 'isceb-blocks/isceb-author-block/');
-}
-add_action('init', 'isceb_author_block_isceb_block_block_init');
+	$isceb_blocks = array(
+		'isceb-author-block/',
+		'isceb-news-block/',
+		'isceb-image-text-block/',
+	);
 
-
-function isceb_news_block_isceb_block_block_init()
-{
-	register_block_type(plugin_dir_path(__FILE__) . 'isceb-blocks/isceb-news-block/');
+	foreach ($isceb_blocks as $block) {
+		register_block_type(plugin_dir_path(__FILE__) . 'isceb-blocks/' . $block);
+	}
 }
-add_action('init', 'isceb_news_block_isceb_block_block_init');
+add_action('init', 'isceb_blocks_init');

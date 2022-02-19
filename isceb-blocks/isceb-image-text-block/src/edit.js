@@ -37,7 +37,6 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 
 
-import { BannerItem } from './components/bannerItem';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -114,7 +113,7 @@ export default function Edit({ attributes, setAttributes }) {
 
 
 		return (
-			<BannerItem post={props.post} ref={setNodeRef} style={style} {...attributes} {...listeners}></BannerItem>
+			<div></div>
 		);
 	}
 

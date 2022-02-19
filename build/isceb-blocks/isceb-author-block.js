@@ -1,11 +1,12 @@
+<<<<<<< HEAD
 /******/ (function() { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./isceb-blocks/isceb-news-block/src/edit.js":
-/*!***************************************************!*\
-  !*** ./isceb-blocks/isceb-news-block/src/edit.js ***!
-  \***************************************************/
+/***/ "./isceb-blocks/isceb-author-block/src/edit.js":
+/*!*****************************************************!*\
+  !*** ./isceb-blocks/isceb-author-block/src/edit.js ***!
+  \*****************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -22,7 +23,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_components__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @wordpress/data */ "@wordpress/data");
 /* harmony import */ var _wordpress_data__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_wordpress_data__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./isceb-blocks/isceb-news-block/src/editor.scss");
+/* harmony import */ var _editor_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./editor.scss */ "./isceb-blocks/isceb-author-block/src/editor.scss");
 
 
 /**
@@ -49,105 +50,135 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
+/**
+ * The edit function describes the structure of your block in the context of the
+ * editor. This represents what the editor will render when the block is used.
+ *
+ * @see https://developer.wordpress.org/block-editor/developers/block-api/block-edit-save/#edit
+ *
+ * @return {WPElement} Element to render.
+ */
+
 function Edit(_ref) {
   let {
     attributes,
     setAttributes
   } = _ref;
   const {
-    selectedPosts
+    author,
+    titleColor,
+    authorImage,
+    topic,
+    date
   } = attributes;
-  const options = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(select => {
-    const {
-      getEntityRecords
-    } = select('core');
-    let postCollection = getEntityRecords('postType', 'post', {
-      per_page: -1,
-      status: 'publish'
-    });
-    let tagsCollection = getEntityRecords('taxonomy', 'post_tag', {
-      per_page: -1
-    });
-    postCollection === null || postCollection === void 0 ? void 0 : postCollection.forEach(post => {
-      var _select$getMedia;
+  const currentDate = (0,_wordpress_data__WEBPACK_IMPORTED_MODULE_4__.useSelect)(select => {
+    // TODO: parce the dat
+    // console.log(select( 'core/editor' ));
+    return select('core/editor').getEditedPostAttribute('date'); // console.log(select( 'core/editor' ).getEditedPostAttribute('date'));
+  }, []);
 
-      post.imgurl = (_select$getMedia = select('core').getMedia(post.featured_media)) === null || _select$getMedia === void 0 ? void 0 : _select$getMedia.media_details.sizes.medium_large.source_url;
-      post.tagText = tagsCollection === null || tagsCollection === void 0 ? void 0 : tagsCollection.filter(tag => post.tags.includes(tag.id)).map(tag => tag.name);
-    });
-    return postCollection;
-  });
-
-  function onSelectedPageChange(selectedPages) {
-    let selectedPagesNumberParsed = selectedPages.map(post => {
-      return parseInt(post);
-    });
+  function onSelectAuthorImage(image) {
+    //improve with right resolution 
+    console.log(image);
     setAttributes({
-      selectedPosts: options.filter(post => selectedPagesNumberParsed.includes(post.id))
+      authorImage: image.sizes.thumbnail.url
     });
   }
 
-  return [(0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
-    key: "inspector"
-  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.SelectControl, {
-    multiple: true,
-    value: attributes.selectedPosts.map(post => {
-      return post.id;
-    }),
-    onChange: onSelectedPageChange,
-    label: (0,_wordpress_i18n__WEBPACK_IMPORTED_MODULE_1__.__)('Select a Post'),
-    options: options === null || options === void 0 ? void 0 : options.map(post => ({
-      label: post.title.rendered,
-      value: post.id
-    })),
-    className: "isceb-gutenberg-select"
-  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)({
-    className: "homepage-banners"
-  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "container-banners"
-  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => {
-    var _post$tagText;
+  function onTitleColourChange(color) {
+    setAttributes({
+      titleColor: color
+    });
+  }
 
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-      href: post.link
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "itemBanner",
-      key: post.id
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      key: post.id,
-      className: "bannerCardImage",
-      style: {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`
-      }
-    }), (post === null || post === void 0 ? void 0 : (_post$tagText = post.tagText) === null || _post$tagText === void 0 ? void 0 : _post$tagText.length) > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "bannerCardTag"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-      className: "bannerTagText"
-    }, post.tagText[0])), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "bannerCardContent"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
-      className: "bannerCardTitle"
-    }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-      className: "bannerCardDescription"
-    }, post.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-      className: "bannerCardButton"
-    }, "More Info"))));
+  function updateAuthor(event) {
+    setAttributes({
+      author: event.target.value
+    });
+  }
+
+  function updateTopic(topic) {
+    setAttributes({
+      topic: topic.target.value
+    });
+  }
+
+  function updateDate(date) {
+    setAttributes({
+      date: date.target.value
+    });
+  }
+
+  console.log(currentDate);
+  return [(0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.InspectorControls, {
+    style: {
+      marginBottom: '40px'
+    }
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
+    title: 'Font color settings'
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, " Selet a title color "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.ColorPalette, {
+    value: titleColor,
+    onChange: onTitleColourChange
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.PanelBody, {
+    title: 'Author Image'
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Select a  Bacgkround Image "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.MediaUpload, {
+    onSelect: onSelectAuthorImage,
+    type: "image",
+    value: authorImage,
+    render: _ref2 => {
+      let {
+        open
+      } = _ref2;
+      return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.IconButton, {
+        className: "editor-media-placeholder__button is-button is-default is-large",
+        icon: "upload",
+        onClick: open
+      }, "Background Image");
+    }
+  }))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", (0,_wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps)({
+    className: "isceb-gutenberg-block-wrapper"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "isceb-standard-page-head"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "isceb-standard-page-title-head-topic"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "Topic: "), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "text",
+    onChange: updateTopic,
+    value: topic,
+    placeholder: "Post topic"
+  })), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "isceb-standard-page-date"
+  }, currentDate)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "isceb-standard-page-head-container test-class"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: authorImage,
+    className: "isceb-standard-page-author-img"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("input", {
+    type: "text",
+    onChange: updateAuthor,
+    value: author,
+    style: {
+      color: titleColor
+    },
+    placeholder: "Name of the page's author",
+    className: "isceb-standard-page-author"
   })))];
 }
 
 /***/ }),
 
-/***/ "./isceb-blocks/isceb-news-block/src/index.js":
-/*!****************************************************!*\
-  !*** ./isceb-blocks/isceb-news-block/src/index.js ***!
-  \****************************************************/
+/***/ "./isceb-blocks/isceb-author-block/src/index.js":
+/*!******************************************************!*\
+  !*** ./isceb-blocks/isceb-author-block/src/index.js ***!
+  \******************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @wordpress/blocks */ "@wordpress/blocks");
 /* harmony import */ var _wordpress_blocks__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./isceb-blocks/isceb-news-block/src/style.scss");
-/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./isceb-blocks/isceb-news-block/src/edit.js");
-/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./isceb-blocks/isceb-news-block/src/save.js");
+/* harmony import */ var _style_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./style.scss */ "./isceb-blocks/isceb-author-block/src/style.scss");
+/* harmony import */ var _edit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./edit */ "./isceb-blocks/isceb-author-block/src/edit.js");
+/* harmony import */ var _save__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./save */ "./isceb-blocks/isceb-author-block/src/save.js");
 /**
  * Registers a new block provided a unique name and an object defining its behavior.
  *
@@ -175,7 +206,7 @@ __webpack_require__.r(__webpack_exports__);
  * @see https://developer.wordpress.org/block-editor/reference-guides/block-api/block-registration/
  */
 
-(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)('isceb-blocks/news-block', {
+(0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)('isceb-blocks/author-block', {
   /**
    * @see ./edit.js
    */
@@ -187,11 +218,12 @@ __webpack_require__.r(__webpack_exports__);
   save: _save__WEBPACK_IMPORTED_MODULE_3__["default"],
   attributes: {
     author: {
-      type: 'string'
+      type: 'string',
+      default: ''
     },
     authorImage: {
       type: 'string',
-      default: null
+      default: ''
     },
     titleColor: {
       type: 'string',
@@ -199,40 +231,21 @@ __webpack_require__.r(__webpack_exports__);
     },
     topic: {
       type: 'string',
-      default: null
+      default: ''
     },
-    selectedPost: {
-      type: 'number',
+    date: {
+      type: 'integer',
       default: 0
-    },
-    selectedPosts: {
-      type: 'array',
-      default: []
-    },
-    align: {
-      type: 'string',
-      default: 'full'
     }
-  },
-  supports: {
-    align: true,
-    alignWide: true
-  },
-
-  getEditWrapperProps(attributes) {
-    return {
-      'data-align': 'full'
-    };
   }
-
 });
 
 /***/ }),
 
-/***/ "./isceb-blocks/isceb-news-block/src/save.js":
-/*!***************************************************!*\
-  !*** ./isceb-blocks/isceb-news-block/src/save.js ***!
-  \***************************************************/
+/***/ "./isceb-blocks/isceb-author-block/src/save.js":
+/*!*****************************************************!*\
+  !*** ./isceb-blocks/isceb-author-block/src/save.js ***!
+  \*****************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -276,48 +289,35 @@ function save(_ref) {
     attributes
   } = _ref;
   const {
-    selectedPosts
+    authorImage,
+    author,
+    topic,
+    date
   } = attributes;
-  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("section", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save({
-    className: "homepage-banners"
+  return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", _wordpress_block_editor__WEBPACK_IMPORTED_MODULE_2__.useBlockProps.save({
+    className: "isceb-gutenberg-block-wrapper"
   }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-    className: "container-banners"
-  }, selectedPosts === null || selectedPosts === void 0 ? void 0 : selectedPosts.map(post => {
-    var _post$tagText;
-
-    return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
-      href: post.link
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "itemBanner",
-      key: post.id
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      key: post.id,
-      className: "bannerCardImage",
-      style: {
-        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${post.imgurl})`
-      }
-    }), (post === null || post === void 0 ? void 0 : (_post$tagText = post.tagText) === null || _post$tagText === void 0 ? void 0 : _post$tagText.length) > 0 && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "bannerCardTag"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-      className: "bannerTagText"
-    }, post.tagText[0])), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
-      className: "bannerCardContent"
-    }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h3", {
-      className: "bannerCardTitle"
-    }, post.title.rendered), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
-      className: "bannerCardDescription"
-    }, post.excerpt.raw), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", {
-      className: "bannerCardButton"
-    }, "More Info"))));
-  })));
+    className: "isceb-standard-page-head"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "isceb-standard-page-title-head-topic"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", null, "Topic: ", topic)), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "isceb-standard-page-date"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", null, date))), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "isceb-standard-page-head-container test-class"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+    src: authorImage,
+    className: "isceb-standard-page-author-img"
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("h6", {
+    className: "isceb-standard-page-author"
+  }, author, " ")));
 }
 
 /***/ }),
 
-/***/ "./isceb-blocks/isceb-news-block/src/editor.scss":
-/*!*******************************************************!*\
-  !*** ./isceb-blocks/isceb-news-block/src/editor.scss ***!
-  \*******************************************************/
+/***/ "./isceb-blocks/isceb-author-block/src/editor.scss":
+/*!*********************************************************!*\
+  !*** ./isceb-blocks/isceb-author-block/src/editor.scss ***!
+  \*********************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -326,10 +326,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./isceb-blocks/isceb-news-block/src/style.scss":
-/*!******************************************************!*\
-  !*** ./isceb-blocks/isceb-news-block/src/style.scss ***!
-  \******************************************************/
+/***/ "./isceb-blocks/isceb-author-block/src/style.scss":
+/*!********************************************************!*\
+  !*** ./isceb-blocks/isceb-author-block/src/style.scss ***!
+  \********************************************************/
 /***/ (function(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 __webpack_require__.r(__webpack_exports__);
@@ -510,8 +510,8 @@ module.exports = window["wp"]["i18n"];
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
 /******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			"index": 0,
-/******/ 			"style-index": 0
+/******/ 			"isceb-blocks/isceb-author-block": 0,
+/******/ 			"style-isceb-blocks/isceb-author-block": 0
 /******/ 		};
 /******/ 		
 /******/ 		// no chunk on demand loading
@@ -563,9 +563,12 @@ module.exports = window["wp"]["i18n"];
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["style-index"], function() { return __webpack_require__("./isceb-blocks/isceb-news-block/src/index.js"); })
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["style-isceb-blocks/isceb-author-block"], function() { return __webpack_require__("./isceb-blocks/isceb-author-block/src/index.js"); })
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=index.js.map
+//# sourceMappingURL=isceb-author-block.js.map
+=======
+!function(){"use strict";var e,t={500:function(){var e=window.wp.blocks;function t(){return t=Object.assign||function(e){for(var t=1;t<arguments.length;t++){var a=arguments[t];for(var r in a)Object.prototype.hasOwnProperty.call(a,r)&&(e[r]=a[r])}return e},t.apply(this,arguments)}var a=window.wp.element,r=(window.wp.i18n,window.wp.blockEditor),n=window.wp.components;(0,e.registerBlockType)("isceb-blocks/author-block",{edit:function(e){let{attributes:o,setAttributes:l}=e;const{author:c,titleColor:i,authorImage:s,topic:u,date:d}=o;return[(0,a.createElement)(r.InspectorControls,{style:{marginBottom:"40px"}},(0,a.createElement)(n.PanelBody,{title:"Font color settings"},(0,a.createElement)("p",null," Selet a title color "),(0,a.createElement)(r.ColorPalette,{value:i,onChange:function(e){l({titleColor:e})}})),(0,a.createElement)(n.PanelBody,{title:"Author Image"},(0,a.createElement)("p",null,"Select a  Bacgkround Image "),(0,a.createElement)(r.MediaUpload,{onSelect:function(e){console.log(e),l({authorImage:e.sizes.thumbnail.url})},type:"image",value:s,render:e=>{let{open:t}=e;return(0,a.createElement)(n.IconButton,{className:"editor-media-placeholder__button is-button is-default is-large",icon:"upload",onClick:t},"Background Image")}}))),(0,a.createElement)("div",t({},(0,r.useBlockProps)(),{class:"isceb-gutenberg-block-wrapper"}),(0,a.createElement)("div",{class:"isceb-standard-page-title-head-topic"},(0,a.createElement)("p",null,"Topic: "),(0,a.createElement)("input",{type:"text",onChange:function(e){l({topic:e.target.value})},value:o.topic,placeholder:"Post topic"})),(0,a.createElement)("div",{class:"isceb-standard-page-date"},(0,a.createElement)("input",{type:"text",onChange:function(e){l({date:e.target.value})},value:o.date,placeholder:"Post date"})),(0,a.createElement)("div",{class:"isceb-standard-page-head-container"},(0,a.createElement)("input",{type:"text",onChange:function(e){l({author:e.target.value})},value:o.author,style:{color:i},placeholder:"Name of the page's author",class:"isceb-standard-page-author"}),(0,a.createElement)("img",{src:s,style:{borderRadius:"50%",height:"60px",width:"60px",border:"5px solid #1F476B"},class:"isceb-standard-page-author-img"})))]},save:function(e){let{attributes:t}=e;const{authorImage:n,author:o,topic:l,date:c}=t;return(0,a.createElement)("div",r.useBlockProps.save(),(0,a.createElement)("div",{class:"isceb-standard-page-title-head-topic"},(0,a.createElement)("h6",null,"Topic: ",l)),(0,a.createElement)("div",{class:"isceb-standard-page-date"},(0,a.createElement)("h6",null,c)),(0,a.createElement)("div",{class:"isceb-standard-page-head-container"},(0,a.createElement)("img",{src:n,style:{borderRadius:"50%",height:"60px",width:"60px",border:"5px solid #1F476B"},class:"isceb-standard-page-author-img"}),(0,a.createElement)("h6",{class:"isceb-standard-page-author"},o," ")))},attributes:{author:{type:"string"},authorImage:{type:"string",default:null},titleColor:{type:"string",default:"red"},topic:{type:"string",default:null},date:{type:"integer",default:null}}})}},a={};function r(e){var n=a[e];if(void 0!==n)return n.exports;var o=a[e]={exports:{}};return t[e](o,o.exports,r),o.exports}r.m=t,e=[],r.O=function(t,a,n,o){if(!a){var l=1/0;for(u=0;u<e.length;u++){a=e[u][0],n=e[u][1],o=e[u][2];for(var c=!0,i=0;i<a.length;i++)(!1&o||l>=o)&&Object.keys(r.O).every((function(e){return r.O[e](a[i])}))?a.splice(i--,1):(c=!1,o<l&&(l=o));if(c){e.splice(u--,1);var s=n();void 0!==s&&(t=s)}}return t}o=o||0;for(var u=e.length;u>0&&e[u-1][2]>o;u--)e[u]=e[u-1];e[u]=[a,n,o]},r.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},function(){var e={766:0,911:0};r.O.j=function(t){return 0===e[t]};var t=function(t,a){var n,o,l=a[0],c=a[1],i=a[2],s=0;if(l.some((function(t){return 0!==e[t]}))){for(n in c)r.o(c,n)&&(r.m[n]=c[n]);if(i)var u=i(r)}for(t&&t(a);s<l.length;s++)o=l[s],r.o(e,o)&&e[o]&&e[o][0](),e[l[s]]=0;return r.O(u)},a=self.webpackChunkisceb_block=self.webpackChunkisceb_block||[];a.forEach(t.bind(null,0)),a.push=t.bind(null,a.push.bind(a))}();var n=r.O(void 0,[911],(function(){return r(500)}));n=r.O(n)}();
+>>>>>>> a13ea5527ad8cc7f9b820c4dabfed04bf09a2d3b

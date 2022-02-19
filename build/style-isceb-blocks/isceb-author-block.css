@@ -1,0 +1,85 @@
+<<<<<<< HEAD
+/*!***********************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./isceb-blocks/isceb-author-block/src/style.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************/
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+.wp-block-isceb-blocks-author-block {
+  padding: 2px;
+}
+
+.isceb-standard-page-author-img {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  border-bottom: "5px solid #1F476B";
+}
+
+.isceb-standard-page-title-container {
+  margin-bottom: 20px;
+}
+
+.isceb-standard-page-header {
+  font-size: xx-large;
+}
+
+.isceb-standard-page-head-container {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[2];
+  grid-template-columns: repeat(2, 1fr);
+  -ms-grid-rows: 1fr;
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  width: 50%;
+  grid-row-gap: 0px;
+  margin-top: 20px;
+}
+
+@media (min-width: 641px) {
+  .isceb-standard-page-head-container {
+    display: -ms-grid;
+    display: grid;
+    -ms-grid-columns: (1fr)[2];
+    grid-template-columns: repeat(2, 1fr);
+    -ms-grid-rows: 1fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    width: 15%;
+    grid-row-gap: 0px;
+    margin-top: 20px;
+  }
+}
+.isceb-standard-page-title-head-topic {
+  padding-bottom: 10px;
+  color: grey;
+  font-weight: normal;
+}
+
+/* Code for the head of standard page (topic, date) */
+.isceb-standard-page-title-head {
+  border-bottom: solid #1f476b;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[2];
+  grid-template-columns: repeat(2, 1fr);
+  -ms-grid-rows: 1fr;
+  grid-template-rows: 1fr;
+  grid-column-gap: 0;
+}
+
+.isceb-standard-page-head {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: solid;
+}
+
+/*# sourceMappingURL=isceb-author-block.css.map*/
+=======
+.wp-block-isceb-blocks-author-block{padding:2px}
+>>>>>>> a13ea5527ad8cc7f9b820c4dabfed04bf09a2d3b

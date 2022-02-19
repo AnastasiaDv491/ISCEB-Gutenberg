@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /*!************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[3].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[3].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[3].use[3]!./isceb-blocks/isceb-author-block/src/editor.scss ***!
   \************************************************************************************************************************************************************************************************************************************************************************/
@@ -6,19 +7,34 @@
  *
  * Replace them with your own styles or remove the file completely.
  */
-.isceb-gutenberg-block-wrapper {
+.isceb-standard-page-author-img {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 50%;
+  min-height: 60px;
+  width: 60px;
+  border-bottom: none;
+  border: 5px solid #1F476B;
+}
+
+.isceb-standard-page-head-container {
   display: -ms-grid;
   display: grid;
-  -ms-grid-columns: (1fr)[1];
-  grid-template-columns: repeat(1, 1fr);
-  -ms-grid-rows: (1fr)[2];
-  grid-template-rows: repeat(2, 1fr);
+  -ms-grid-columns: (1fr)[2];
+  grid-template-columns: repeat(2, 1fr);
+  -ms-grid-rows: 1fr;
+  grid-template-rows: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
+  margin-top: 20px;
+  width: auto;
 }
 
-.isceb-standard-page-title-head-topic, .isceb-standard-page-date, .isceb-standard-page-head-container {
-  margin: auto;
+.isceb-standard-page-head {
+  display: block;
+  border-bottom: none;
 }
 
-/*# sourceMappingURL=index.css.map*/
+/*# sourceMappingURL=isceb-author-block.css.map*/
+=======
+.isceb-gutenberg-block-wrapper{-ms-grid-columns:(1fr)[1];-ms-grid-rows:(1fr)[2];grid-column-gap:0;grid-row-gap:0;display:-ms-grid;display:grid;grid-template-columns:repeat(1,1fr);grid-template-rows:repeat(2,1fr)}.isceb-standard-page-date,.isceb-standard-page-head-container,.isceb-standard-page-title-head-topic{margin:auto}
+>>>>>>> a13ea5527ad8cc7f9b820c4dabfed04bf09a2d3b

@@ -11,7 +11,8 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/packages/packages-block-editor/#useBlockProps
  */
-import { useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps, RichText } from '@wordpress/block-editor';
+
 
 /**
  * The save function defines the way in which the different attributes should
@@ -22,32 +23,19 @@ import { useBlockProps } from '@wordpress/block-editor';
  *
  * @return {WPElement} Element to render.
  */
+
+
 export default function save({ attributes }) {
 	const {
-		authorImage,
-		author,
-		topic,
-		date
+		selectedPosts,
+		subheading,
+		description
 	} = attributes;
+
 	return (
-		<div {...useBlockProps.save({ className: "isceb-gutenberg-block-wrapper" })}>
-			<div className="isceb-standard-page-head">
-				<div className="isceb-standard-page-title-head-topic">
-					<h6>Topic: {topic}</h6>
-
-				</div>
-				<div className="isceb-standard-page-date">
-					<h6 >{date}</h6>
-				</div>
-			</div>
-
-			<div className="isceb-standard-page-head-container test-class">
-				<img src={authorImage}
-					className="isceb-standard-page-author-img"
-				/>
-				<h6 className="isceb-standard-page-author">{author} </h6>
-
-			</div>
+		<div className="wrapper isceb-homepage-wrapper" id="full-width-page-wrapper">
+				
 		</div>
+
 	);
 }
